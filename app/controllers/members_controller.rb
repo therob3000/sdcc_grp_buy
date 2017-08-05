@@ -74,10 +74,14 @@ class MembersController < ApplicationController
 	end
 
 	def cover_member
-		member = Member.find(params[:id])
+		member = Member.find(params[:member_id])
 		member.covered = true;
-		
-		
+		if member.save
+			render :json => { :success => true }
+		else
+			render :json => { :success => false, :message => member.errors.full_messages }
+		end
+
 	end
 
 	private

@@ -13,10 +13,7 @@ class BroadcastsController < WebsocketRails::BaseController
 	end
 
 	def mark_member_as_covered_for_all_groups
-		member = Member.find(message[:member_id])
-		member.covered = true
-		if member.save
-			WebsocketRails.trigger('member_covered', {room: room, member_group_id: member_group_id})
-		end
+		member_id = message[:member_id]
+		WebsocketRails.trigger('member_covered', {member_id: member_id})
 	end
 end

@@ -119,12 +119,7 @@
 						$('#sdcc_member_id_holder_create').val(sdcc_num);
 					});
 				} else {
-					var html = '';
-					for (var i = data.message.length - 1; i >= 0; i--) {
-						var mess = data.message[i];
-						html += "<li>"+mess+"</li>"
-					} 
-					$('#error_list').html(html);
+					populateErrors(data.message);
 				}
 			}
 		})
@@ -146,12 +141,7 @@
 				$(this).trigger('reset');
 
 			} else {
-				var html = '';
-				for (var i = data.message.length - 1; i >= 0; i--) {
-					var mess = data.message[i];
-					html += "<li>"+mess+"</li>"
-				}
-				$('#error_list').html(html);
+				populateErrors(data.message);
 			}
 		})		
 	});
@@ -173,6 +163,15 @@
 		coverMember(mem_id);
 	});
 
+	var populateErrors = function(err_array) {
+		var html = '';
+		for (var i = err_array.length - 1; i >= 0; i--) {
+			var mess = err_array[i];
+			html += "<li>"+mess+"</li>"
+		} 
+		$('#error_list').html(html);
+	}
+
 
 	var coverMember = function(member_id){
 		$.ajax({
@@ -183,6 +182,8 @@
 			if (data.success) {
 				var obj = { member_id: data.member_id }
 				dispatcher.trigger('cover_member', obj)
+			} else {
+				populateErrors(data.message);
 			}
 		})
 		
