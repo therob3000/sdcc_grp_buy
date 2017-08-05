@@ -1,0 +1,23 @@
+<div class="member-item <%= mem_grp.member.covered ? 'member_covered' : '' %>" id="member_row_<%= mem_grp.id %>">
+	<div class="mem-block">
+		<%= mem_grp.member.name %> (<%= mem_grp.member.sdcc_member_id %>)
+	</div>
+	<div class="mem-block day-holder" style='float: center;'>
+		<% ['wensday','thursday','friday','saturday','sunday'].each do |day| %>
+		<% if mem_grp.member.needs.first.attributes[day] %>
+		<div class="day-block">
+			<%= day %>
+		</div>
+		<% end %>
+		<% end %>
+	</div>
+
+	<div class="mem-block" style='float: right;'>
+		<input type="text" name="" id='ticket_<%= mem_grp.member.id %>' placeholder='confirmation code'>
+		<a href="/purchases" data-id='<%= mem_grp.member.id %>' class='buy-ticket btn btn-sm btn-warning' data-id='<%= mem_grp.member.id %>'>CONFIRM</a>
+		<% if current_user.groups.map { |e| e.id }.include?(grp.id) %>
+			<a href="#" class='remove btn btn-sm btn-danger remove-this-user' data-id='<%= mem_grp.id %>'>REMOVE</a>
+		<% end %>
+	</div>
+	
+</div>

@@ -1,0 +1,38 @@
+<div class="create-form">
+	<form action='/groups' method='POST' id='create-group-form'>
+		<h3>Create a new group</h3>
+		<div class="form-group">
+			<label for='group[name]'>Group Name</label>
+			<input class="form-control" type="text" name='group[name]'>
+			<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+		</div>
+		<div id="error_list" style="color: red"></div>
+		<button type="submit" class="btn btn-primary">Submit</button>
+	</form>
+</div>
+
+<script type="text/javascript">
+$("body").on('submit', '#create-group-form', function(event) {
+	event.preventDefault();
+	/* Act on the event */
+		$.ajax({
+			url: '/groups',
+			method: 'POST',
+			data: $(this).serialize(),
+		})
+		.done(function(data) {
+			if (data.success == true) {
+				window.location = '/groups';
+			} else {
+				var html = '';
+				for (var i = data.message.length - 1; i >= 0; i--) {
+					var mess = data.message[i];
+					html += "<li>"+mess+"</li>"
+				}
+				$('#error_list').html(html);
+			}
+		})
+});
+
+	
+</script>

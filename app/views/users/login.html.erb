@@ -1,0 +1,13 @@
+
+<div class="login-body">
+	
+	<% if current_user.nil? %>
+		<a class="fblogin btn btn-lg btn btn-lg btn-primary" href="/users/auth/facebook">
+		  Continue with Facebook
+		</a>
+	<% else %>
+		<div class="welcome">
+			Welcome!
+		</div>
+	<% end %>
+</div>

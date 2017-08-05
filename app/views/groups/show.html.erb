@@ -1,0 +1,247 @@
+<h2><%= @grp.name %></h2>
+<hr>
+
+
+<div class="member-list" id='member-list'>
+	<% @grp.member_groups.each do |mem_grp| %>
+		<%= render :partial => 'member_list_item', :locals => { :mem_grp => mem_grp, :grp => @grp } %>
+	<% end %>
+</div>
+
+<% if current_user.groups.map { |e| e.id }.include?(@grp.id) %>
+<div class="create-form">
+	<h5>Add member to this group</h5>
+	<p>
+		<b>Only the user that started this group may add members to this group</b>
+	</p>
+	<p>
+		To register yourself or a member into this group, please enter a valid SDCC number here, and check off the days desired.
+	</p>
+	<form method="post" id="reg-member">
+		<input type="hidden" name="member_group[group_id]" value="<%= @grp.id %>">
+			<input type="text" name="sdcc_member_id" id='sdcc_member_id_holder' class="form-control" style='width: 200px' placeholder="SDCC member ID">
+			<div id="error_list" style="color: red"></div>
+
+			<hr>
+			<div class="form-check form-check-inline">
+			  <label class="form-check-label">
+			  	<%= check_box_tag 'need[wensday]' %> Wensday
+			  </label>
+			</div>
+			<div class="form-check form-check-inline">
+			  <label class="form-check-label">
+			  	<%= check_box_tag 'need[thursday]' %> Thursday
+			  </label>
+			</div>
+			<div class="form-check form-check-inline">
+			  <label class="form-check-label">
+			  	<%= check_box_tag 'need[friday]' %> Friday
+			  </label>
+			</div>
+
+			<div class="form-check form-check-inline">
+			  <label class="form-check-label">
+			  	<%= check_box_tag 'need[saturday]' %> Saturday
+			  </label>
+			</div>
+
+			<div class="form-check form-check-inline">
+			  <label class="form-check-label">
+			  	<%= check_box_tag 'need[sunday]' %> Sunday
+			  </label>
+			</div>
+			<input type="submit" name="ADD">
+	</form>
+</div>
+<!-- id: integer, user_id: integer, sdcc_member_id: integer, name: string, phone: string, email: string, covered: boolean, -->
+<div id="new-member-form" style='display: none;'>
+	<div class="create-form">
+		<form action='/members' method='POST' id='create-member-form'>
+			<h3>Create a new Member</h3>
+			<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+			<div class="form-group">
+				<label for='member[name]'>Name</label>
+				<input class="form-control" type="text" name='member[name]'>
+			</div>
+			<div class="form-group">
+				<label for='member[phone]'>Phone</label>
+				<input class="form-control" type="text" name='member[phone]'>
+			</div>
+			<div class="form-group">
+				<label for='member[email]'>E-Mail</label>
+				<input class="form-control" type="text" name='member[email]'>
+			</div>
+			<div class="form-group">
+				<label for='member[phone]'>SDCC Member ID</label>
+				<input class="form-control" id='sdcc_member_id_holder_create' type="text" name='member[sdcc_member_id]'>
+			</div>
+
+			<div id="error_list" style="color: red"></div>
+			<button type="submit" class="btn btn-primary">Register Member</button>
+		</form>
+	</div>
+</div>
+<% end %>
+<style type="text/css">
+	.form-check {
+		position: relative;
+		display: inline-block;
+		width: 15%;
+	}
+
+	.member_covered {
+		background-color: red;
+	}
+</style>
+<script type="text/javascript">
+  // var dispatcher = new WebSocketRails(window.document.location.host + "/" + "websocket");
+  var dispatcher = new WebSocketRails('localhost:3002' + "/" + "websocket");
+  var connection;
+  var connectionID;
+  var channel;
+  var chat_room_conn;
+
+	function regMember(dataSend){
+		$.ajax({
+			url: '/members/register_member_to_group',
+			method: 'POST',
+			data: dataSend,
+		})
+		.done(function(data) {
+			if (data.success == true) {
+				$("#reg-member").trigger('reset');
+				var obj = {room: <%= @grp.id %>, member_id: data.member_id, member_group_id: data.member_group_id}
+				dispatcher.trigger('register_member', obj)
+			} else {
+				if (data.new_member) {
+					$('#new-member-form').slideDown('500', function() {
+						var sdcc_num = $('#sdcc_member_id_holder').val();
+						$('#sdcc_member_id_holder_create').val(sdcc_num);
+					});
+				} else {
+					var html = '';
+					for (var i = data.message.length - 1; i >= 0; i--) {
+						var mess = data.message[i];
+						html += "<li>"+mess+"</li>"
+					} 
+					$('#error_list').html(html);
+				}
+			}
+		})
+	}
+
+	$('body').on('submit', '#create-member-form', function(event) {
+		event.preventDefault();
+		// create the member.
+		$.ajax({
+			url: '/members/register_member',
+			type: 'POST',
+			data: $(this).serialize(),
+		})
+		.done(function(data) {
+			if (data.success) {
+				// register the member to the group.
+				$('#new-member-form').slideUp(500);
+				regMember($('#reg-member').serialize());
+				$(this).trigger('reset');
+
+			} else {
+				var html = '';
+				for (var i = data.message.length - 1; i >= 0; i--) {
+					var mess = data.message[i];
+					html += "<li>"+mess+"</li>"
+				}
+				$('#error_list').html(html);
+			}
+		})		
+	});
+
+	$("body").on('submit', '#reg-member', function(event) {
+		event.preventDefault();
+		regMember($(this).serialize());
+	});
+
+	$("body").on('click', '.remove-this-user', function(event) {
+		event.preventDefault();
+		var mb_id = $(this).attr('data-id');
+		removeMemberFromDom(mb_id);		
+	});
+
+	$('body').on('click', '.buy-ticket', function(event) {
+		event.preventDefault();
+		var mem_id = $(this).attr('data-id');
+		coverMember(mem_id);
+	});
+
+
+	var coverMember = function(member_id){
+		$.ajax({
+			url: '/members/cover_member',
+			data: {member_id: member_id},
+		})
+		.done(function(data) {
+			if (data.success) {
+				var obj = { member_id: data.member_id }
+				dispatcher.trigger('cover_member', obj)
+			}
+		})
+		
+	}
+
+  var removeMemberFromDom = function(member_group_id) {
+    $.ajax({
+    	url: '/members/remove_member',
+    	method: 'DELETE',
+    	data: {mem_grp_id: member_group_id, grp_id: <%= @grp.id %>},
+    })
+    .done(function(data) {
+    	if (data.success) {
+			  	var obj = {room: <%= @grp.id %>, member_group_id: data.message}
+					dispatcher.trigger('unregister', obj)
+    	}
+    })
+  }
+
+  var addMemberToDom = function(message) {
+    var member_group_id = message.member_group_id;
+    $.ajax({
+    	url: '/groups/present_member',
+    	data: {mem_grp_id: member_group_id, grp_id: <%= @grp.id %>},
+    })
+    .done(function(data) {
+    	$("#member-list").append(data);
+    })
+  }
+
+  dispatcher.on_open = function(data) {
+    console.log('Connection has been established: ', data);
+    connectionID = data.connection_id;
+    connection = <%= @grp.id %>;
+    chat_room_conn = 'group_'+ connection;
+    channel = dispatcher.subscribe(chat_room_conn);
+    var room_create_success = chat_room_conn + '_created';
+
+    // listen for newly registered members
+    channel.bind("member_registered", function(mes){
+    	addMemberToDom(mes);
+    });
+
+    // listen for any dropped members
+    channel.bind("unregister_member",function(mes){
+    	$("#member_row_" + mes.member_group_id).fadeOut('500', function() {
+		    $("#member_row_" + mes.member_group_id).remove();
+    	});;
+    })
+
+    // listen for any covered members across all groups in this group
+    channel.bind("member_covered",function(mes){
+	    $("#member_row_" + mes.member_group_id).css('background-color', 'red');;
+
+    })
+
+    console.log(room_create_success);
+  }
+
+
+
+</script>

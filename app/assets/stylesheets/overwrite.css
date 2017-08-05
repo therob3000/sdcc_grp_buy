@@ -1,0 +1,80 @@
+.wrapper {
+	position: relative;
+}
+
+.skin-blue {
+	position: relative;
+	height: 100%;
+	padding: 0;
+}
+
+.content-wrapper {
+	height: 1000px;
+}
+
+.login-body {
+	padding-left: 20%;
+}
+
+.create-form {
+	  position: relative;
+    width: 50%;
+    padding: 2%;
+    background-color: white;
+    border-radius: 40px;
+}
+
+.group-list-item {
+    width: 100%;
+    margin-bottom: 5px;
+    color: white;
+    font-size: 13px;	
+}
+
+.content {
+    padding-left: 5%;
+    overflow: scroll;
+    height: 1000px;
+ }
+
+.list-group {
+	  padding-left: 0;
+    margin-bottom: 20px;
+    width: 90%;
+    padding: 3px;
+}
+
+.group-list {
+	
+	padding-left: 5%;
+}
+
+.list-group a {
+	font-size: 14px;
+}
+
+.member-item {
+    background-color: #9dd6f7;
+    padding: 1%;
+    font-size: 20px;
+    margin-bottom: 2%;
+    width: 90%;
+    border-radius: 10px;
+}
+
+.mem-block {
+    display: inline-block;
+    margin-right: 3%;
+    background-color: white;
+    padding: 7px;
+}
+
+.day-block {
+    display: inline-block;
+    background-color: white;
+    margin-right: 2%;
+}
+
+.day-holder {
+        width: 40%;
+}
