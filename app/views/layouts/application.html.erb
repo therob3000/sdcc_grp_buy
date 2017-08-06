@@ -62,6 +62,9 @@
               </p>
             </div>
           </div>
+          <div class="inbox">
+            <a href="/user/inbox" class='group-list-item'>INBOX</a>
+          </div>
           <!-- search form -->
           <form action="#" method="get" id='private-grp-search' class="sidebar-form">
             <div class="input-group">
@@ -129,6 +132,16 @@
   </div>
 </div>
 <script type="text/javascript">
+  var populateErrors = function(err_array) {
+    var html = '';
+    for (var i = err_array.length - 1; i >= 0; i--) {
+      var mess = err_array[i];
+      html += ""+mess+"\n"
+    }
+   alert(html);
+    // $('#error_list').html(html);
+  }
+
   function performPrivateSearch(){
     var phrase = $("#pgsearch").val();
     $.ajax({
@@ -168,7 +181,8 @@
     /* Act on the event */
     var mem_id = $(this).attr('data-id');
     $.ajax({
-      url: '/users/' + mem_id,
+      url: '/users/show_user',
+      data: {id: mem_id}
     })
     .done(function(data) {
       $('.modal-body').html(data);

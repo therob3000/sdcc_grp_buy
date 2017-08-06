@@ -1,6 +1,34 @@
 <h1>All Current Members</h1>
 
 <hr>
+<div id="new-member-form" style='display: block; height: 50px; overflow-y: hidden;'>
+  <div class="create-form">
+  <a href="#" id='expand' class='btn btn-md btn-primary expand-member'>+MEMBER</a>
+    <form action='/members' method='POST' id='create-member-form'>
+      <h3>Create a new Member</h3>
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <div class="form-group">
+        <label for='member[name]'>Name</label>
+        <input class="form-control" type="text" name='member[name]'>
+      </div>
+      <div class="form-group">
+        <label for='member[phone]'>Phone</label>
+        <input class="form-control" type="text" name='member[phone]'>
+      </div>
+      <div class="form-group">
+        <label for='member[email]'>E-Mail</label>
+        <input class="form-control" type="text" name='member[email]'>
+      </div>
+      <div class="form-group">
+        <label for='member[phone]'>SDCC Member ID</label>
+        <input class="form-control" id='sdcc_member_id_holder_create' type="text" name='member[sdcc_member_id]'>
+      </div>
+
+      <div id="error_list" style="color: red"></div>
+      <button type="submit" class="btn btn-primary">Register Member</button>
+    </form>
+  </div>
+</div>
 <div class="search-container">
   
 <form action="#" method="get" class="group-search sidebar-form">
@@ -25,12 +53,26 @@
 </div>
 <hr>
 
+<script type="text/javascript">
+  $('body').on('click', '.expand-member', function(event) {
+  event.preventDefault();
+  if ($('#new-member-form').css('height') == '500px') {
+    $('#new-member-form').animate({'height': '100px'}, 500);
+  } else {
+    $('#new-member-form').animate({'height': '500px'}, 500);
+  }
 
+});
+
+</script>
 
 <style type="text/css">
 	.pagination a {
 		display: inline-block;
 	}
+  .expand-member {
+    width: 100%;
+  }
 </style>
 
 <!-- Trigger the modal with a button -->
@@ -57,6 +99,27 @@
 </div>
 
 <script type="text/javascript">
+$('body').on('submit', '#create-member-form', function(event) {
+    event.preventDefault();
+    // create the member.
+    $.ajax({
+      url: '/members/register_member',
+      type: 'POST',
+      data: $(this).serialize(),
+    })
+    .done(function(data) {
+      if (data.success) {
+        // register the member to the group.
+        $('#gsearch').val(data.member_id);
+        $('#gsearch').trigger('keyup');
+        $(this).trigger('reset');
+
+      } else {
+        populateErrors(data.message);
+      }
+    })    
+  });
+
   function performSearch(){
     var phrase = $("#gsearch").val();
     // debugger

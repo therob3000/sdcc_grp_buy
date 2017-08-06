@@ -23,7 +23,11 @@ class UsersController < ApplicationController
   end
 
   def show
-    @usr = User.find(params[:id])
-    render :partial => 'show', :locals => {:user => @usr}
+    
+  end
+
+  def show_user
+    @user = User.find(params[:id])
+    render :partial => 'show', :locals => {:user => @user}
   end
 end

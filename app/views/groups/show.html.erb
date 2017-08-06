@@ -12,9 +12,10 @@
 			<form>
 				<input type="text" name="" class='form-control chat-message-input' placeholder="SAy sumthin'.....">
 			</form>
+			<span class="someone_typing">Someone is typing a message.....</span>
 		</div>
 		<div class="chat-log" id='chat_log'>
-			<% @grp.chat_messages.each do |message| %>
+			<% @grp.chat_messages.order('created_at DESC').each do |message| %>
 				<%= render :partial => 'groups/chat_line', :locals => { :message => message, :user => message.user } %>			
 			<% end %>
 		</div>
@@ -24,11 +25,19 @@
 .chat-form {
 	padding: 2px;
 	background-color: #d4cea8;
+  height: 24px;
 }
 #chat_container {
 	position: relative;
 	width: 100%;
 	height: 300px;
+}
+
+.someone_typing {
+	display: none;
+	    width: 100%;
+    position: relative;
+    background-color: #efeacc;
 }
 
 	.chat-log {
@@ -68,10 +77,11 @@ position: relative;
 	.bubble-time {
 		float: right;
     right: 4px;
-    padding: 7px;
+    padding: 4px;
     position: absolute;
     background-color: #ecf0f5;
     border-radius: 20px;
+    font-size: 10px;
 	}
 
 	.bubble-time-left {
@@ -84,36 +94,7 @@ position: relative;
 	}
 </style>
 
-<script type="text/javascript">
-	// var elem = document.getElementById('chat_log');
-	// var elem2 = document.getElementById('chat_container');
- //  elem.scrollTop = elem.scrollHeight;
- //  elem2.scrollTop = elem2.scrollHeight;
 
-$('body').on('click', '.expand-chat-log', function(event) {
-	event.preventDefault();
-	if ($('.chat-box').css('height') == '500px') {
-		$('.chat-box').animate({'height': '100px'}, 500);
-	} else {
-		$('.chat-box').animate({'height': '500px'}, 500);
-	}
-
-});
-
-  var addCommentToDom = function(message) {
-    var newText = message.content;
-    if (message.connection_id == connectionID) {
-      $("#chat_log").append("<div class='dialog_row container my_dialog'>"+newText+"</div>");
-
-    } else {
-      $("#chat_log").append("<div class='dialog_row container'>"+newText+"</div>");
-    }
-    // elem.scrollTop = elem.scrollHeight;
-    elem.scrollTop = 0;
-    console.log('just received new message: ' + message);
-  }
-	
-</script>
 <div class="member-list" id='member-list'>
 	<% @grp.member_groups.each do |mem_grp| %>
 		<%= render :partial => 'member_list_item', :locals => { :member => mem_grp.member, :mem_grp => mem_grp, :grp => @grp } %>
@@ -276,15 +257,6 @@ $('body').on('click', '.expand-chat-log', function(event) {
 		coverMember(mem_id, need_id);
 	});
 
-	var populateErrors = function(err_array) {
-		var html = '';
-		for (var i = err_array.length - 1; i >= 0; i--) {
-			var mess = err_array[i];
-			html += ""+mess+"\n"
-		}
-	 alert(html);
-		// $('#error_list').html(html);
-	}
 
 
 	var coverMember = function(member_id, need_id){
@@ -295,8 +267,8 @@ $('body').on('click', '.expand-chat-log', function(event) {
 		.done(function(data) {
 				// debugger
 			if (data.success) {
-				var obj = { member_id: data.member_id, groups: data.groups }
-				dispatcher.trigger('cover_member', obj)
+				var obj = { member_id: data.member_id, groups: data.groups };
+				dispatcher.trigger('cover_member', obj);
 			} else {
 				populateErrors(data.message);
 			}
@@ -356,9 +328,85 @@ $('body').on('click', '.expand-chat-log', function(event) {
 
     })
 
+    // chatroom listener
+    channel.bind('add_room_message', function(message) {
+    	addCommentToDom(message);
+    });
+
+    // someone_typing
+    channel.bind('someone_typing', function(message) {
+    	someoneTyping();
+    });
+
     console.log(room_create_success);
   }
 
+  var someoneTyping = function(){
+  	$('.someone_typing').css('display', 'block');
+  	$('.someone_typing').fadeOut(2000, function() {
+  		
+  	});
+
+  }
 
 
+// chat rooom functionality
+	// var elem = document.getElementById('chat_log');
+	// var elem2 = document.getElementById('chat_container');
+ //  elem.scrollTop = elem.scrollHeight;
+ //  elem2.scrollTop = elem2.scrollHeight;
+
+ $('body').on('keydown', '.chat-message-input', function(event) {
+		if (event.which == 13) {
+		 	event.preventDefault();
+		 	var message = $(this).val();
+		 	$(this).val('');
+		 	$.ajax({
+		 		url: '/groups/process_message',
+		 		type: 'POST',
+		 		data: {message: {message: message, group_id: <%= @grp.id %>}},
+		 	})
+		 	.done(function(data) {
+		 		if (data.success) {
+			 		var obj = {message: data.message, room: <%= @grp.id %>, user_id: data.user_id, connection: connectionID};
+			 		dispatcher.trigger('send_chat_message', obj);
+		 		} else {
+		 			populateErrors(data.message);
+		 		}
+		 	})
+
+		} else {
+			// notify users that someone is typing
+			dispatcher.trigger('someone_typing', {room: "<%= @grp.id %>"});
+		}
+ });
+
+$('body').on('click', '.expand-chat-log', function(event) {
+	event.preventDefault();
+	if ($('.chat-box').css('height') == '500px') {
+		$('.chat-box').animate({'height': '100px'}, 500);
+	} else {
+		$('.chat-box').animate({'height': '500px'}, 500);
+	}
+
+});
+
+  var addCommentToDom = function(message) {
+  	var message_id = message.message_id;
+    // if (message.connection_id == connectionID) {
+    	$.ajax({
+    		url: '/groups/add_comment',
+    		data: {message_id: message_id},
+    	})
+    	.done(function(data) {
+	      $("#chat_log").prepend(data);
+    	})
+    	
+    // }
+    // elem.scrollTop = elem.scrollHeight;
+    var elem = $('#chat_log');
+    elem.scrollTop = 0;
+    console.log('just received new message: ' + message);
+  }
+	
 </script>

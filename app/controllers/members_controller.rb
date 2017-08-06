@@ -26,7 +26,7 @@ class MembersController < ApplicationController
 		@member.covered = false
 
 		if @member.save
-			render :json => { :success => true }
+			render :json => { :success => true, :member_id => @member.sdcc_member_id }
 		else
 			render :json => { :success => false, :message => @member.errors.full_messages}
 		end

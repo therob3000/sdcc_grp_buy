@@ -6,6 +6,10 @@ Rails.application.routes.draw do
       get 'dashboard'
     end
 
+    collection do 
+      get 'show_user'
+    end
+
   end
 
 
@@ -22,9 +26,11 @@ Rails.application.routes.draw do
 
   resources :groups do 
     collection do 
+      get 'add_comment'
       get 'present_member'
       get 'search'
       get 'private_search'
+      post 'process_message'
     end
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

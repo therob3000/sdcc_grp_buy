@@ -96,6 +96,12 @@
     font-weight: bold;
 }
 
+.inbox {
+    text-align: center;
+    margin: 0 auto;
+    width: 90%;
+}
+
 .day-holder {
     width: 33%;
 
@@ -153,6 +159,22 @@
     background-color: #9dd6f7;
 }
 
+.group_active {
+    color: black;
+    margin: 0px;
+    text-decoration: none;
+    background-color: #ecf0f5;
+    width: 107%;
+    padding: 10px;
+}
+
+.group_active a {
+    color: black;
+    margin: 0px;
+    text-decoration: none;
+    border: transparent;
+}
+
 .search-container {
     width: 90%;
 }
@@ -168,11 +190,12 @@
 
 /* CSS talk bubble */
 .talk-bubble {
-    margin: 40px;
+    margin: 15px;
   display: inline-block;
   position: relative;
     width: 70%;
     top: 35px;
+    left: 0px;
     height: auto;
     background-color: lightyellow;
 }
@@ -405,8 +428,9 @@
 
 /* talk bubble contents */
 .talktext{
-    padding: 1%;
-    padding-left: 4%;
+    padding: 3%;
+    padding-left: 10%;
+    padding-right: 10%;
     text-align: left;
     line-height: 1.5em;
     font-size: 15px;}
@@ -417,7 +441,10 @@
 }
 
 .chat-avatar {
-    position: relative;
+    /*position: absolute;*/
+    height: 63px;
+    top: -40px;
+    /*position: relative;*/
     left: 3%;
 }
 

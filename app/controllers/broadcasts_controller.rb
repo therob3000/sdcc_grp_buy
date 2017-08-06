@@ -31,4 +31,19 @@ class BroadcastsController < WebsocketRails::BaseController
 			WebsocketRails["group_#{room}"].trigger('member_covered', {member_id: member_id})
 		end
 	end
+
+	def someone_typing
+		room = message[:room]
+		WebsocketRails["group_#{room}"].trigger('someone_typing', {room: room})
+		
+	end
+
+	def send_chat_message
+		room = message[:room]
+		message_id = message[:message]
+		user_id = message[:user_id]
+		connection = message[:connection]
+		WebsocketRails["group_#{room}"].trigger('add_room_message', {room: room, message_id: message_id, user_id: user_id, connection_id: connection})
+		
+	end
 end

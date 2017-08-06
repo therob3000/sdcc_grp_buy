@@ -35,6 +35,22 @@ class GroupsController < ApplicationController
 		end
 	end
 
+	def process_message
+		mess = ChatMessage.new(message_params)
+		mess.user_id = current_user.id
+
+		if mess.save
+			render :json => { :success => true, :message => mess.id, :user_id => current_user.id }
+		else 
+			render :json => { :success => false, :message => @grp.errors.full_messages}
+		end		
+	end
+
+	def add_comment
+		message = ChatMessage.find(params[:message_id])
+		render :partial => 'groups/chat_line', :locals => { :message => message, :user => message.user }
+	end
+
 	def show
 		@grp = Group.find(params[:id])
 		# @messages = ChatMessage.select { |e| e.group_id == @grp.id } 
@@ -53,6 +69,10 @@ class GroupsController < ApplicationController
 	end
 
 	private
+
+	def message_params
+		params.require(:message).permit(:message, :group_id)
+	end
 
 	def group_params
 		params.require(:group).permit(:name)

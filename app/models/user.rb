@@ -6,6 +6,7 @@ class User < ApplicationRecord
 	has_many :members
 	has_many :purchases
   has_many :groups
+  has_many :direct_messages
 	
 
 	def self.from_omniauth(auth)

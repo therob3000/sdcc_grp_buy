@@ -6,17 +6,20 @@
 		  Continue with Facebook
 		</a>
 	<% else %>
+		Logged in as <b><%= current_user.name %></b>
+	<% end %>
 		<div class="welcome">
 		<p>
 			Welcome!  Thank you for using this site to organize your next trip to comic con.
-
-
-			
 		</p>
 
 		<p>
 			A few guide lines: 
+				<ul>
+					<li>When you log in, you may create a 'buying group by navigating to the +GROUP button on top, from there, only the coordinator of that group may add members with thier SDCC membership ID.</li>
+					<li>Please only add members of people that are trusted, this website assumes no liability for lost funds.</li>
+					<li>If someone has registered a member you need to register, you may leave them a message on this site by clicking on thier avatar/portrait and following the instructions.</li>
+				</ul>
 		</p>
 		</div>
-	<% end %>
 </div>
