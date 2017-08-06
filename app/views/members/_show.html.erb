@@ -13,7 +13,9 @@
 	<b>
 		Registered by: 
 		<br>
+		<a href="#" class='user-modal-pop btn' data-toggle="modal" data-target="#userModal" data-id='<%= member.user.try(:id) %>'>
 			<%= member.user.name %>
+		</a>
 		<br>
 		<img src="<%= member.user.avatar_url %>" class="img-circle" alt="User Image" />
 	</b>
@@ -24,6 +26,6 @@
 </center>
 
 <hr>
-<h3>Groups</h3>
+<h3>Groups that <%= member.name %> belongs to:</h3>
 
 <%= render :partial => 'groups/group_list_sidebar', :locals => { :groups => member.member_groups.map { |e| e.group }} %>

@@ -37,6 +37,7 @@ class GroupsController < ApplicationController
 
 	def show
 		@grp = Group.find(params[:id])
+		# @messages = ChatMessage.select { |e| e.group_id == @grp.id } 
 	end
 
 	def create_new_group

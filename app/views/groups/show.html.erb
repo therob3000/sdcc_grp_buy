@@ -4,8 +4,116 @@
 	<b>Group Coordinator: <a href="#" class='user-modal-pop btn' data-toggle="modal" data-target="#userModal" data-id='<%= @grp.user.try(:id) %>'> <%= @grp.user.try(:name) %></b> </a> (<%= @grp.user.try(:email) %>)
 </p>
 <hr>
+<a href="#" class='btn btn-sm btn-primary expand-chat-log' style='width: 90%;'>expand chat log</a>
 
+<div class="chat-box">
+	<div id="chat_container">
+		<div class="chat-form">
+			<form>
+				<input type="text" name="" class='form-control chat-message-input' placeholder="SAy sumthin'.....">
+			</form>
+		</div>
+		<div class="chat-log" id='chat_log'>
+			<% @grp.chat_messages.each do |message| %>
+				<%= render :partial => 'groups/chat_line', :locals => { :message => message, :user => message.user } %>			
+			<% end %>
+		</div>
+	</div>
+</div>
+<style type="text/css">
+.chat-form {
+	padding: 2px;
+	background-color: #d4cea8;
+}
+#chat_container {
+	position: relative;
+	width: 100%;
+	height: 300px;
+}
 
+	.chat-log {
+		position: relative;
+		overflow-y: scroll;
+		max-height: 400px;
+		margin-top: 3px;
+	}
+	.chat-box {
+position: relative;
+    width: 90%;
+    background-color: #efeacc;
+    height: 100px;
+    margin: 3px;
+    border-radius: 15px;
+    padding: 3%;
+    padding-top: 5px;
+    color: #151313;
+    overflow-y: hidden;
+	}
+
+	.chat-message-input {
+		width: 100%;
+		    background-color: #374850;
+		    color: white;
+		    padding: 2px;
+		    padding-left: 2%;
+    font-size: 14px;
+    font-family: monospace;
+	}
+
+	.chat-line {
+	    width: 95%;
+	    margin: 0 auto;
+	}
+
+	.bubble-time {
+		float: right;
+    right: 4px;
+    padding: 7px;
+    position: absolute;
+    background-color: #ecf0f5;
+    border-radius: 20px;
+	}
+
+	.bubble-time-left {
+		float: left;
+    left: 4px;
+    padding: 7px;
+    position: absolute;
+    background-color: #ecf0f5;
+    border-radius: 20px;
+	}
+</style>
+
+<script type="text/javascript">
+	// var elem = document.getElementById('chat_log');
+	// var elem2 = document.getElementById('chat_container');
+ //  elem.scrollTop = elem.scrollHeight;
+ //  elem2.scrollTop = elem2.scrollHeight;
+
+$('body').on('click', '.expand-chat-log', function(event) {
+	event.preventDefault();
+	if ($('.chat-box').css('height') == '500px') {
+		$('.chat-box').animate({'height': '100px'}, 500);
+	} else {
+		$('.chat-box').animate({'height': '500px'}, 500);
+	}
+
+});
+
+  var addCommentToDom = function(message) {
+    var newText = message.content;
+    if (message.connection_id == connectionID) {
+      $("#chat_log").append("<div class='dialog_row container my_dialog'>"+newText+"</div>");
+
+    } else {
+      $("#chat_log").append("<div class='dialog_row container'>"+newText+"</div>");
+    }
+    // elem.scrollTop = elem.scrollHeight;
+    elem.scrollTop = 0;
+    console.log('just received new message: ' + message);
+  }
+	
+</script>
 <div class="member-list" id='member-list'>
 	<% @grp.member_groups.each do |mem_grp| %>
 		<%= render :partial => 'member_list_item', :locals => { :member => mem_grp.member, :mem_grp => mem_grp, :grp => @grp } %>

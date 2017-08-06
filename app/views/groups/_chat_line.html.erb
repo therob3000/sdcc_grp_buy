@@ -1,0 +1,36 @@
+<div class="chat-line">
+	<% if current_user.id == user.id %>
+		<a href="#" class='user-modal-pop btn chat-avatar' data-toggle="modal" data-target="#userModal" data-id='<%= user.try(:id) %>'><img src="<%= user.avatar_url %>" class="img-circle" alt="User Image" /></a> 
+		<div class="talk-bubble tri-right left-top round ">
+		  <div class="talktext">
+		  <p>
+			  <b> <%= user.name %> : </b><%= message.message %>  
+
+
+		  </p>
+		  
+		  <div style='' class='bubble-time'>
+		  	
+			   <%= message.created_at %>
+		  </div>
+		  </div>
+		</div>
+	<% else %>
+		<div class="talk-bubble tri-right right-top round" style='left: 6%;'>
+		  <div class="talktext">
+		  <p>
+			  <b> <%= user.name %> : </b><%= message.message %>  
+
+
+		  </p>
+		  
+		  <div style='' class='bubble-time '>
+		  	
+			   <%= message.created_at %>
+		  </div>
+		  </div>
+		</div>
+		<a href="#" class='user-modal-pop btn chat-avatar' data-toggle="modal" data-target="#userModal" data-id='<%= user.try(:id) %>' style='right: 3%;'><img src="<%= user.avatar_url %>" class="img-circle" alt="User Image" /></a> 
+	<% end %>
+	<br>
+</div>
