@@ -1,14 +1,17 @@
 <h1>All Current Members</h1>
 
 <hr>
+<div class="search-container">
+  
 <form action="#" method="get" class="group-search sidebar-form">
-  <div class="input-group">
-    <input type="text" name="q" id='gsearch' class="form-control" placeholder="Search Members..."/>
+  <div class="input-group"> 
+    <input type="text" name="q" id='gsearch' class="form-control" placeholder="Search Members by SDCC member ID or name..."/>
     <span class="input-group-btn">
       <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
     </span>
   </div>
 </form>
+</div>
 
 <div class='member-list'>
 	<% @members.each do |member| %>

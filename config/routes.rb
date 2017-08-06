@@ -10,15 +10,13 @@ Rails.application.routes.draw do
 
 
   resources :members do 
-    member do 
-    end
-
     collection do
       get 'cover_member'
       delete 'remove_member'
       post 'register_member_to_group'
       post 'register_member'
       get 'search'
+      get 'activate_member'
     end
   end
 

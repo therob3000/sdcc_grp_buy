@@ -1,0 +1,24 @@
+<% if mem_grp %>
+	<li class="member-item clock-slot sm-clock-slot <%= member.covered ? 'member_covered' : '' %>" id="member_row_<%= mem_grp.id %>">
+<% else %>
+	<li class="member-item clock-slot sm-clock-slot <%= member.covered ? 'member_covered' : '' %>">
+<% end %>
+	<div class="mem-block" style='float: left;width: 35%; padding:1px'>
+		 <a href="#" class='member-modal-pop btn' data-toggle="modal" data-target="#memberModal" data-id='<%= member.id %>'> <%= member.name %> </a><br>
+	</div>
+	<div class="mem-block day-holder" style='float: center;width: 30%;'>
+		<%= member.sdcc_member_id %>
+	</div>
+
+	<div class="mem-block" style='float: right;'>
+		<% if !member.covered %>
+				This member needs coverage
+		<% else %>
+				This member has been covered
+		<% end %>
+		
+	</div>
+	
+</li>
+
+

@@ -1,0 +1,27 @@
+<center>
+	
+
+<p>
+	<b>
+		<img src="<%= user.avatar_url %>" class="img-circle" alt="User Image" />
+	</b>
+</p>
+
+<h2>
+	<%= user.name %>
+</h2>	
+
+<p>
+	<b>Contact:  </b> <%= "#{user.email} " %>
+</p>
+
+
+
+</center>
+
+<hr>
+<h3>Registered Members</h3>
+<div id="member-modal-block">
+	
+	<%= render :partial => 'members/member_list_part_small', :locals => { :members => user.members} %>
+</div>

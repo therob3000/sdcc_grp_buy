@@ -17,7 +17,7 @@
 }
 
 .create-form {
-	  position: relative;
+	position: relative;
     width: 90%;
     padding: 1%;
     border-radius: 10px;
@@ -50,8 +50,8 @@
 }
 
 .group-list {
-	
-	padding-left: 5%;
+	width: 90%;
+	padding-left: 0%;
 }
 
 .list-group a {
@@ -59,13 +59,17 @@
 }
 
 .member-item {
-    background-color: #9dd6f7;
+    background-color: #d2da95;
     padding: 1%;
     font-size: 20px;
     margin-bottom: 2%;
     width: 90%;
     border-radius: 10px;
 }
+
+.member-item:hover {
+    background-color: yellow;
+} 
 
 .mem-block {
     display: inline-block;
@@ -93,22 +97,22 @@
 }
 
 .day-holder {
-    width: 40%;
+    width: 33%;
 
 }
 
 .clock-slot {
     list-style: none;
-    background-color: #d1ea13;
+    background-color: #d2da95;
     padding: 1%;
     border-radius: 10px;
     margin: 2px;
     font-size: 12px;
-     width: 100%;
+     /*width: 100%;*/
     overflow-y: auto;
 }
 .group-slot {
-    background-color: #3c8dbc;
+    background-color: #c3e9ff;
     
 }
 .group-slot a{
@@ -120,6 +124,37 @@
 
 .group-slot:hover { 
     background-color: yellow;
+}
+
+.sm-clock-slot {
+    width: 100%;
+}
+
+.mem-block {
+    height: 100px;
+    width: 33%;
+}
+
+.name-holder {
+    width: 30%;
+}
+
+#member-modal-block {
+    position: relative;
+    max-height: 300px;
+    overflow-y: scroll;
+}
+
+#member-modal-block li.list-member {
+    padding: 1px;
+}
+
+.member_active {
+    background-color: #9dd6f7;
+}
+
+.search-container {
+    width: 90%;
 }
 
 @media (max-width: 900px) {

@@ -1,0 +1,5 @@
+<% members.each do |member| %>
+		<div class="list-member">
+			<%= render :partial => 'members/sm_member_item', :locals => { :member => member, :mem_grp => nil, :grp => nil } %>
+		</div>
+<% end %>

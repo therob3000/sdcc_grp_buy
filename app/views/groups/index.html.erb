@@ -1,14 +1,16 @@
 <h1>All Current Groups</h1>
 
 <hr>
-<form action="#" method="get" class="group-search sidebar-form">
-  <div class="input-group">
-    <input type="text" name="q" id='gsearch' class="form-control" placeholder="Search Groups..."/>
-    <span class="input-group-btn">
-      <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
-    </span>
-  </div>
-</form>
+<div class="search-container">
+  <form action="#" method="get" class="group-search sidebar-form">
+    <div class="input-group">
+      <input type="text" name="q" id='gsearch' class="form-control" placeholder="Search Groups..."/>
+      <span class="input-group-btn">
+        <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
+      </span>
+    </div>
+  </form>
+</div>
 
 <div class='group-list'>
 	<%= render :partial => 'groups/group_list_sidebar', :locals => { :groups => @groups} %>

@@ -7,6 +7,18 @@ class MembersController < ApplicationController
 		end
 	end
 
+	def activate_member
+		@member = Member.find(params[:id])
+		@member.active = true
+
+		if @member.save
+			render :json => { :success => true }
+		else
+			render :json => { :success => false, :message => @member.errors.full_messages}
+		end
+		
+	end
+
 	def register_member
 		# user_id: integer, sdcc_member_id: integer, name: string, phone: string, email: string, covered: boolean,
 		@member = Member.new(member_params)
@@ -14,7 +26,7 @@ class MembersController < ApplicationController
 		@member.covered = false
 
 		if @member.save
-			render :json => { :success => true}
+			render :json => { :success => true }
 		else
 			render :json => { :success => false, :message => @member.errors.full_messages}
 		end
@@ -22,7 +34,13 @@ class MembersController < ApplicationController
 	end
 
 	def search
-		
+		if !!(params[:search] =~ /\A[-+]?[0-9]+\z/)
+			@members = Member.where('lower(sdcc_member_id) like ?', "%#{params[:search].downcase}%").first(8)
+		else
+			@members = Member.where('lower(name) like ?', "%#{params[:search].downcase}%").first(8)
+		end
+		# render :partial => "group_list", :locals => { :members => @members }
+		render :partial => 'members/member_list_part', :locals => { :members => @members}
 	end
 
 	def register_member_to_group
@@ -75,6 +93,7 @@ class MembersController < ApplicationController
 
 	def show
 		@mem = Member.find(params[:id])
+		render :partial => 'show', :locals => {:member => @mem}
 	end
 
 	def cover_member

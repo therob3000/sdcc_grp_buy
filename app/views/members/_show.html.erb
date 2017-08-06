@@ -1,0 +1,29 @@
+<center>
+	
+
+<h2>
+	<%= member.name %>
+</h2>	
+
+<p>
+	<b>Contact:  </b> <%= "#{member.email}/#{member.phone} " %>
+</p>
+
+<p>
+	<b>
+		Registered by: 
+		<br>
+			<%= member.user.name %>
+		<br>
+		<img src="<%= member.user.avatar_url %>" class="img-circle" alt="User Image" />
+	</b>
+</p>
+
+
+
+</center>
+
+<hr>
+<h3>Groups</h3>
+
+<%= render :partial => 'groups/group_list_sidebar', :locals => { :groups => member.member_groups.map { |e| e.group }} %>

@@ -109,6 +109,25 @@
   </div>
 </div>
 
+
+<div id="userModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content user-modal-body" style='display: none;'>
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">User Details</h4>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 <script type="text/javascript">
   function performPrivateSearch(){
     var phrase = $("#pgsearch").val();
@@ -133,18 +152,32 @@
   $('body').on('click', '.member-modal-pop', function(event) {
     event.preventDefault();
     /* Act on the event */
+    var mem_id = $(this).attr('data-id');
     $.ajax({
-      url: '/path/to/file',
-      type: 'default GET (Other values: POST)',
-      dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
-      data: {param1: 'value1'},
+      url: '/members/' + mem_id,
     })
     .done(function(data) {
-      $('.member-modal-body').html(data);
+      $('.modal-body').html(data);
       $('.member-modal-body').fadeIn(500, function() {});
     })
     
   });
+
+  $('body').on('click', '.user-modal-pop', function(event) {
+    event.preventDefault();
+    /* Act on the event */
+    var mem_id = $(this).attr('data-id');
+    $.ajax({
+      url: '/users/' + mem_id,
+    })
+    .done(function(data) {
+      $('.modal-body').html(data);
+      $('.user-modal-body').fadeIn(500, function() {});
+    })
+    
+  });
+
+  // user-modal-pop
 
 
 </script>

@@ -1,5 +1,5 @@
   <% groups.try(:each).each do |grp| %>
-    <li class='clock-slot group-slot'>
-      <a class='group-list-item' href="/groups/<%= grp.id %>"><%= grp.name %></a>
+    <li class='clock-slot group-slot <%= grp.has_active_member ? 'member_active' : '' %>'>
+      <a class='group-list-item' href="/groups/<%= grp.id %>"><%= grp.name %> (<%= grp.member_groups.count %>)</a>
     </li>
   <% end %>

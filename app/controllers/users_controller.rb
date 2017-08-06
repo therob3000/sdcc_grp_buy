@@ -23,6 +23,7 @@ class UsersController < ApplicationController
   end
 
   def show
-  	byebug
+    @usr = User.find(params[:id])
+    render :partial => 'show', :locals => {:user => @usr}
   end
 end

@@ -20,6 +20,7 @@ WebsocketRails::EventMap.describe do
   subscribe :register_member, "broadcasts#register_member_to_group"
   subscribe :unregister, "broadcasts#delete_member_from_group"
   subscribe :cover_member, "broadcasts#cover_member_for_group"
+  subscribe :activate_member, "broadcasts#activate_member"
   # end
   # The above will handle an event triggered on the client like `product.new`.
 end
