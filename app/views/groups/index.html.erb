@@ -11,11 +11,7 @@
 </form>
 
 <div class='group-list'>
-	<% @groups.each do |grp| %>
-		<div class="list-group">
-		<a href="/groups/<%= grp.id %>"><%=grp.name%></a>
-		</div>
-	<% end %>
+	<%= render :partial => 'groups/group_list_sidebar', :locals => { :groups => @groups} %>
   <div class="pag-contain">
   	<%= will_paginate @groups %>
   </div>

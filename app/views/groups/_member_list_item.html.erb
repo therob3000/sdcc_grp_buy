@@ -1,23 +1,35 @@
-<div class="member-item <%= mem_grp.member.covered ? 'member_covered' : '' %>" id="member_row_<%= mem_grp.id %>">
+<% if mem_grp %>
+	<li class="member-item clock-slot <%= member.covered ? 'member_covered' : '' %>" id="member_row_<%= mem_grp.id %>">
+<% else %>
+	<li class="member-item clock-slot <%= member.covered ? 'member_covered' : '' %>">
+<% end %>
 	<div class="mem-block">
-		<%= mem_grp.member.name %> (<%= mem_grp.member.sdcc_member_id %>)
+		<b>Name:</b> <a href="#" class='member-modal-pop btn' data-toggle="modal" data-target="#memberModal" data-id='<%= member.id %>'> <%= member.name %> </a><br>
+		<b>SDCC ID:</b> <br> <%= member.sdcc_member_id %>
 	</div>
 	<div class="mem-block day-holder" style='float: center;'>
 		<% ['wensday','thursday','friday','saturday','sunday'].each do |day| %>
-		<% if mem_grp.member.needs.first.attributes[day] %>
-		<div class="day-block">
-			<%= day %>
-		</div>
-		<% end %>
+			<% if member.needs.first.attributes[day] %>
+			<div class="day-block">
+				<%= day %>
+			</div>
+			<% end %>
 		<% end %>
 	</div>
 
 	<div class="mem-block" style='float: right;'>
-		<input type="text" name="" id='ticket_<%= mem_grp.member.id %>' placeholder='confirmation code'>
-		<a href="/purchases" data-id='<%= mem_grp.member.id %>' class='buy-ticket btn btn-sm btn-warning' data-id='<%= mem_grp.member.id %>'>CONFIRM</a>
-		<% if current_user.groups.map { |e| e.id }.include?(grp.id) %>
+		<% if !member.covered %>
+			<input type="text" name="" id='ticket_<%= member.id %>' placeholder='confirmation code'>
+			<a href="/purchases" data-id='<%= member.id %>' class='buy-ticket btn btn-sm btn-warning' need-id='<%= member.needs.first.id %>' data-id='<%= member.id %>'>CONFIRM</a>
+		<% else %>
+				This member has been covered
+		<% end %>
+		
+		<% if grp && (current_user.groups.map { |e| e.id }.include?(grp.id)) %>
 			<a href="#" class='remove btn btn-sm btn-danger remove-this-user' data-id='<%= mem_grp.id %>'>REMOVE</a>
 		<% end %>
 	</div>
 	
-</div>
+</li>
+
+

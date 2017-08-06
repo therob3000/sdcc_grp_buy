@@ -1,1 +1,78 @@
-index.html.erb
+<h1>All Current Members</h1>
+
+<hr>
+<form action="#" method="get" class="group-search sidebar-form">
+  <div class="input-group">
+    <input type="text" name="q" id='gsearch' class="form-control" placeholder="Search Members..."/>
+    <span class="input-group-btn">
+      <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
+    </span>
+  </div>
+</form>
+
+<div class='member-list'>
+	<% @members.each do |member| %>
+		<div class="list-member">
+			<%= render :partial => 'groups/member_list_item', :locals => { :member => member, :mem_grp => nil, :grp => nil } %>
+		</div>
+	<% end %>
+  <div class="pag-contain">
+  	<%= will_paginate @members %>
+  </div>
+</div>
+<hr>
+
+
+
+<style type="text/css">
+	.pagination a {
+		display: inline-block;
+	}
+</style>
+
+<!-- Trigger the modal with a button -->
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <p>Some text in the modal.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script type="text/javascript">
+  function performSearch(){
+    var phrase = $("#gsearch").val();
+    // debugger
+    $.ajax({
+      url: '/members/search',
+      data: {search: phrase},
+    })
+    .done(function(data) {
+      $('.member-list').html(data);
+    })    
+  }
+
+
+  $('body').on('keyup', '#gsearch', function(event) {
+    event.preventDefault();
+    performSearch();
+  });
+  $('body').on('click', '#search-btn', function(event) {
+    event.preventDefault();
+    performSearch();
+  });
+</script>

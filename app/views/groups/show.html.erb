@@ -1,21 +1,25 @@
 <h2><%= @grp.name %></h2>
+
+<p>
+	<b>Group Coordinator: <a href="#" class='open-user-info-panel btn'> <%= @grp.user.try(:name) %></b> </a> (<%= @grp.user.try(:email) %>)
+</p>
 <hr>
 
 
 <div class="member-list" id='member-list'>
 	<% @grp.member_groups.each do |mem_grp| %>
-		<%= render :partial => 'member_list_item', :locals => { :mem_grp => mem_grp, :grp => @grp } %>
+		<%= render :partial => 'member_list_item', :locals => { :member => mem_grp.member, :mem_grp => mem_grp, :grp => @grp } %>
 	<% end %>
 </div>
 
 <% if current_user.groups.map { |e| e.id }.include?(@grp.id) %>
 <div class="create-form">
-	<h5>Add member to this group</h5>
+	<h2>Add member to this group</h2>
 	<p>
-		<b>Only the user that started this group may add members to this group</b>
+		<b>(Only the user that started this group may add members to this group)</b>
 	</p>
 	<p>
-		To register yourself or a member into this group, please enter a valid SDCC number here, and check off the days desired.
+		To register yourself or a member into this group, please provide a valid SDCC member ID here, and check off the days desired.
 	</p>
 	<form method="post" id="reg-member">
 		<input type="hidden" name="member_group[group_id]" value="<%= @grp.id %>">
@@ -90,7 +94,7 @@
 	}
 
 	.member_covered {
-		background-color: red;
+		background-color: #ffb4b4;
 	}
 </style>
 <script type="text/javascript">
@@ -99,7 +103,7 @@
   var connection;
   var connectionID;
   var channel;
-  var chat_room_conn;
+  var group_room_conn;
 
 	function regMember(dataSend){
 		$.ajax({
@@ -160,27 +164,30 @@
 	$('body').on('click', '.buy-ticket', function(event) {
 		event.preventDefault();
 		var mem_id = $(this).attr('data-id');
-		coverMember(mem_id);
+		var need_id = $(this).attr('need-id');
+		coverMember(mem_id, need_id);
 	});
 
 	var populateErrors = function(err_array) {
 		var html = '';
 		for (var i = err_array.length - 1; i >= 0; i--) {
 			var mess = err_array[i];
-			html += "<li>"+mess+"</li>"
-		} 
-		$('#error_list').html(html);
+			html += ""+mess+"\n"
+		}
+	 alert(html);
+		// $('#error_list').html(html);
 	}
 
 
-	var coverMember = function(member_id){
+	var coverMember = function(member_id, need_id){
 		$.ajax({
 			url: '/members/cover_member',
-			data: {member_id: member_id},
+			data: {member_id: member_id, need_id: need_id},
 		})
 		.done(function(data) {
+				// debugger
 			if (data.success) {
-				var obj = { member_id: data.member_id }
+				var obj = { member_id: data.member_id, groups: data.groups }
 				dispatcher.trigger('cover_member', obj)
 			} else {
 				populateErrors(data.message);
@@ -218,25 +225,26 @@
     console.log('Connection has been established: ', data);
     connectionID = data.connection_id;
     connection = <%= @grp.id %>;
-    chat_room_conn = 'group_'+ connection;
-    channel = dispatcher.subscribe(chat_room_conn);
-    var room_create_success = chat_room_conn + '_created';
+    group_room_conn = 'group_'+ connection;
+    channel = dispatcher.subscribe(group_room_conn);
+    var room_create_success = group_room_conn + '_created';
 
     // listen for newly registered members
-    channel.bind("member_registered", function(mes){
+    channel.bind("member_registered", function(mes) {
     	addMemberToDom(mes);
     });
 
     // listen for any dropped members
-    channel.bind("unregister_member",function(mes){
+    channel.bind("unregister_member",function(mes) {
     	$("#member_row_" + mes.member_group_id).fadeOut('500', function() {
 		    $("#member_row_" + mes.member_group_id).remove();
     	});;
     })
 
     // listen for any covered members across all groups in this group
-    channel.bind("member_covered",function(mes){
-	    $("#member_row_" + mes.member_group_id).css('background-color', 'red');;
+    channel.bind("member_covered",function(mes) {
+	    // $("#member_row_" + mes.member_group_id).css('background-color', 'red');
+	    $("#member_row_" + mes.member_group_id).addClass('member_covered');
 
     })
 

@@ -9,12 +9,14 @@ class GroupsController < ApplicationController
 
 	def search
 		@groups = Group.where('lower(name) like ?', "%#{params[:search].downcase}%").first(8)
-		render :partial => "group_list", :locals => { :groups => @groups }
+		# render :partial => "group_list", :locals => { :groups => @groups }
+		render :partial => 'groups/group_list_sidebar', :locals => { :groups => @groups}
 	end
 
 	def private_search
 		@groups = Group.where('lower(name) like ? and user_id = ?', "%#{params[:search]}%", current_user.id)
-		render :partial => "group_list_sidebar", :locals => { :groups => @groups }
+		# render :partial => "group_list_sidebar", :locals => { :groups => @groups }
+		render :partial => 'groups/group_list_sidebar', :locals => { :groups => @groups}
 	end
 
 	def present_member

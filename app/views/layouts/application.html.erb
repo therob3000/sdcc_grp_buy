@@ -4,7 +4,7 @@
     <title>SdccGrpBuy</title>
     <!-- Bootstrap 3.3.2 -->
     <!-- FontAwesome 4.3.0 -->
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" /> -->
     <!-- Ionicons 2.0.0 -->
     <link href="http://code.ionicframework.com/ionicons/2.0.0/css/ionicons.min.css" rel="stylesheet" type="text/css" />    
    
@@ -37,9 +37,6 @@
               <li class="">
                 <a href="/members" class='btn btn-lg'>MEMBERS</a>
               </li>
-
-
-
 
               <li class="dropdown user user-menu">
                
@@ -82,11 +79,7 @@
         </section>
         <div>
           <ul id="grp_search_aside" style='padding: 2%;'>
-            <% current_user.my_groups.try(:each) do |grp| %>
-              <li>
-                <a class='group-list-item' href="/groups/<%= grp.id %>"><%= grp.name %></a>
-              </li>
-            <% end %>
+            <%= render :partial => 'groups/group_list_sidebar', :locals => { :groups => current_user.my_groups} %>
           </ul>
         </div>
         <!-- /.sidebar -->
@@ -94,6 +87,27 @@
 
       <% end %>
 
+
+
+<!-- Modal -->
+<div id="memberModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content member-modal-body" style='display: none;'>
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Member Details</h4>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 <script type="text/javascript">
   function performPrivateSearch(){
@@ -115,6 +129,23 @@
     event.preventDefault();
     performPrivateSearch();
   });
+
+  $('body').on('click', '.member-modal-pop', function(event) {
+    event.preventDefault();
+    /* Act on the event */
+    $.ajax({
+      url: '/path/to/file',
+      type: 'default GET (Other values: POST)',
+      dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
+      data: {param1: 'value1'},
+    })
+    .done(function(data) {
+      $('.member-modal-body').html(data);
+      $('.member-modal-body').fadeIn(500, function() {});
+    })
+    
+  });
+
 
 </script>
       <!-- Right side column. Contains the navbar and content of the page -->

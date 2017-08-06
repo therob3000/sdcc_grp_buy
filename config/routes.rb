@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       delete 'remove_member'
       post 'register_member_to_group'
       post 'register_member'
+      get 'search'
     end
   end
 

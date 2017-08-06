@@ -19,7 +19,7 @@ WebsocketRails::EventMap.describe do
   # namespace :members do
   subscribe :register_member, "broadcasts#register_member_to_group"
   subscribe :unregister, "broadcasts#delete_member_from_group"
-  subscribe :cover_member, "broadcasts#mark_member_as_covered_for_all_groups"
+  subscribe :cover_member, "broadcasts#cover_member_for_group"
   # end
   # The above will handle an event triggered on the client like `product.new`.
 end

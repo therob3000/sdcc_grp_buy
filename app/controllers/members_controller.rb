@@ -21,6 +21,10 @@ class MembersController < ApplicationController
 
 	end
 
+	def search
+		
+	end
+
 	def register_member_to_group
 
 		# every group can have a max of 5 members in it
@@ -76,10 +80,22 @@ class MembersController < ApplicationController
 	def cover_member
 		member = Member.find(params[:member_id])
 		member.covered = true;
+		pur = Purchase.new(:user_id => current_user.id, :need_id => params[:need_id])
 		if member.save
-			render :json => { :success => true }
+			pur.save
+			render :json => { :success => true, :member_id => member.id, :groups => member.member_groups.map { |e| e.group.id }.join('-') }
 		else
-			render :json => { :success => false, :message => member.errors.full_messages }
+			errs = []
+
+			pur.errors.full_messages.each do |e|
+				errs << e
+			end
+
+
+			member.errors.full_messages.each do |e|
+				errs << e
+			end
+			render :json => { :success => false, :message => errs }
 		end
 
 	end
