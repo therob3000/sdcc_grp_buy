@@ -16,7 +16,7 @@
 		  </div>
 		</div>
 	<% else %>
-		<div class="talk-bubble tri-right right-top round" style='left: 6%;'>
+		<div class="talk-bubble tri-right right-top round" style='left: 0%;'>
 		  <div class="talktext">
 		  <p>
 			  <b> <%= user.name %> : </b><%= message.message %>  
@@ -26,7 +26,7 @@
 		  
 		  <div style='' class='bubble-time '>
 		  	
-			   <%= message.created_at %>
+			   <%= message.created_at.strftime("%l:%M %P %D") %>
 		  </div>
 		  </div>
 		</div>

@@ -6,7 +6,8 @@ Rails.application.routes.draw do
       get 'dashboard'
     end
 
-    collection do 
+    collection do
+      get 'inbox' 
       get 'show_user'
     end
 
@@ -21,6 +22,8 @@ Rails.application.routes.draw do
       post 'register_member'
       get 'search'
       get 'activate_member'
+      post 'direct_message'
+      get 'mark_message_seen'
     end
   end
 

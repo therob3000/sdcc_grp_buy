@@ -15,7 +15,21 @@
 	<b>Contact:  </b> <%= "#{user.email} " %>
 </p>
 
-
+<p>
+	<b>Send User a Direct message to thier SDCC wait group inbox:</b>
+</p>
+<div class="send_dir_message_holder">
+	<form action='#' class="" id='send_dir_message'>
+		<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+		<input type="text" name="message[subject]" class='form-control' placeholder="Subject...">
+		<input type="textbox" name="message[body]" class='form-control' width="500px" placeholder="message...." style='
+			margin-top: 2px;
+	    width: 100%;
+	    height: 50px;'>
+	    <input type="hidden" name="message[user_id]" value='<%= user.id %>'>
+	    <input type="submit" name="Send">
+	</form>
+</div>
 
 </center>
 

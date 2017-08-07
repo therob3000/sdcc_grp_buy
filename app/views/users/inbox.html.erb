@@ -1,0 +1,94 @@
+
+<h2>My direct message inbox</h2>
+<hr>
+<b>(click subject line to expand message)</b>
+<% @dms.each do |message| %>
+	<%= render :partial => 'users/direct_messages', :locals => { :message => message } %>
+<% end %>
+
+<div class="pag-contain">
+	<%= will_paginate @dms %>
+</div>
+
+<style type="text/css">
+	.pagination a {
+		display: inline-block;
+	}
+
+	.direct-message {
+    width: 90%;
+    background-color: #f5fbff;
+    padding: 1%;
+    margin: 2px;
+    border-radius: 10px;
+    position: relative;
+  	}
+
+  	.subject-line {
+  		position: relative;
+  		height: 30px;
+  	}
+
+  	.subject {
+  		display: inline-block;
+  		width: 60%;
+    background-color: transparent;
+    padding: 2px;
+    position: relative;
+    float: left;
+  	}
+
+  	.received {
+  		text-align: right;
+  		display: inline-block;
+  		width: 20%;
+  		background-color: transparent;
+  		padding: 2px;
+  		position: relative;
+  		float: right;
+  		font-weight: bold;
+  	}
+
+  	.unseen-message {
+	    background-color: #c5ffc5;
+  	}
+
+  	.seen-message {
+  		background-color: white;
+  	}
+
+  	.body-text {
+  		padding: 1%;
+/*    width: 90%;
+    float: right;*/
+  	}
+</style>
+
+<script type="text/javascript">
+	$('body').on('click', '.subject-line', function(event) {
+		event.preventDefault();
+		var elem = $(this).parent().find('.body-text');
+		var that = $(this).parent();
+
+		$.ajax({
+			url: '/members/mark_message_seen',
+			data: {id: $(this).attr('data-id')},
+		})
+		.done(function(data) {
+			if (data.success) {
+				that.animate({'background-color': 'white'}, 2000);
+			} else {
+				populateErrors(data.message);
+			}
+		})
+		
+
+		if (elem.css('display') == 'none') {
+			elem.slideDown('500', function() {});
+		} else {
+			elem.slideUp('500', function() {});
+		}
+
+
+	});
+</script>

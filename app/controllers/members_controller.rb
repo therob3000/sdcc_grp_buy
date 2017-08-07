@@ -19,6 +19,17 @@ class MembersController < ApplicationController
 		
 	end
 
+	def mark_message_seen
+		dm = DirectMessage.find(params[:id])
+		dm.seen = true
+
+		if dm.save
+			render :json => { :success => true }
+		else
+			render :json => { :success => false, :message => dm.errors.full_messages}
+		end
+	end
+
 	def register_member
 		# user_id: integer, sdcc_member_id: integer, name: string, phone: string, email: string, covered: boolean,
 		@member = Member.new(member_params)
@@ -31,6 +42,17 @@ class MembersController < ApplicationController
 			render :json => { :success => false, :message => @member.errors.full_messages}
 		end
 
+	end
+
+	def direct_message
+		# user_id: integer, from_user_id: integer, subject: string, body: text,
+		dm = DirectMessage.new(direct_message_params)
+		dm.from_user_id = current_user.id
+		if dm.save
+			render :json => { :success => true }
+		else
+			render :json => { :success => false, :message => dm.errors.full_messages}
+		end
 	end
 
 	def search
@@ -102,7 +124,7 @@ class MembersController < ApplicationController
 		pur = Purchase.new(:user_id => current_user.id, :need_id => params[:need_id])
 		if member.save
 			pur.save
-			render :json => { :success => true, :member_id => member.id, :groups => member.member_groups.map { |e| e.group.id }.join('-') }
+			render :json => { :success => true, :member_group_id => params[:member_group_id], :groups => member.member_groups.map { |e| e.group_id }.join('-'), :group_id => params[:group_id] }
 		else
 			errs = []
 
@@ -127,6 +149,12 @@ class MembersController < ApplicationController
 
 	def member_groups_params
 		params.require(:member_group).permit(:group_id)
+	end
+
+	def direct_message_params
+		# user_id: integer, from_user_id: integer, subject: string, body: text,
+		params.require(:message).permit(:subject, :body, :user_id)
+
 	end
 
 	def need_params

@@ -31,3 +31,10 @@ require 'faker'
 # 50.times do 
 # 	ChatMessage.create(:group_id => 1, :user_id => rand(30), :message => Faker::Hacker.say_something_smart)
 # end
+
+15.times do 
+	d = DirectMessage.new(:user_id => 2, :from_user_id => rand(43), :subject => Faker::Hacker.say_something_smart, :body => Faker::Lorem.paragraph(2))
+	if !d.save
+		p d.errors.full_messages
+	end
+end

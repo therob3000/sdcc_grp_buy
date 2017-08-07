@@ -110,6 +110,7 @@ $('body').on('submit', '#create-member-form', function(event) {
     .done(function(data) {
       if (data.success) {
         // register the member to the group.
+        $('#new-member-form').animate({'height': '100px'}, 500)
         $('#gsearch').val(data.member_id);
         $('#gsearch').trigger('keyup');
         $(this).trigger('reset');

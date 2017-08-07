@@ -22,7 +22,7 @@ class GroupsController < ApplicationController
 	def present_member
 		mem_grp = MemberGroup.find(params[:mem_grp_id])
 		grp = Group.find(params[:grp_id])
-		render :partial => 'member_list_item', :locals => { :mem_grp => mem_grp, :grp => grp }
+		render :partial => 'member_list_item', :locals => { :mem_grp => mem_grp, :grp => grp, :member => mem_grp.member }
 	end
 
 	def create

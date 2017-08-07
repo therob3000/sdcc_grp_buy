@@ -28,19 +28,22 @@ class User < ApplicationRecord
     end
   end
 
+  def has_unread_messages
+    direct_messages.any? { |e| e.seen == false }
+  end
+
   def my_groups
     # out = members.map { |e| e.member_groups.map { |m| m.group } }.to_a.uniq
     out = []
     groups.each do |grp|
       out << grp
     end
-
     members.each do |mem|
       mem.member_groups.each do |mg|
         out << mg.group
       end
     end      
 
-    out.uniq!
+    out.uniq
   end
 end
