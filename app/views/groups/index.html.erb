@@ -13,7 +13,7 @@
 </div>
 
 <div class='group-list'>
-	<%= render :partial => 'groups/group_list_sidebar', :locals => { :groups => @groups} %>
+	<%= render :partial => 'groups/group_list_sidebar_index', :locals => { :groups => @groups} %>
   <div class="pag-contain">
   	<%= will_paginate @groups %>
   </div>

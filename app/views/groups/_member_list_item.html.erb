@@ -24,13 +24,13 @@
 				<input type="text" name="" id='ticket_<%= member.id %>' placeholder='confirmation code' style='margin-bottom: 2px;width: 100%;'><br>
 				<a href="/purchases" data-id='<%= member.id %>' class='buy-ticket btn btn-sm btn-warning' member_group_id='<%= mem_grp.try(:id) %>' need-id='<%= member.needs.first.id %>' data-id='<%= member.id %>'>CONFIRM</a>
 			<% end %>
+			<% if grp && (current_user.members.map { |e| e.id }.include?(mem_grp.try(:member).try(:id))) %>
+				<a href="#" class='activate btn btn-sm btn-primary activate-this-user' data-id='<%= mem_grp.try(:id) %>'>SELECTED</a>
+			<% end %>
 		<% else %>
 				This member has been covered
 		<% end %>
 		
-		<% if grp && (current_user.members.map { |e| e.id }.include?(mem_grp.try(:member).try(:id))) %>
-			<a href="#" class='activate btn btn-sm btn-primary activate-this-user' data-id='<%= mem_grp.try(:id) %>'>SELECTED</a>
-		<% end %>
 		
 		<% if grp && (current_user.groups.map { |e| e.id }.include?(grp.id)) %>
 			<a href="#" class='remove btn btn-sm btn-danger remove-this-user' data-id='<%= mem_grp.try(:id) %>'>REMOVE</a>

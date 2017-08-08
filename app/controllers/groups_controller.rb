@@ -48,7 +48,7 @@ class GroupsController < ApplicationController
 
 	def add_comment
 		message = ChatMessage.find(params[:message_id])
-		render :partial => 'groups/chat_line', :locals => { :message => message, :user => message.user }
+		render :partial => 'groups/chat_line', :locals => { :message => message, :user => message.user, :from => params[:from] }
 	end
 
 	def show
