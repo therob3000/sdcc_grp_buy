@@ -4,14 +4,18 @@ class BroadcastsController < WebsocketRails::BaseController
 		member_group_id = message[:member_group_id]
 		connection = message[:connection]
 		member_id = message[:member_id]
-		WebsocketRails["group_#{room}"].trigger('member_registered', {room: room, member_group_id: member_group_id, member_id: member_id, connection_id: connection})
+		grp = Group.find(room)
+		number = grp.member_groups.count
+		WebsocketRails["group_#{room}"].trigger('member_registered', {room: room, member_group_id: member_group_id, member_id: member_id, connection_id: connection, :num_of_ppl => number})
 	end
 
 	def delete_member_from_group
 		room = message[:room]
 		member_group_id = message[:member_group_id]
 		connection = message[:connection]
-		WebsocketRails["group_#{room}"].trigger('unregister_member', {room: room, member_group_id: member_group_id, connection_id: connection})
+		grp = Group.find(room)
+		number = grp.member_groups.count
+		WebsocketRails["group_#{room}"].trigger('unregister_member', {room: room, member_group_id: member_group_id, connection_id: connection, :num_of_ppl => number })
 	end
 
 	def mark_member_as_covered_for_all_groups
@@ -32,7 +36,22 @@ class BroadcastsController < WebsocketRails::BaseController
 		room = message[:room]
 		connection = message[:connection]
 		WebsocketRails["group_#{room}"].trigger('someone_typing', {room: room, connection_id: connection})
-		
+	end
+
+
+	def activate_member
+		member = Member.find(message[:member_id])
+    member.active = true
+    # maybe i need to loop in the JS and not in the controller
+    if member.save
+	    member.member_groups.map { |e| e.group_id }.each do |grp_id|
+				WebsocketRails["group_#{grp_id}"].trigger('activate_member', { :member_id => member.id})
+	    end
+    else
+    	member.member_groups.map { |e| e.group_id }.each do |grp_id|
+				WebsocketRails["group_#{grp_id}"].trigger('activate_member', { :message => member.errors.full_messages })
+	    end
+    end
 	end
 
 	def send_chat_message

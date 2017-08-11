@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     collection do
       get 'inbox' 
       get 'show_user'
+      get 'side_menu'
     end
 
   end

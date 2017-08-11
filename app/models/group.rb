@@ -8,4 +8,8 @@ class Group < ApplicationRecord
 	def has_active_member
 		member_groups.map { |e| e.member }.any? { |e| e.active }
 	end
+
+	def member_lists
+		member_groups.map { |e| "member_groups_marker_#{e.id}" }.join(' ')
+	end
 end

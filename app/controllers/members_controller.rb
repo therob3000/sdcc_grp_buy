@@ -1,4 +1,6 @@
 class MembersController < ApplicationController
+	before_action :authenticate_user!
+
 	def index
 		if params[:page]
 			@members = Member.paginate(:page => params[:page], :per_page => 10)		
@@ -76,8 +78,8 @@ class MembersController < ApplicationController
 			if Member.exists?(:sdcc_member_id => params[:sdcc_member_id])
 				@member = Member.find_by_sdcc_member_id(params[:sdcc_member_id])
 				# a member can belong to no more than 3 groups
-				if @member.member_groups.count >= 3
-					render :json => {:success => false, :message => ['This member is already signed up with 3 groups, and cannot be in anymore.']}
+				if @member.member_groups.count >= 5
+					render :json => {:success => false, :message => ['This member is already signed up with 5 groups, and cannot be in anymore.']}
 				else 
 					mb = MemberGroup.new(member_groups_params)
 					mb.member_id = @member.id

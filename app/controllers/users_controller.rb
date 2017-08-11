@@ -26,6 +26,10 @@ class UsersController < ApplicationController
     
   end
 
+  def side_menu
+    
+  end
+
   def inbox
     if params[:page]
       @dms = current_user.direct_messages.order('created_at DESC').paginate(:page => params[:page], :per_page => 10)   

@@ -4,197 +4,119 @@
 	<b>Group Coordinator: <a href="#" class='user-modal-pop btn' data-toggle="modal" data-target="#userModal" data-id='<%= @grp.user.try(:id) %>'> <%= @grp.user.try(:name) %></b> </a> (<%= @grp.user.try(:email) %>)
 </p>
 <hr>
-<a href="#" class='btn btn-sm btn-primary expand-chat-log' style='width: 90%;'>expand chat log</a>
+<div class="row" style="width: 90%;">
 
-<div class="chat-box">
-	<div id="chat_container">
-		<div class="chat-form">
-			<form>
-				<input type="text" name="" class='form-control chat-message-input' placeholder="SAy sumthin'.....">
-			</form>
-			<span class="someone_typing">Someone is typing a message.....</span>
-		</div>
-		<div class="chat-log" id='chat_log'>
-			<% @grp.chat_messages.order('created_at DESC').each do |message| %>
-				<%= render :partial => 'groups/chat_line', :locals => { :message => message, :user => message.user, :from => 'todom' } %>			
+
+	<div class="member-box room-box col-md-6">
+	<% if  @grp.member_groups.count == 1 %>
+		<h2 class='number-of-members'><%= @grp.member_groups.count %> Member in this buying group</h2>
+	<% elsif  @grp.member_groups.count == 0 %>
+		<h2 class='number-of-members'>This buying group is empty</h2>
+	<% else %>
+		<h2 class='number-of-members'><%= @grp.member_groups.count %> Members in this buying group</h2>
+	<% end %>
+		<div class="member-list" id='member-list'>
+			<% @grp.member_groups.each do |mem_grp| %>
+				<%= render :partial => 'member_list_item', :locals => { :member => mem_grp.member, :mem_grp => mem_grp, :grp => @grp } %>
 			<% end %>
 		</div>
+		<% if current_user.groups.map { |e| e.id }.include?(@grp.id) %>
+		<div class="create-form">
+			<h2>Add member to this group</h2>
+			<p>
+				<b>(Only the user that started this group may add members to this group)</b>
+			</p>
+			<p>
+				To register yourself or a member into this group, please provide a valid SDCC member ID here, and check off the days desired.
+			</p>
+			<form method="post" id="reg-member">
+				<input type="hidden" name="member_group[group_id]" value="<%= @grp.id %>">
+					<input type="text" name="sdcc_member_id" id='sdcc_member_id_holder' class="form-control" style='width: 100%' placeholder="SDCC member ID">
+					<div id="error_list" style="color: red"></div>
+
+					<hr>
+					<div class="form-check form-check-inline">
+					  <label class="form-check-label">
+					  	<%= check_box_tag 'need[wensday]' %> Wensday
+					  </label>
+					</div>
+					<div class="form-check form-check-inline">
+					  <label class="form-check-label">
+					  	<%= check_box_tag 'need[thursday]' %> Thursday
+					  </label>
+					</div>
+					<div class="form-check form-check-inline">
+					  <label class="form-check-label">
+					  	<%= check_box_tag 'need[friday]' %> Friday
+					  </label>
+					</div>
+
+					<div class="form-check form-check-inline">
+					  <label class="form-check-label">
+					  	<%= check_box_tag 'need[saturday]' %> Saturday
+					  </label>
+					</div>
+
+					<div class="form-check form-check-inline">
+					  <label class="form-check-label">
+					  	<%= check_box_tag 'need[sunday]' %> Sunday
+					  </label>
+					</div>
+					<input type="submit" name="ADD">
+			</form>
+		</div>
+		<!-- id: integer, user_id: integer, sdcc_member_id: integer, name: string, phone: string, email: string, covered: boolean, -->
+		<div id="new-member-form" style='display: none;'>
+			<div class="create-form">
+				<form action='/members' method='POST' id='create-member-form'>
+					<h3>Create a new Member</h3>
+					<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+					<div class="form-group">
+						<label for='member[name]'>Name</label>
+						<input class="form-control" type="text" name='member[name]'>
+					</div>
+					<div class="form-group">
+						<label for='member[phone]'>Phone</label>
+						<input class="form-control" type="text" name='member[phone]'>
+					</div>
+					<div class="form-group">
+						<label for='member[email]'>E-Mail</label>
+						<input class="form-control" type="text" name='member[email]'>
+					</div>
+					<div class="form-group">
+						<label for='member[phone]'>SDCC Member ID</label>
+						<input class="form-control" id='sdcc_member_id_holder_create' type="text" name='member[sdcc_member_id]'>
+					</div>
+
+					<div id="error_list" style="color: red"></div>
+					<button type="submit" class="btn btn-primary">Register Member</button>
+				</form>
+			</div>
+		</div>
+		<% end %>
+	</div>
+	<div class='col-md-6'>
+		<h2>Group Chat</h2>
+		<a href="#" class='btn btn-sm btn-primary expand-chat-log' style=''>Toggle chat log</a>
+		
+		<div class="chat-box room-box">
+			<div id="chat_container">
+				<div class="chat-form">
+					<form>
+						<input type="text" name="" class='form-control chat-message-input' placeholder="SAy sumthin'.....">
+					</form>
+					<span class="someone_typing">Someone is typing a message.....</span>
+				</div>
+				<div class="chat-log" id='chat_log'>
+					<% @grp.chat_messages.order('created_at DESC').each do |message| %>
+						<%= render :partial => 'groups/chat_line', :locals => { :message => message, :user => message.user, :from => 'todom' } %>			
+					<% end %>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
-<style type="text/css">
-.chat-form {
-	padding: 2px;
-	/*background-color: #d4cea8;*/
-	background-color: #efeacc;
-  height: 24px;
-}
-#chat_container {
-	position: relative;
-	width: 100%;
-	height: 300px;
-}
 
-.someone_typing {
-	display: none;
-	    width: 100%;
-    position: relative;
-    background-color: #efeacc;
-    position: relative;
-    margin: 0 auto;
-    background-color: #efeacc;
-    width: 70%;
-}
-
-	.chat-log {
-		position: relative;
-		overflow-y: scroll;
-		height: 400px;
-		margin-top: 25px;
-	}
-	.chat-box {
-position: relative;
-    width: 90%;
-    background-color: #efeacc;
-    height: 0px;
-    margin: 3px;
-    border-radius: 15px;
-    padding: 3%;
-    padding-top: 5px;
-    color: #151313;
-    overflow-y: hidden;
-	}
-
-	.chat-message-input {
-		    width: 70%;
-    background-color: #374850;
-    color: white;
-    padding: 2px;
-    padding-left: 2%;
-    font-size: 14px;
-    font-family: monospace;
-    margin: 0 auto;
-	}
-
-	.chat-line {
-	    width: 95%;
-	    margin: 0 auto;
-      text-align: center;
-	}
-
-	.bubble-time {
-float: right;
-    right: 4px;
-    padding: 4px;
-    position: absolute;
-    /*background-color: #ffffe0;*/
-        background-color: rgba(255, 255, 224, 0.57);
-    border-radius: 20px;
-    font-size: 10px;
-    border-style: solid;
-    border-top-color: #efeacc;
-    border-right-color: transparent;
-    border-color: #efeacc;
-    border-bottom-style: inset;
-    border-bottom-color: #efeacc;
-    border-left-color: #efeacc;
-	}
-
-	.bubble-time-left {
-		float: left;
-    left: 4px;
-    padding: 7px;
-    position: absolute;
-    background-color: #ecf0f5;
-    border-radius: 20px;
-	}
-</style>
-
-		<h2>Current Members in this buying group</h2>
-
-<div class="member-list" id='member-list'>
-	<% @grp.member_groups.each do |mem_grp| %>
-		<%= render :partial => 'member_list_item', :locals => { :member => mem_grp.member, :mem_grp => mem_grp, :grp => @grp } %>
-	<% end %>
-</div>
-
-<script type="text/javascript">
-	// $('body')
-</script>
-
-<% if current_user.groups.map { |e| e.id }.include?(@grp.id) %>
-<div class="create-form">
-	<h2>Add member to this group</h2>
-	<p>
-		<b>(Only the user that started this group may add members to this group)</b>
-	</p>
-	<p>
-		To register yourself or a member into this group, please provide a valid SDCC member ID here, and check off the days desired.
-	</p>
-	<form method="post" id="reg-member">
-		<input type="hidden" name="member_group[group_id]" value="<%= @grp.id %>">
-			<input type="text" name="sdcc_member_id" id='sdcc_member_id_holder' class="form-control" style='width: 200px' placeholder="SDCC member ID">
-			<div id="error_list" style="color: red"></div>
-
-			<hr>
-			<div class="form-check form-check-inline">
-			  <label class="form-check-label">
-			  	<%= check_box_tag 'need[wensday]' %> Wensday
-			  </label>
-			</div>
-			<div class="form-check form-check-inline">
-			  <label class="form-check-label">
-			  	<%= check_box_tag 'need[thursday]' %> Thursday
-			  </label>
-			</div>
-			<div class="form-check form-check-inline">
-			  <label class="form-check-label">
-			  	<%= check_box_tag 'need[friday]' %> Friday
-			  </label>
-			</div>
-
-			<div class="form-check form-check-inline">
-			  <label class="form-check-label">
-			  	<%= check_box_tag 'need[saturday]' %> Saturday
-			  </label>
-			</div>
-
-			<div class="form-check form-check-inline">
-			  <label class="form-check-label">
-			  	<%= check_box_tag 'need[sunday]' %> Sunday
-			  </label>
-			</div>
-			<input type="submit" name="ADD">
-	</form>
-</div>
-<!-- id: integer, user_id: integer, sdcc_member_id: integer, name: string, phone: string, email: string, covered: boolean, -->
-<div id="new-member-form" style='display: none;'>
-	<div class="create-form">
-		<form action='/members' method='POST' id='create-member-form'>
-			<h3>Create a new Member</h3>
-			<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-			<div class="form-group">
-				<label for='member[name]'>Name</label>
-				<input class="form-control" type="text" name='member[name]'>
-			</div>
-			<div class="form-group">
-				<label for='member[phone]'>Phone</label>
-				<input class="form-control" type="text" name='member[phone]'>
-			</div>
-			<div class="form-group">
-				<label for='member[email]'>E-Mail</label>
-				<input class="form-control" type="text" name='member[email]'>
-			</div>
-			<div class="form-group">
-				<label for='member[phone]'>SDCC Member ID</label>
-				<input class="form-control" id='sdcc_member_id_holder_create' type="text" name='member[sdcc_member_id]'>
-			</div>
-
-			<div id="error_list" style="color: red"></div>
-			<button type="submit" class="btn btn-primary">Register Member</button>
-		</form>
-	</div>
-</div>
-<% end %>
 <style type="text/css">
 	.form-check {
 		position: relative;
@@ -239,6 +161,11 @@ float: right;
 		})		
 	});
 
+	$("body").on('click', '.activate-this-user', function(event) {
+		event.preventDefault();
+		dispatcher.trigger('activate_member', { member_id: $(this).attr('member-id')})
+	});
+
 	$("body").on('submit', '#reg-member', function(event) {
 		event.preventDefault();
 		regMember($(this).serialize());
@@ -255,7 +182,7 @@ float: right;
 		var mem_id = $(this).attr('data-id');
 		var need_id = $(this).attr('need-id');
 		var member_group_id = $(this).attr('member_group_id');
-		var group_id = <%= @grp.id %>
+		var group_id = <%= @grp.id %>;
 		coverMember(mem_id, need_id, member_group_id, group_id);
 	});
 
@@ -347,6 +274,14 @@ float: right;
 		    	// if (message.connection_id != connectionID) {
 		    	// 	return;
 		    	// }
+		    	var number = mes.num_of_ppl;
+		    	if (number == 1) {
+			    	$(".number-of-members").text(number + ' Member in this buying group')
+		    	} else if (number == 0) {
+			    	$(".number-of-members").text('This buying group is empty')
+		    	} else {
+			    	$(".number-of-members").text(number + ' Members in this buying group')
+		    	}
 		    	addMemberToDom(mes);
 		    });
 
@@ -355,6 +290,14 @@ float: right;
 		    	// if (message.connection_id != connectionID) {
 		    	// 	return;
 		    	// }
+		    	var number = mes.num_of_ppl;
+		    	if (number == 1) {
+			    	$(".number-of-members").text(number + ' Member in this buying group')
+		    	} else if (number == 0) {
+			    	$(".number-of-members").text('This buying group is empty')
+		    	} else {
+			    	$(".number-of-members").text(number + ' Members in this buying group')
+		    	}
 		    	$("#member_row_" + mes.member_group_id).fadeOut('500', function() {
 				    $("#member_row_" + mes.member_group_id).remove();
 		    	});;
@@ -367,6 +310,15 @@ float: right;
 		    	// }
 			    $("#member_row_" + mes.member_group_id).addClass('member_covered');
 			    $("#action-holder-for" + mes.member_group_id).html("This member has been covered");
+		    })
+
+		    // listen for active members
+		    channel.bind("activate_member",function(mes) {
+		    	// activate member
+		    	debugger
+			    // $(".member_select_" + mes.member_id).addClass('member_active');
+		    	// activate groups that member belongs to
+			    $(".member_groups_marker_" + mes.member_id).addClass('member_active');
 		    })
 
 		    // chatroom listener
@@ -475,3 +427,7 @@ $('body').on('click', '.expand-chat-log', function(event) {
   }
 	
 </script>
+
+<style type="text/css">
+
+</style>

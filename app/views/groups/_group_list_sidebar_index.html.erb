@@ -1,10 +1,10 @@
   <% groups.try(:each).try(:each) do |grp| %>
   <% user = grp.user %>
-    <li class='clock-slot  <%= grp.has_active_member ? 'member_active' : '' %> <%= (!@grp.nil? && @grp.id == grp.id) ? "group_active" : "group-slot" %>'>
-    <% if (!@grp.nil? && @grp.id == grp.id)%>
-      <%= grp.name %> (<%= grp.member_groups.count %>)
-    <% else %>
-      <a class='group-list-item' href="/groups/<%= grp.id %>"><%= grp.name %> (<%= grp.member_groups.count %>) </a><a href="#" class='user-modal-pop btn chat-avatar' style="float: right;" data-toggle="modal" data-target="#userModal" data-id='<%= user.try(:id) %>'><img src="<%= user.avatar_url %>" class="img-circle" alt="User Image" /></a> 
-    <% end %>
+    <li class='clock-slot clock-slot-index  <%= grp.has_active_member ? 'member_active' : '' %> <%= (!@grp.nil? && @grp.id == grp.id) ? "group_active" : "group-slot" %>'>
+	    <% if (!@grp.nil? && @grp.id == grp.id)%>
+	      <%= grp.name %> (<%= grp.member_groups.count %>)
+	    <% else %>
+		      <a class='group-list-item group-list-item-index' href="/groups/<%= grp.id %>"><%= grp.name %> (<%= grp.member_groups.count %>) </a><a href="#" class='user-modal-pop btn chat-avatar' style="float: right;" data-toggle="modal" data-target="#userModal" data-id='<%= user.try(:id) %>'><img src="<%= user.avatar_url %>" class="img-circle" alt="User Image" /></a> 
+	    <% end %>
     </li>
   <% end %>

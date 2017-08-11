@@ -1,4 +1,5 @@
 class GroupsController < ApplicationController
+	before_action :authenticate_user!
 	def index
 		if params[:page]
 			@groups = Group.paginate(:page => params[:page], :per_page => 10)		

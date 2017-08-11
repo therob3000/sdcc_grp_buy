@@ -21,11 +21,11 @@
       
       <header class="main-header">
         <!-- Logo -->
-        <a href="index2.html" class="logo"><b>SDCC</b>2018</a>
+        <a href="/users/login" class="logo"><b>SDCC</b>2018</a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top" role="navigation">
           <!-- Sidebar toggle button-->
-
+          <% if current_user %>
           <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
               <li class="">
@@ -37,14 +37,18 @@
               <li class="">
                 <a href="/members" class='btn btn-lg'>MEMBERS</a>
               </li>
-
-              <li class="dropdown user user-menu">
-               
+                
+              <li>
+                <a href="/users/side_menu" class='btn btn-md btn-primary'>Your Acct</a>
               </li>
+            
             </ul>
           </div>
+          <% end %>
         </nav>
       </header>
+
+
       <% if current_user %>
       <!-- Left side column. contains the logo and sidebar -->
       <aside class="main-sidebar">
@@ -58,7 +62,7 @@
             <div class="pull-left info">
               <p>
                 <%= current_user.name %>
-                <a href="/user_log_out_route/sign_out">logout</a>
+                <%= link_to('Logout', destroy_user_session_path, method: :delete) %>
               </p>
             </div>
           </div>

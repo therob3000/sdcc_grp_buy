@@ -1,5 +1,5 @@
   <% groups.try(:each).try(:each) do |grp| %>
-    <li class='clock-slot  <%= grp.has_active_member ? 'member_active' : '' %> <%= (!@grp.nil? && @grp.id == grp.id) ? "group_active" : "group-slot" %>'>
+    <li class='clock-slot  <%= grp.has_active_member ? 'member_active' : '' %> <%= (!@grp.nil? && @grp.id == grp.id) ? "group_active" : "group-slot" %> li_grp_for_<%= grp.id %> <%= grp.member_lists %>'>
     <% if (!@grp.nil? && @grp.id == grp.id)%>
       <%= grp.name %> (<%= grp.member_groups.count %>)
     <% else %>

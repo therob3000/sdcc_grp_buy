@@ -1,0 +1,48 @@
+
+      <% if current_user %>
+      <!-- Left side column. contains the logo and sidebar -->
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+          <!-- Sidebar user panel -->
+          <div class="user-panel">
+            <div class="pull-left image">
+              <img src="<%= current_user.avatar_url %>" class="img-circle" alt="User Image" />
+            </div>
+            <div class="pull-left info">
+              <p>
+                <%= current_user.name %>
+                <a href="/user_log_out_route/sign_out">logout</a>
+              </p>
+            </div>
+          </div>
+          <div class="inbox">
+            <% if current_user.has_unread_messages %>
+              <a href="/users/inbox" class='group-list-item' style='background-color: #90ff90; color: black'>INBOX*</a>
+            <% else %>
+              <a href="/users/inbox" class='group-list-item'>INBOX</a>
+            <% end %>
+          </div>
+          <!-- search form -->
+          <form action="#" method="get" id='private-grp-search' class="sidebar-form">
+            <div class="input-group">
+              <input type="text" name="q" id="pgsearch" class="form-control" placeholder="Search Your groups..."/>
+              <span class="input-group-btn">
+                <button type='submit' name='search' id='psearch-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
+              </span>
+            </div>
+          </form>
+          <!-- /.search form -->
+          <!-- sidebar menu: : style can be found in sidebar.less -->
+            <h1>
+	            YOUR GROUPS
+            </h1>
+        </section>
+        <div style='overflow-y: scroll;'>
+          <ul id="grp_search_aside" style='padding: 2%;'>
+            <%= render :partial => 'groups/group_list_sidebar', :locals => { :groups => current_user.my_groups} %>
+          </ul>
+        </div>
+        <!-- /.sidebar -->
+
+      <% end %>
+
