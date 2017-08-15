@@ -15,14 +15,14 @@ WebsocketRails.setup do |config|
   # Start the standalone server with rake websocket_rails:start_server
   # * Requires Redis
   config.synchronize = false
-  # if Rails.env.development?
-    # config.standalone = true
-    # config.standalone_port = 3002
+  if Rails.env.development?
+    config.standalone = true
+    config.standalone_port = 3002
     config.redis_options = {:host => 'localhost', :port => '6379'}
-  # else
-  #   config.standalone = false
-  #   config.redis_options = {:host => 'angelfish.redistogo.com', :port => '10657', :user => 'redistogo', :password => ENV["REDIS_PS"]}
-  # end
+  else
+    config.standalone = false
+    config.redis_options = {:host => 'angelfish.redistogo.com', :port => '10657', :user => 'redistogo', :password => ENV["REDIS_PS"]}
+  end
 
   # Change to true to enable channel synchronization between
   # multiple server instances.
