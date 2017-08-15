@@ -50,9 +50,9 @@ gem 'redis', '~> 3.0'
 # Use Unicorn as the app server
 # gem 'unicorn'
 # gem 'websocket-rails'
-gem 'websocket-rails', github: 'recurser/websocket-rails', branch: 'bugfix/388-latest-faye-websocket'
 
 group :development, :test do
+  gem 'websocket-rails', github: 'recurser/websocket-rails', branch: 'bugfix/388-latest-faye-websocket'
   gem 'sqlite3'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
@@ -66,6 +66,7 @@ group :development, :test do
 end
 
 group :production do
+  gem 'websocket-rails' #, github: 'recurser/websocket-rails', branch: 'bugfix/388-latest-faye-websocket'
   gem 'pg'
   # gem 'rails_12factor', '0.0.2'
 end

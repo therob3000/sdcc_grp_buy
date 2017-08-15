@@ -14,19 +14,19 @@ WebsocketRails.setup do |config|
   # Change to true to enable standalone server mode
   # Start the standalone server with rake websocket_rails:start_server
   # * Requires Redis
-  if Rails.env.development?
-    config.standalone = true
-    config.standalone_port = 3002
-    config.redis_options = {:host => 'localhost', :port => '6379'}
-  else
-    config.standalone = false
-    config.redis_options = {:host => 'angelfish.redistogo.com', :port => '10657', :user => 'redistogo', :password => ENV["REDIS_PS"]}
-  end
+  # if Rails.env.development?
+    # config.standalone = true
+    # config.standalone_port = 3002
+    # config.redis_options = {:host => 'localhost', :port => '6379'}
+  # else
+  # end
 
   # Change to true to enable channel synchronization between
   # multiple server instances.
   # * Requires Redis.
   config.synchronize = false
+  config.standalone = false
+  config.redis_options = {:host => 'angelfish.redistogo.com', :port => '10657', :user => 'redistogo', :password => ENV["REDIS_PS"]}
 
   # Prevent Thin from daemonizing (default is true)
   # config.daemonize = false
