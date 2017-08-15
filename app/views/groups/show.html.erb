@@ -129,7 +129,6 @@
 	}
 </style>
 <script type="text/javascript">
-  // var dispatcher = new WebSocketRails(window.document.location.host + "/" + "websocket");
   var dispatcher;
   var connection;
   var connectionID;
@@ -253,8 +252,11 @@
 
 
 	function startDispatch(){
-
-	  dispatcher = new WebSocketRails('localhost:3002' + "/" + "websocket");
+		<% if Rails.env.development? %>
+		  dispatcher = new WebSocketRails('localhost:3002' + "/" + "websocket");
+		<% else %>
+	  	dispatcher = new WebSocketRails(window.document.location.host + "/" + "websocket");
+		<% end %>
 	  dispatcher.on_open = function(data) {
 	  	// sleep(1000);
 	  	if (!activeDispatcher) {
