@@ -23,7 +23,7 @@
 .env
 .DS_Store
 
-/vendor
+/vendor/bundle
 /log
 
 dump.rdb
