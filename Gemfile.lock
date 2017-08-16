@@ -1,5 +1,5 @@
 GIT
-  remote: https://github.com/recurser/websocket-rails.git
+  remote: git://github.com/recurser/websocket-rails.git
   revision: 3d4bc7cb73e20ce748c0bea4b2da5a85f0713f80
   branch: bugfix/388-latest-faye-websocket
   specs:
