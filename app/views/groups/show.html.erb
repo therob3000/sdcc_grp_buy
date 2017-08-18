@@ -250,6 +250,14 @@
     })
   }
 
+  var success = function(response) {
+	  console.log("Wow it worked: ", response);
+	}
+
+	var failure = function(response) {
+		  console.log("That just totally failed: ", response);
+	}
+
 
 	function startDispatch(){
 		<% if Rails.env.development? %>
@@ -341,9 +349,6 @@
 
 		    // someone_typing
 		    channel.bind('someone_typing', function(message) {
-		    	// if (message.connection_id != connectionID) {
-		    	// 	return;
-		    	// }
 		    	someoneTyping();
 		    });
 
@@ -392,7 +397,7 @@
 
 		} else {
 			// notify users that someone is typing
-			dispatcher.trigger('someone_typing', {room: "<%= @grp.id %>"});
+			dispatcher.trigger('someone_typing', {room: "<%= @grp.id %>"}, success, failure);
 		}
  });
 
