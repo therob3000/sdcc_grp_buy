@@ -1,0 +1,14 @@
+	<% codes.each do |code| %>
+	<div class="code_container row">
+		<div class="email col-lg-3">
+			<%= code.email %>
+		</div>
+		<div class="code col-lg-6">
+			<%= encrypt_code(code.code) %>
+		</div>
+
+		<div class="col-lg-3">
+			<a href="#" class='e-mail-to-user btn btn-primary btn-lg'>Email</a>
+		</div>
+	</div>
+	<% end %>

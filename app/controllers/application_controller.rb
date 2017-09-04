@@ -9,4 +9,13 @@ class ApplicationController < ActionController::Base
   
   # helper_method :current_user
 
+  # private
+
+  def validate
+  	if !current_user.is_valid?
+  		flash[:error] = 'You must validate your code, or request a code'
+  		redirect_to root_path
+  	end
+  end
+
 end

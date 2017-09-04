@@ -34,6 +34,15 @@
     /* border-radius: 40px; */
 }
 
+.create-code-form {
+    width: 50%;
+        width: 50%;
+    padding-top: 2px;
+    padding-left: 3%;
+    background-color: #162c48;
+    color: white;
+}
+
 .group-list-item {
     width: 100%;
     margin-bottom: 5px;
@@ -52,10 +61,10 @@
 }
 
 .list-group {
- padding-left: 0;
- margin-bottom: 20px;
- width: 90%;
- padding: 3px;
+   padding-left: 0;
+   margin-bottom: 20px;
+   width: 90%;
+   padding: 3px;
 }
 
 .group-list {
@@ -563,10 +572,52 @@
     }
     .welcome-message {
         width: 75%;
-    font-size: 14px;
-    font-family: sans-serif;
-    padding: 5%;
+        font-size: 14px;
+        font-family: sans-serif;
+        padding: 5%;
     }
+
+    .val-code-box {
+        padding: 2%;
+        background-color: #f7d6ad;
+        width: 50%;
+        margin-top: 12px;
+        border-radius: 10px;
+        text-align: center;
+        padding-top: 1px;
+    }
+
+    .covered-member {
+            padding: 2%;
+            text-align: center;
+            font-size: 15px;
+            font-weight: bold;
+            background-color: yellow;
+            border-radius: 10px;
+            color: red;
+            margin: 4px;
+    }
+
+    .code_container {
+        padding-left: 2%;
+        padding: 1%;
+        background-color: #ffdada;
+        width: 100%;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        font-size: 20px;
+    }
+
+    .code_container .code {
+    }
+    
+    .pag-contain {
+        margin: 0 auto;
+    }
+    .pagination a {
+        display: inline-block;
+    }
+
 
     h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
         font-family: monospace;
@@ -577,7 +628,7 @@
     }
 
     @media (max-width: 1697px) and (min-width: 961px) {
-     .talk-bubble {
+       .talk-bubble {
         margin: 15px;
         display: inline-block;
         position: relative;
@@ -588,11 +639,11 @@
         height: auto;
         background-color: lightyellow;
         .welcome-message {
-        width: 85%;
-        font-size: 14px;
-        font-family: sans-serif;
-        padding: 5%;
-    }
+            width: 85%;
+            font-size: 14px;
+            font-family: sans-serif;
+            padding: 5%;
+        }
     }
     
     .chat-line .user-modal-pop {
@@ -614,7 +665,7 @@
         width: 100%;
     }
 
- 
+
 
 }
 
@@ -624,9 +675,9 @@
     }
     .welcome-message {
         width: 100%;
-    font-size: 14px;
-    font-family: sans-serif;
-    padding: 5%;
+        font-size: 14px;
+        font-family: sans-serif;
+        padding: 5%;
     }
 
     .talk-bubble {
@@ -640,7 +691,7 @@
         height: auto;
         background-color: lightyellow;
     }
-   .show-side-menu {
+    .show-side-menu {
         display: block;
     }
 

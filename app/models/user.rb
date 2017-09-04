@@ -1,13 +1,14 @@
 class User < ApplicationRecord
+  include SecurityHelper
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [:facebook]
-	has_many :members
-	has_many :purchases
+  has_many :members
+  has_many :purchases
   has_many :groups
   has_many :direct_messages
-	
+
 
 	def self.from_omniauth(auth)
     if User.exists?(:email => auth.info.email)
@@ -28,16 +29,28 @@ class User < ApplicationRecord
     end
   end
 
+  def is_valid?
+    # this users validation_code must match thier assigned e-mail in the ValidationCode model
+    code = ValidationCode.validate_by_email(email, decrypt_code(validation_code))
+  end
+
+  def is_admin?
+    is_admin == true
+  end
+
   def has_unread_messages
     direct_messages.any? { |e| e.seen == false }
   end
 
   def my_groups
-    # out = members.map { |e| e.member_groups.map { |m| m.group } }.to_a.uniq
     out = []
+
+    # all groups created by user
     groups.each do |grp|
       out << grp
     end
+
+    # all groups with a member created/sponsored by user
     members.each do |mem|
       mem.member_groups.each do |mg|
         out << mg.group

@@ -32,9 +32,28 @@ require 'faker'
 # 	ChatMessage.create(:group_id => 1, :user_id => rand(30), :message => Faker::Hacker.say_something_smart)
 # end
 
-15.times do 
-	d = DirectMessage.new(:user_id => 2, :from_user_id => rand(43), :subject => Faker::Hacker.say_something_smart, :body => Faker::Lorem.paragraph(2))
-	if !d.save
-		p d.errors.full_messages
+# 15.times do 
+# 	d = DirectMessage.new(:user_id => 2, :from_user_id => rand(43), :subject => Faker::Hacker.say_something_smart, :body => Faker::Lorem.paragraph(2))
+# 	if !d.save
+# 		p d.errors.full_messages
+# 	end
+# end
+	CRPT_KEY = ENV['CRPT_KEY'].to_i
+	CODE_STRING = ENV['CODE_STRING']
+
+
+100.times do 
+	code_array = []
+	rand(3..7).times do 
+		code = ""
+		rand(10..20).times do 
+			letter = CODE_STRING.split('').sample
+			code += letter
+		end
+
+		code_array << code
 	end
+
+	gen_code = code_array.join('+')
+	ValidationCode.create(:email => Faker::Internet.safe_email, :code => gen_code)
 end

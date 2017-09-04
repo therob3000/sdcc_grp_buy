@@ -1,6 +1,8 @@
 class MembersController < ApplicationController
 	before_action :authenticate_user!
-
+	before_action :validate, :only => [:register_member,:register_member_to_group,:remove_member,:cover_member]
+	include SecurityHelper
+	
 	def index
 		if params[:page]
 			@members = Member.paginate(:page => params[:page], :per_page => 10)		
@@ -19,6 +21,19 @@ class MembersController < ApplicationController
 			render :json => { :success => false, :message => @member.errors.full_messages}
 		end
 		
+	end
+
+	def validate_user
+		code = code_params['code']
+		db_code = ValidationCode.find_by_email(current_user.email)
+		if db_code.code == decrypt_code(code)
+			current_user.validation_code = code
+			current_user.save
+		else
+			flash[:error] = 'Code is invalid, or expired'
+		end
+
+		redirect_to :back
 	end
 
 	def mark_message_seen
@@ -72,13 +87,13 @@ class MembersController < ApplicationController
 		# every group can have a max of 5 members in it
 		@group = Group.find(params[:member_group][:group_id])
 		# @member = Member.create(member_params)
-		if @group.member_groups.count >= 5
+		if @group.member_groups.count >= 40
 			render :json => {:success => false, :message => ["Sorry, this group is full"]}
 		else
 			if Member.exists?(:sdcc_member_id => params[:sdcc_member_id])
 				@member = Member.find_by_sdcc_member_id(params[:sdcc_member_id])
 				# a member can belong to no more than 3 groups
-				if @member.member_groups.count >= 5
+				if @member.member_groups.count >= 20
 					render :json => {:success => false, :message => ['This member is already signed up with 5 groups, and cannot be in anymore.']}
 				else 
 					mb = MemberGroup.new(member_groups_params)
@@ -144,6 +159,9 @@ class MembersController < ApplicationController
 	end
 
 	private
+	def code_params
+		params.require(:code).permit(:code)
+	end
 
 	def member_params
 		params.require(:member).permit(:name, :sdcc_member_id, :phone, :email)

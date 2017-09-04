@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 	# before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!, except: [:login]
+  before_action :authenticate_user!, :validate, except: [:login]
 
   def login
 

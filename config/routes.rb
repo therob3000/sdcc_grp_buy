@@ -21,10 +21,20 @@ Rails.application.routes.draw do
       delete 'remove_member'
       post 'register_member_to_group'
       post 'register_member'
+      get 'validate_user'
       get 'search'
       get 'activate_member'
       post 'direct_message'
       get 'mark_message_seen'
+    end
+  end
+
+  resources :admins do 
+    member do 
+      get 'send_email'
+    end
+    collection do 
+      get 'search'
     end
   end
 
