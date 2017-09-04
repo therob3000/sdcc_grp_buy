@@ -57,7 +57,7 @@ class AdminsController < ApplicationController
 		val_code = ValidationCode.find(params[:id])
 		code = ''
 		if val_code.delete
-			render :json => { :success => true, :message => 'deleted', :code => code, :id => val_code.id }
+			render :json => { :success => true, :message => 'deleted', :code => code, :delete_id => val_code.id }
 		else
 			render :json => { :success => false, :message =>val_code.errors.full_messages.join(',') }
 		end

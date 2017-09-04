@@ -1,14 +1,18 @@
-	<% codes.each do |code| %>
-	<div class="code_container row">
-		<div class="email col-lg-3">
+<% codes.each do |code| %>
+	<div class="code_container row" id='validation_code_parent_<%= code.id %>'>
+		<div class="email col-lg-2">
 			<%= code.email %>
 		</div>
-		<div class="code col-lg-6">
+
+		<div class="code col-lg-8" id='validation_code_<%= code.id %>'>
 			<%= encrypt_code(code.code) %>
 		</div>
 
-		<div class="col-lg-3">
-			<a href="#" class='e-mail-to-user btn btn-primary btn-lg'>Email</a>
+		<div class="col-lg-2">
+			<a href="#" class='email-code-user btn btn-primary btn-lg' data-id='<%= code.id %>' data-email='<%= code.email %>' data-toggle="modal" data-target="#confirmationModal">Email</a>
+			<a href="#" class='reset-code-user btn btn-warning btn-lg' data-id='<%= code.id %>' data-email='<%= code.email %>' data-toggle="modal" data-target="#confirmationModal">Reset</a>
+			<a href="#" class='delete-code-user btn btn-danger btn-lg' data-id='<%= code.id %>' data-email='<%= code.email %>' data-toggle="modal" data-target="#confirmationModal">Delete</a>
 		</div>
 	</div>
 	<% end %>
+
