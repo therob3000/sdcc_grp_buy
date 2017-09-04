@@ -53,6 +53,9 @@ gem 'redis', '~> 3.0'
 gem 'websocket-rails', github: 'recurser/websocket-rails', branch: 'bugfix/388-latest-faye-websocket'
 # gem 'websocket-rails', github: 'moaa/websocket-rails', branch: 'threadsocket-rails'
 
+gem 'aws-sdk', '~> 2'
+gem 'aws-sdk-rails'
+
 group :development, :test do
   gem 'sqlite3'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

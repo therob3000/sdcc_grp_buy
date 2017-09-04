@@ -45,11 +45,24 @@ class AdminsController < ApplicationController
 		val_code = ValidationCode.find(params[:id])
 		email = val_code.email
 		code = ''
+
+		obj = {
+			email: email, 
+			message: "your validation code is: #{val_code.code}"
+		}
+
+		send_email_to_email(obj)
+
 		if val_code.save
 			render :json => { :success => true, :message => "email sent to #{email}", :code => code, :id => val_code.id }
 		else
 			render :json => { :success => false, :message =>val_code.errors.full_messages.join(',') }
 		end
+	end
+
+	def send_email_to_email(obj)
+		MyMailer.send_email(obj).deliver
+	  # redirect_to root_url, notice: "Email sent!"
 	end
 
 	def destroy

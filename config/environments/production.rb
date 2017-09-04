@@ -56,7 +56,7 @@ Rails.application.configure do
   # config.active_job.queue_adapter     = :resque
   # config.active_job.queue_name_prefix = "sdcc_grp_buy_#{Rails.env}"
   config.action_mailer.perform_caching = false
-
+  config.action_mailer.perform_deliveries = true
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
@@ -74,6 +74,19 @@ Rails.application.configure do
   # Use a different logger for distributed setups.
   # require 'syslog/logger'
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
+
+  aws_credentials = Aws::Credentials.new(ENV['AWS_ACCESS_KEY_ID'], ENV['AWS_ACCESS_KEY_ID'])
+  Aws::Rails.add_action_mailer_delivery_method(:aws_ses, credentials: aws_credentials, region: ENV['AWS_REGION'])
+  config.action_mailer.delivery_method = :aws_ses
+
+config.action_mailer.smtp_settings = {
+  :address => "email-smtp.us-west-2.amazonaws.com",
+  :port => 587,
+  :user_name => ENV["SES_SMTP_USERNAME"], #Your SMTP user
+  :password => ENV["SES_SMTP_PASSWORD"], #Your SMTP password
+  :authentication => :login,
+  :enable_starttls_auto => true
+}
 
   if ENV["RAILS_LOG_TO_STDOUT"].present? && Rails.env.development?
     logger           = ActiveSupport::Logger.new(STDOUT)
