@@ -87,7 +87,6 @@ $('body').on('submit', '#create-member-form', function(event) {
         $('#gsearch').val(data.member_id);
         $('#gsearch').trigger('keyup');
         $(this).trigger('reset');
-
       } else {
         populateErrors(data.message);
       }

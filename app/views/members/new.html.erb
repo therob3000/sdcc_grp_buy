@@ -1,6 +1,5 @@
 <div id="new-member-form" style='display: block; overflow-y: hidden;'>
   <div class="create-form">
-  <a href="#" id='expand' class='btn btn-md btn-primary expand-member'>+MEMBER</a>
     <form action='/members' method='POST' id='create-member-form'>
       <h3>Create a new Member</h3>
       <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
@@ -26,3 +25,24 @@
     </form>
   </div>
 </div>
+
+<script type="text/javascript">
+  $('body').on('submit', '#create-member-form', function(event) {
+    event.preventDefault();
+    // create the member.
+    $.ajax({
+      url: '/members/register_member',
+      type: 'POST',
+      data: $(this).serialize(),
+    })
+    .done(function(data) {
+      if (data.success) {
+        // register the member to the group.
+        alert('member successfully registered');
+        $('#create-member-form').trigger('reset');
+      } else {
+        populateErrors(data.message);
+      }
+    })    
+  });
+</script>
