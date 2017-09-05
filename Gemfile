@@ -58,7 +58,6 @@ gem 'websocket-rails', github: 'recurser/websocket-rails', branch: 'bugfix/388-l
 
 group :development, :test do
   gem 'sqlite3'
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
   
   gem 'listen'
@@ -72,8 +71,8 @@ end
 group :production do
   # gem 'websocket-rails' #, github: 'recurser/websocket-rails', branch: 'bugfix/388-latest-faye-websocket'
   gem 'pg'
-  gem 'mysql2'
-  # gem 'rails_12factor', '0.0.2'
+  # gem 'mysql2'
+  gem 'rails_12factor', '0.0.2'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
