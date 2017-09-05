@@ -19,6 +19,7 @@ module SecurityHelper
 
 	def encrypt_code(code)
 		output = []
+		return if code.nil?
 		input = code.split('+')
 		input.each do |cod|
 			tmp = ''
@@ -34,6 +35,7 @@ module SecurityHelper
 
 	def decrypt_code(code)
 		output = []
+		return if code.nil?
 		input = code.split('-')
 		input.each do |cod|
 			tmp = ''
