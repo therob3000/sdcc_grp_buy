@@ -72,6 +72,7 @@ end
 group :production do
   # gem 'websocket-rails' #, github: 'recurser/websocket-rails', branch: 'bugfix/388-latest-faye-websocket'
   gem 'pg'
+  gem 'mysql2'
   # gem 'rails_12factor', '0.0.2'
 end
 
