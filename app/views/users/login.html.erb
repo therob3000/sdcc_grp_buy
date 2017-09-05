@@ -9,7 +9,7 @@
 		Logged in as <b><%= current_user.name %></b>
 	<% end %>
 	
-		<% if !current_user.is_valid? %>
+		<% if !current_user.try(:is_valid?) %>
 		<div class="val-code-box">
 		<h3>
 			validation code box

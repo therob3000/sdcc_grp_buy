@@ -40,17 +40,17 @@
           <% if current_user %>
           <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
-              <% if !current_user.is_valid? %>
+              <% if !current_user.try(:is_valid?) %>
                 <li class="">
                   <a href="/" class='btn btn-lg btn-danger'>Enter validation code</a>
                 </li>
               <% end %>
-              <% if current_user.is_admin %>
+              <% if current_user.try(:is_admin) %>
                 <li class="">
                   <a href="/admins" class='btn btn-lg btn-warning'>ADMIN</a>
                 </li>
               <% end %>
-              <% if current_user.is_valid? %>
+              <% if current_user.try(:is_valid?) %>
                 <li class="">
                   <a href="/groups/new" class='btn btn-lg'>+GROUP</a>
                 </li>
@@ -58,7 +58,7 @@
               <li class="">
                 <a href="/groups" class='btn btn-lg'>GROUPS</a>
               </li>
-              <% if current_user.is_valid? %>
+              <% if current_user.try(:is_valid?) %>
                 <li class="">
                   <a href="/members/new" class='btn btn-lg'>+MEMBER</a>
                 </li>
