@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     end
 
     collection do
+      post 'update_user'
       post 'manual_create'
       post 'manual_login'
       get 'confirm_create'

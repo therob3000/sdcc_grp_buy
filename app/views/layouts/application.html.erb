@@ -86,12 +86,13 @@
           <!-- Sidebar user panel -->
           <div class="user-panel">
             <div class="pull-left image">
-              <img src="<%= current_user.avatar_url %>" class="img-circle" alt="User Image" />
+              <img src="<%= current_user.avatar_url %>" class="more-circle" alt="User Image""/>
             </div>
             <div class="pull-left info">
               <p>
                 <%= current_user.name %>
-                <%= link_to('Logout', destroy_user_session_path, method: :delete) %>
+                <br>
+                <%= link_to('Logout', destroy_user_session_path, method: :delete, class: 'btn btn-danger btn-md logout-button') %>
               </p>
             </div>
           </div>

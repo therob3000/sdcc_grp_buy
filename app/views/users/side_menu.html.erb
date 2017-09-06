@@ -2,13 +2,13 @@
 
 <div class="row profile-container-edit">
   <div class="col-lg-2">
-    <img src="<%= current_user.avatar_url %>" class="img-fluid" alt="User Image" style='' />
+    <img src="<%= current_user.avatar_url %>" class="img-fluid" alt="User Image" style='max-height: 200px' />
     
   </div>
   <div class="col-lg-10">
-    <form action="" method="PUT">
+    <form method="POST" action="/users/update_user">
         <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-        <h1>You Profile</h1>
+        <h1>Your Profile</h1>
         <div class="form-group">
           <label for="signup_email">User Name</label>
           <input type="text" class="form-control" value="<%= @user.name %>" name='update[name]' id="signup_name" aria-describedby="emailHelp" placeholder="Enter desired username">
@@ -26,7 +26,7 @@
           <input type="avatarurl" class="form-control" value="<%= @user.avatar_url %>" name='update[avatar_url]' id="signup_avatar" aria-describedby="emailHelp" placeholder="Enter url of yourself...if you want">
         </div>
 
-        <input type="submit" name="update" value='Update Info' class='btn btn-lg btn-primary sign_log_in'>
+        <input type="submit" value='Update Info' class='btn btn-lg btn-primary sign_log_in'>
     </form>
   </div>
 

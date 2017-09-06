@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 	# before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, except: [:login, :manual_create,:manual_login,:confirm_create]
-  before_action :validate, except: [:login, :manual_create,:manual_login, :side_menu,:confirm_create]
+  before_action :validate, except: [:login, :update, :manual_create,:manual_login, :side_menu,:confirm_create]
   include SecurityHelper
 
   def login
@@ -79,8 +79,15 @@ class UsersController < ApplicationController
   	
   end
 
-  def update
-  	
+  def update_user
+    # byebug
+    current_user.assign_attributes(user_update_params)
+  	if current_user.save
+      redirect_to :back
+    else
+      flash[:error] = current_user.errors.full_messages.join(', ')
+      redirect_to :back
+    end
   end
 
   def destroy

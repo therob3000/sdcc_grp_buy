@@ -36,7 +36,7 @@
 
 .create-code-form {
     width: 50%;
-        width: 50%;
+    width: 50%;
     padding-top: 2px;
     padding-left: 3%;
     background-color: #162c48;
@@ -61,10 +61,10 @@
 }
 
 .list-group {
-   padding-left: 0;
-   margin-bottom: 20px;
-   width: 90%;
-   padding: 3px;
+ padding-left: 0;
+ margin-bottom: 20px;
+ width: 90%;
+ padding: 3px;
 }
 
 .group-list {
@@ -588,14 +588,14 @@
     }
 
     .covered-member {
-            padding: 2%;
-            text-align: center;
-            font-size: 15px;
-            font-weight: bold;
-            background-color: yellow;
-            border-radius: 10px;
-            color: red;
-            margin: 4px;
+        padding: 2%;
+        text-align: center;
+        font-size: 15px;
+        font-weight: bold;
+        background-color: yellow;
+        border-radius: 10px;
+        color: red;
+        margin: 4px;
     }
 
     .code_container {
@@ -637,59 +637,77 @@
         width: 40%;
     }
 
-    h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-        font-family: monospace;
-        font-variant: initial;
-        font-kerning: initial;
-        font-stretch: normal;
-        font-weight: bolder;
-    }
-
-    #manual-login-form {
-        padding: 0%;
-    }
-
-    .profile-container-edit {
-        padding: 3%;
-    }
-
-    @media (max-width: 1697px) and (min-width: 961px) {
-       .talk-bubble {
-        margin: 15px;
-        display: inline-block;
+    .more-circle {
+        overflow: hidden;
+        width: auto;
         position: relative;
-        /*width: 60%;*/
-        width: 90%;
-        top: 35px;
-        left: 0px;
-        height: auto;
-        background-color: lightyellow;
-        .welcome-message {
-            width: 85%;
-            font-size: 14px;
-            font-family: sans-serif;
-            padding: 5%;
-        }
-    }
-    
-    .chat-line .user-modal-pop {
-        display: none;
+        overflow: hidden;
+        border-radius: 10px
     }
 
-    .show-side-menu {
-        display: block;
+    .logout-button {
+        margin-top: 8px;
+        width: 100%; 
+    }
+
+     .info {
+        width: 75%;
     }
 
 
-    .form-check {
-        position: relative;
-        display: inline-block;
-        width: 100%;
-    }
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: monospace;
+    font-variant: initial;
+    font-kerning: initial;
+    font-stretch: normal;
+    font-weight: bolder;
+}
 
-    .clock-slot-index {
-        width: 100%;
+#manual-login-form {
+    padding: 0%;
+}
+
+.profile-container-edit {
+    padding: 3%;
+}
+
+@media (max-width: 1697px) and (min-width: 961px) {
+ .talk-bubble {
+    margin: 15px;
+    display: inline-block;
+    position: relative;
+    /*width: 60%;*/
+    width: 90%;
+    top: 35px;
+    left: 0px;
+    height: auto;
+    background-color: lightyellow;
+    .welcome-message {
+        width: 85%;
+        font-size: 14px;
+        font-family: sans-serif;
+        padding: 5%;
     }
+}
+
+.chat-line .user-modal-pop {
+    display: none;
+}
+
+.show-side-menu {
+    display: block;
+}
+
+
+.form-check {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.clock-slot-index {
+    width: 100%;
+}
 
 
 
