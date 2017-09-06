@@ -164,7 +164,7 @@ class MembersController < ApplicationController
 	end
 
 	def member_params
-		params.require(:member).permit(:name, :sdcc_member_id, :phone, :email)
+		params.require(:member).permit(:name, :last_name, :sdcc_member_id, :phone, :email)
 	end
 
 	def member_groups_params

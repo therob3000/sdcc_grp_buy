@@ -14,6 +14,7 @@
 		<h2 class='number-of-members'>This buying group is empty</h2>
 	<% else %>
 		<h2 class='number-of-members'><%= @grp.member_groups.count %> Members in this buying group</h2>
+		<h5><a href="#" id='non-covered-toggle' style="width: 100%" class='btn btn-primary btn-lg'>Show Only Non-Covered</a></h5>
 	<% end %>
 		<div class="member-list" id='member-list'>
 			<% @grp.member_groups.each do |mem_grp| %>
@@ -75,6 +76,10 @@
 						<label for='member[name]'>Name</label>
 						<input class="form-control" type="text" name='member[name]'>
 					</div>
+		      <div class="form-group">
+		        <label for='member[last_name]'>Last Name</label>
+		        <input class="form-control" type="text" name='member[last_name]'>
+		      </div>
 					<div class="form-group">
 						<label for='member[phone]'>Phone</label>
 						<input class="form-control" type="text" name='member[phone]'>
@@ -399,6 +404,17 @@
 			// notify users that someone is typing
 			dispatcher.trigger('someone_typing', {room: "<%= @grp.id %>"}, success, failure);
 		}
+ });
+
+ $('body').on('click', '#non-covered-toggle', function(event) {
+ 	event.preventDefault();
+ 	if ($('.member_covered').css('display') == 'none') {
+	 	$('.member_covered').slideDown(500);
+	 	$(this).text('Show Everyone');
+ 	} else {
+	 	$('.member_covered').slideUp(500);
+	 	$(this).text('Show Only Non-Covered');
+ 	}
  });
 
 $('body').on('click', '.expand-chat-log', function(event) {

@@ -10,4 +10,12 @@ class Member < ApplicationRecord
 		needs.all? { |e| e.covered? }
 	end
 
+	def display_last
+		if last_name.nil?
+			name.split(' ').last
+		else
+			last_name
+		end
+	end
+
 end

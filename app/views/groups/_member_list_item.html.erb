@@ -5,7 +5,7 @@
 <% end %>
 	<div class="mem-block name-holder">
 		<b>Name:</b> <a href="#" class='member-modal-pop btn' data-toggle="modal" data-target="#memberModal" data-id='<%= member.id %>'> <%= member.name %> </a><br>
-		<b>SDCC ID:</b> <br> <%= member.sdcc_member_id %>
+		<b>SDCC ID:</b> <br><%= member.display_last %> <%= member.sdcc_member_id %>
 	</div>
 	<div class="mem-block day-holder" style='float: center;'>
 		<b>Days Needed:</b><br><br>
