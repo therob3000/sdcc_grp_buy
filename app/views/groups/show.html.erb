@@ -156,7 +156,7 @@
 			if (data.success) {
 				// register the member to the group.
 				$('#new-member-form').slideUp(500);
-				$('#new-member-form').trigger('reset');
+				$('#create-member-form').trigger('reset');
 				regMember($('#reg-member').serialize());
 				$(this).trigger('reset');
 
