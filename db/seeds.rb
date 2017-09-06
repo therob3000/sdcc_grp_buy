@@ -17,7 +17,7 @@ require 'faker'
 
 
 # 40.times do 
-# 	user = User.new(:email => Faker::Internet.safe_email, :name => Faker::Internet.user_name, :avatar_url => Faker::Avatar.image("my-own-slug", "50x50"), :password => 'password')
+	# user = User.new(:email => Faker::Internet.safe_email, :name => Faker::Internet.user_name, :avatar_url => Faker::Avatar.image("my-own-slug", "50x50"), :password => 'password')
 # 	if !user.save
 # 		p user.errors.full_messages
 # 	end

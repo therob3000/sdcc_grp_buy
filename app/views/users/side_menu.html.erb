@@ -1,48 +1,61 @@
 
-      <% if current_user %>
-      <!-- Left side column. contains the logo and sidebar -->
-        <!-- sidebar: style can be found in sidebar.less -->
-        <section class="sidebar">
-          <!-- Sidebar user panel -->
-          <div class="user-panel">
-            <div class="pull-left image">
-              <img src="<%= current_user.avatar_url %>" class="img-circle" alt="User Image" />
-            </div>
-            <div class="pull-left info">
-              <p>
-                <%= current_user.name %>
-                <a href="/user_log_out_route/sign_out">logout</a>
-              </p>
-            </div>
-          </div>
-          <div class="inbox">
-            <% if current_user.has_unread_messages %>
-              <a href="/users/inbox" class='group-list-item' style='background-color: #90ff90; color: black'>INBOX*</a>
-            <% else %>
-              <a href="/users/inbox" class='group-list-item'>INBOX</a>
-            <% end %>
-          </div>
-          <!-- search form -->
-          <form action="#" method="get" id='private-grp-search' class="sidebar-form">
-            <div class="input-group">
-              <input type="text" name="q" id="pgsearch" class="form-control" placeholder="Search Your groups..."/>
-              <span class="input-group-btn">
-                <button type='submit' name='search' id='psearch-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
-              </span>
-            </div>
-          </form>
-          <!-- /.search form -->
-          <!-- sidebar menu: : style can be found in sidebar.less -->
-            <h1>
-	            YOUR GROUPS
-            </h1>
-        </section>
-        <div style='overflow-y: scroll;'>
-          <ul id="grp_search_aside" style='padding: 2%;'>
-            <%= render :partial => 'groups/group_list_sidebar', :locals => { :groups => current_user.my_groups} %>
-          </ul>
+
+<div class="row profile-container-edit">
+  <div class="col-lg-2">
+    <img src="<%= current_user.avatar_url %>" class="img-fluid" alt="User Image" style='' />
+    
+  </div>
+  <div class="col-lg-10">
+    <form action="" method="PUT">
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        <h1>You Profile</h1>
+        <div class="form-group">
+          <label for="signup_email">User Name</label>
+          <input type="text" class="form-control" value="<%= @user.name %>" name='update[name]' id="signup_name" aria-describedby="emailHelp" placeholder="Enter desired username">
+          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
         </div>
-        <!-- /.sidebar -->
 
+        <div class="form-group">
+          <label for="signup_email">Email address</label>
+          <input type="email" class="form-control" value="<%= @user.email %>" name='update[email]' id="signup_email" aria-describedby="emailHelp" placeholder="Enter email">
+          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+
+        <div class="form-group">
+          <label for="avatarurl">Avatar URL(optional)</label>
+          <input type="avatarurl" class="form-control" value="<%= @user.avatar_url %>" name='update[avatar_url]' id="signup_avatar" aria-describedby="emailHelp" placeholder="Enter url of yourself...if you want">
+        </div>
+
+        <input type="submit" name="update" value='Update Info' class='btn btn-lg btn-primary sign_log_in'>
+    </form>
+  </div>
+
+</div>
+
+  <!-- /.search form -->
+  <!-- sidebar menu: : style can be found in sidebar.less -->
+<div class="row">
+  <div class="col-lg-6">
+    <h1>
+      YOUR GROUPS
+    </h1>
+    <div style='overflow-y: scroll;'>
+      <ul id="grp_search_aside" style='padding: 2%;'>
+        <%= render :partial => 'groups/group_list_sidebar', :locals => { :groups => @groups } %>
+      </ul>
+    </div>
+    <!-- /.sidebar -->
+
+    
+  </div>
+  <div class="col-lg-6">
+    <h1>YOUR MEMBERS</h1>
+    <div class='member-list'>
+      <% @members.each do |member| %>
+        <div class="list-member">
+          <%= render :partial => 'groups/member_list_item', :locals => { :member => member, :mem_grp => nil, :grp => nil } %>
+        </div>
       <% end %>
-
+    </div>
+  </div>
+</div>

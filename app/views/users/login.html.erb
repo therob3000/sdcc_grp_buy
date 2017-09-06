@@ -1,15 +1,88 @@
 
 <div class="login-body">
 	
-	<% if current_user.nil? %>
-		<a class="fblogin btn btn-lg btn btn-lg btn-primary" href="/users/auth/facebook">
-		  Continue with Facebook
-		</a>
-	<% else %>
-		Logged in as <b><%= current_user.name %></b>
-	<% end %>
+	<div class="login-window">
+		
+		<% if current_user.nil? %>
+			<form id="manual-login-form" method="POST" action='/users/manual_login'>
+				<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+				<h3>Login</h3>
+				<div class="form-group">
+					<input type="hidden" name="type" value='manual'>
+			    <label for="login_email">Email address</label>
+			    <input type="email" class="form-control" name='login[email]' id="login_email" aria-describedby="emailHelp" placeholder="Enter email">
+			    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+			  </div>
+
+				<div class="form-group">
+			    <label for="password">Password</label>
+			    <input type="password" class="form-control" name='login[password]' id="password" aria-describedby="emailHelp" placeholder="Enter email">
+			  </div>
+			  
+				<input type="submit" name="Login" value="Login" class='btn btn-lg btn-primary sign_log_in'>
+			</form>
+
+			<a href="#" id='new-user-link' class='btn btn-lg btn-primary' style='    width: 100%'>New User?  Sign up here</a>
+
+			<form id="manual-signup-form" action='/users/manual_create' method="POST" style="display: none;">
+				<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+				<h3>Sign Up</h3>
+				<div class="form-group">
+			    <label for="signup_email">User Name</label>
+			    <input type="text" class="form-control" name='signup[name]' id="signup_name" aria-describedby="emailHelp" placeholder="Enter desired username">
+			    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+			  </div>
+
+				<div class="form-group">
+			    <label for="signup_email">Email address</label>
+			    <input type="email" class="form-control" name='signup[email]' id="signup_email" aria-describedby="emailHelp" placeholder="Enter email">
+			    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+			  </div>
+
+				<div class="form-group">
+			    <label for="password">Password</label>
+			    <input type="password" class="form-control" name='signup[password]' id="signup_password" aria-describedby="emailHelp" placeholder="Enter password">
+			  </div>
+
+			  <div class="form-group">
+			    <label for="confirmpassword">Confirm Password</label>
+			    <input type="password" class="form-control" name='signup[password_confirmation]' id="signup_password" aria-describedby="emailHelp" placeholder="Please confirm password">
+			  </div>
+
+			  <div class="form-group">
+			    <label for="avatarurl">Avatar URL(optional)</label>
+			    <input type="avatarurl" class="form-control" name='signup[avatar_url]' id="signup_avatar" aria-describedby="emailHelp" placeholder="Enter url of yourself...if you want">
+			  </div>
+
+				<input type="submit" name="SignUp" value='Sign Up' class='btn btn-lg btn-primary sign_log_in'>
+			</form>
+
+			<a class="fblogin btn btn-lg btn btn-lg btn-primary" href="/users/auth/facebook" style="margin-top: 5px">
+			  Or Login/Sign up with Facebook
+			</a>
+		<% end %>
+	</div>
+
+<script type="text/javascript">
+	$('body').on('click', '#new-user-link', function(event) {
+		event.preventDefault();
+		var signup = $('#manual-signup-form');
+		var login = $('#manual-login-form');
+
+		if (signup.css('display') == 'none') {
+			signup.slideDown(500, function() {});
+			login.slideUp(500, function() {});
+			$(this).text('Already Have an account?  Log in here')
+		} else {
+			login.slideDown(500, function() {});
+			signup.slideUp(500, function() {});
+			$(this).text('New User?  Sign up here')
+		}
+	});
+</script>
+
 	
-		<% if !current_user.try(:is_valid?) %>
+		<% if !current_user.try(:is_valid?) && current_user %>
 		<div class="val-code-box">
 		<h3>
 			validation code box

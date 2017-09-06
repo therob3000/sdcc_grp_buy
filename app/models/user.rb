@@ -8,6 +8,8 @@ class User < ApplicationRecord
   has_many :purchases
   has_many :groups
   has_many :direct_messages
+  validates_uniqueness_of :name, :email
+
 
 
 	def self.from_omniauth(auth)

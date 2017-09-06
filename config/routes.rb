@@ -7,6 +7,8 @@ Rails.application.routes.draw do
     end
 
     collection do
+      post 'manual_create'
+      post 'manual_login'
       get 'inbox' 
       get 'show_user'
       get 'side_menu'

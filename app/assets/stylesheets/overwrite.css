@@ -11,11 +11,11 @@
 
 
 .content-wrapper {
-	height: 1000px;
+	height: 100%;
 }
 
 .login-body {
-	padding-left: 20%;
+	padding-left: 10%;
 }
 
 .create-form {
@@ -619,6 +619,23 @@
         display: inline-block;
     }
 
+    .login-window {
+        background-color: #e2e3e4;
+        width: 70%;
+        padding: 2%;
+        border-radius: 10px;
+    }
+
+    .fblogin {
+        margin-bottom: 0 auto;
+        width: 100%;
+    }
+
+    .sign_log_in {
+        float: right;
+        margin-bottom: 5px;
+        width: 40%;
+    }
 
     h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
         font-family: monospace;
@@ -626,6 +643,14 @@
         font-kerning: initial;
         font-stretch: normal;
         font-weight: bolder;
+    }
+
+    #manual-login-form {
+        padding: 0%;
+    }
+
+    .profile-container-edit {
+        padding: 3%;
     }
 
     @media (max-width: 1697px) and (min-width: 961px) {
