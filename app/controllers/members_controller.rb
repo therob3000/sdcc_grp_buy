@@ -101,12 +101,16 @@ class MembersController < ApplicationController
 					mb.user_id = current_user.id
 					if mb.save 
 						# create the need
-						need = Need.new(need_params)
-						need.member_id = @member.id
-						if need.save
-							render :json => {:success => true, :member_id => @member.id, :member_group_id => mb.id}
+						if params[:need].nil?
+							render :json => {:success => false, :message => "you must specify what days this member needs"}
 						else
-							render :json => {:success => false, :message => need.errors.full_messages}
+							need = Need.new(need_params)
+							need.member_id = @member.id
+							if need.save
+								render :json => {:success => true, :member_id => @member.id, :member_group_id => mb.id}
+							else
+								render :json => {:success => false, :message => need.errors.full_messages}
+							end
 						end
 					else
 						render :json => {:success => false, :message => mb.errors.full_messages}
