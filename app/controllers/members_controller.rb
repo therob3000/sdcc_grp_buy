@@ -103,6 +103,7 @@ class MembersController < ApplicationController
 						# create the need
 						if params[:need].nil?
 							render :json => {:success => false, :message => ["you must specify what days this member needs"]}
+							mb.delete
 							return
 						else
 							need = Need.new(need_params)
