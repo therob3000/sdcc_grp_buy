@@ -40,7 +40,7 @@
           <% if current_user %>
           <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
-              <% if !current_user.try(:is_valid?) %>
+              <% if !current_user.try(:is_valid?) && current_user.has_a_val_code? %>
                 <li class="">
                   <a href="/" class='btn btn-lg btn-danger'>Enter validation code</a>
                 </li>

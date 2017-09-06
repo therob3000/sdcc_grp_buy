@@ -6,4 +6,5 @@ class ValidationCode < ApplicationRecord
 		code = find_by_email(email)
 		(!code.nil?) && (code.code == validation_code)
 	end
+
 end

@@ -1,10 +1,10 @@
 class UsersController < ApplicationController
 	# before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!, except: [:login, :manual_create,:manual_login]
-  before_action :validate, except: [:login, :manual_create,:manual_login, :side_menu]
+  before_action :authenticate_user!, except: [:login, :manual_create,:manual_login,:confirm_create]
+  before_action :validate, except: [:login, :manual_create,:manual_login, :side_menu,:confirm_create]
+  include SecurityHelper
 
   def login
-
   end
 
   def manual_login
@@ -24,12 +24,50 @@ class UsersController < ApplicationController
       user.avatar_url = Faker::Avatar.image("my-own-slug", "50x50")
     end
 
-    if user.save
-      sign_in(:user, user)
+    if user.valid?
+      # make a validation code
+      # make an entry in the user_holder_table with validation code and 
+      flash[:error] = "An Email has been sent to #{user_params['email']} with a verification link, please check that e-mail and click the link."
+      temp = Temp.new(:name => user.name, :password => user.password, :avatar_url => user.avatar_url, :email => user.email)
+      temp.avatar_url = user.avatar_url
+      en_code = encrypt_code(gen_code)
+      temp.val_code = en_code
+      temp.save
+
+      link = "<a href='#{request.protocol}#{request.host_with_port}/users/confirm_create?id=#{temp.id}&val=#{en_code}'> HERE </a>"
+      text_b = "copy and pase:  #{request.protocol}#{request.host_with_port}/users/confirm_create?id=#{temp.id}&val=#{en_code} into your browser"
+
+      obj = {
+        email: user_params['email'], 
+        message: text_b
+      }
+
+      MyMailer.send_email(obj, 'Your validation link from SDCC tickets').deliver
+
       redirect_to :back
     else
       flash[:error] = user.errors.full_messages.join(', ')
       redirect_to :back
+    end
+  end
+
+  def confirm_create
+    code = params[:val]
+    id = params[:id]
+    temp = Temp.find(id)
+    # compare params[:confirmation_code] with what is in user_holder_table for this id 
+    if code == temp.val_code
+      user = User.new(:name => temp.name, :password => temp.password, :password_confirmation => temp.password, :avatar_url => temp.avatar_url, :email => temp.email)
+      if user.save
+        sign_in(:user, user)
+        redirect_to '/'
+      else
+        flash[:error] = user.errors.full_messages.join(', ')
+        redirect_to '/'
+      end
+    else
+      flash[:error] = 'Invalid Code'
+      redirect_to '/'
     end
   end
 
@@ -65,8 +103,6 @@ class UsersController < ApplicationController
     else
       @dms = current_user.direct_messages.order('created_at DESC').paginate(:page => 1, :per_page => 10)   
     end
-    # @dms = 
-    # @dms = current_user.direct_messages
   end
 
   def show_user

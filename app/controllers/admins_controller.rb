@@ -48,7 +48,7 @@ class AdminsController < ApplicationController
 
 		obj = {
 			email: email, 
-			message: "your validation code is: #{val_code.code}"
+			message: "your validation code is: #{encrypt_code(val_code.code)}"
 		}
 
 		send_email_to_email(obj)

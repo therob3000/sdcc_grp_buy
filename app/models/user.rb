@@ -40,6 +40,11 @@ class User < ApplicationRecord
     is_admin == true
   end
 
+  def has_a_val_code?
+    val_code = ValidationCode.find_by_email(email)
+    !val_code.nil?
+  end
+
   def has_unread_messages
     direct_messages.any? { |e| e.seen == false }
   end

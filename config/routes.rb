@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     collection do
       post 'manual_create'
       post 'manual_login'
+      get 'confirm_create'
       get 'inbox' 
       get 'show_user'
       get 'side_menu'

@@ -82,7 +82,7 @@
 </script>
 
 	
-		<% if !current_user.try(:is_valid?) && current_user %>
+		<% if !current_user.try(:is_valid?) && current_user && current_user.has_a_val_code? %>
 		<div class="val-code-box">
 		<h3>
 			validation code box
