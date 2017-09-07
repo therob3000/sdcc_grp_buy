@@ -1,6 +1,9 @@
 class MembersController < ApplicationController
 	before_action :authenticate_user!
 	before_action :validate, :only => [:register_member,:register_member_to_group,:remove_member,:cover_member]
+
+	before_action :user_owns, :only => [:edit, :update]
+
 	include SecurityHelper
 	
 	def index
@@ -12,11 +15,9 @@ class MembersController < ApplicationController
 	end
 
 	def edit
-		@member = Member.find(params[:id])
 	end
 
 	def update
-		@member = Member.find(params[:id])
 		@member.assign_attributes(member_params)
 
 		if @member.save
@@ -171,6 +172,16 @@ class MembersController < ApplicationController
 	end
 
 	private
+
+	def user_owns
+		@member = Member.find(params.id)
+
+		if @member.user_id != current_user.id
+			flash[:error] = 'your not authorized for this'
+			redirect_to :back
+		end
+	end
+
 	def code_params
 		params.require(:code).permit(:code)
 	end

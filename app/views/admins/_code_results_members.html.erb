@@ -1,0 +1,20 @@
+<% members.each do |code| %>
+	<div class="code_container row" id='validation_code_parent_<%= code.id %>'>
+		<div class="email col-lg-3">
+			<%= code.name %>
+		</div>
+
+		<div class="code col-lg-3" id='validation_code_<%= code.id %>'>
+			<%= code.email %>
+		</div>
+
+		<div class="code col-lg-3" id='validation_code_<%= code.id %>'>
+			<%= code.sdcc_member_id %>
+		</div>
+
+		<div class="col-lg-3">
+			<a href="#" class='delete-member btn btn-danger btn-lg' data-id='<%= code.id %>' data-sdcc_member_id='<%= code.sdcc_member_id %>' data-name='<%= code.name %> <%= code.last_name %> <%= code.sdcc_member_id %>' data-toggle="modal" data-target="#confirmationModal">Delete</a>
+		</div>
+	</div>
+<% end %>
+

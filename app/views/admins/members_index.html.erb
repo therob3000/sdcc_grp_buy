@@ -3,7 +3,7 @@
 <div class="search-container" style="width: 100%">
   <form action="#" method="get" class="code-search sidebar-form">
     <div class="input-group">
-      <input type="text" name="q" id='csearch' class="form-control" placeholder="Search users by username..."/>
+      <input type="text" name="q" id='csearch' class="form-control" placeholder="Search members by SDCC member id or by name..."/>
       <span class="input-group-btn">
         <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
       </span>
@@ -12,44 +12,22 @@
 </div>
 
 <div class="results-container-codes">
-	<%= render :partial => 'code_results_users', :locals => { :users => @users.all } %>
+	<%= render :partial => 'code_results_members', :locals => { :members => @members.all } %>
 	<div class="pag-contain">
-		<%= will_paginate @users %>
+		<%= will_paginate @members %>
 	</div>
 </div>
 
 
 
 <script type="text/javascript">
-$('body').on('click', '.email-code-user', function(event) {
-	event.preventDefault();
-	var html = ""
-	html += 'Email to '+ $(this).attr('data-email')+'? <br><br>';
-	html += "<a href='/admins/" + $(this).attr('data-id') + "/send_email' method='get' class='ajax-button btn btn-primary btn-lg'>SEND</a>";
 
-	$('#confirmationModal .modal-body .edit-modal-content').html(html);
-});
 
-$('body').on('click', '.promote-user', function(event) {
-	event.preventDefault();
-	var html = ""
-  if ($(this).text() == 'Promote to Admin') {
-    html += 'Promote '+ $(this).attr('data-name')+' to an Admin? <br><br>';
-    html += "<a href='/admins/" + $(this).attr('data-id') + "/promote' method='patch' class='ajax-button btn btn-warning btn-lg'>PROMOTE</a>";
-  } else {
-    html += 'Demote '+ $(this).attr('data-name')+'? <br><br>';
-    html += "<a href='/admins/" + $(this).attr('data-id') + "/demote' method='patch' class='ajax-button btn btn-warning btn-lg'>DEMOTE</a>";
-
-  }
-
-	$('#confirmationModal .modal-body .edit-modal-content').html(html);
-});
-
-$('body').on('click', '.delete-user', function(event) {
+$('body').on('click', '.delete-member', function(event) {
 	event.preventDefault();
 	var html = ""
 	html += 'Delete '+ $(this).attr('data-name')+'? <br><br>';
-	html += "<a href='/admins/" + $(this).attr('data-id') + "/banish' method='delete' class='ajax-button btn btn-danger btn-lg'>DELETE</a>";
+	html += "<a href='/admins/" + $(this).attr('data-id') + "/delete_member' method='delete' class='ajax-button btn btn-danger btn-lg'>DELETE</a>";
 
 	$('#confirmationModal .modal-body .edit-modal-content').html(html);
 });
@@ -58,7 +36,7 @@ $('body').on('click', '.delete-user', function(event) {
   function performSearch(){
     var phrase = $("#csearch").val();
     $.ajax({
-      url: '/admins/search_users',
+      url: '/admins/search_members',
       data: {search: phrase},
     })
     .done(function(data) {
@@ -86,7 +64,7 @@ $('body').on('click', '.delete-user', function(event) {
   				},2000)
   			});
   			$('#errors_mess').html('');
-        $("#csearch").trigger('keyup');
+        // $("#csearch").trigger('keyup');
   			 if (data.delete_id != '') {
   				$('#validation_code_parent_' + data.delete_id).hide(500);
   			}

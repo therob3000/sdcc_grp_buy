@@ -2,6 +2,51 @@ class AdminsController < ApplicationController
 	before_action :authenticate_user!, :validate_admin
 	include SecurityHelper
 
+	def members_index
+		if params[:page]
+			@members = Member.paginate(:page => params[:page], :per_page => 5)		
+		else
+			@members = Member.paginate(:page => 1, :per_page => 5)		
+		end
+	end
+
+	def search_members
+		members = Member.where("lower(sdcc_member_id) like ? OR lower(name) like ?", "%#{params[:search].downcase}%", "%#{params[:search].downcase}%").first(5)
+		render :partial => 'code_results_members', :locals => { :members => members }
+	end
+
+	def delete_member
+		member = Member.find(params[:id])
+		if member.delete
+			render :json => { :success => true, :message => 'member destroyed!', :delete_id => member.id }
+		else
+			render :json => { :success => false, :message => member.errors.full_messages.join(',') }
+		end
+	end
+
+	def groups_index
+		if params[:page]
+			@groups = Group.paginate(:page => params[:page], :per_page => 5)		
+		else
+			@groups = Group.paginate(:page => 1, :per_page => 5)		
+		end
+		
+	end
+
+	def search_groups
+		groups = Group.where("lower(name) like ?", "%#{params[:search].downcase}%").first(5)
+		render :partial => 'code_results_groups', :locals => { :groups => groups }
+	end
+
+	def blow_up_group
+		group = Group.find(params[:id])
+		if group.delete
+			render :json => { :success => true, :message => 'group destroyed!', :delete_id => group.id }
+		else
+			render :json => { :success => false, :message =>group.errors.full_messages.join(',') }
+		end
+	end
+
 	def index
 		if params[:page]
 			@codes = ValidationCode.paginate(:page => params[:page], :per_page => 5)		

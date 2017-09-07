@@ -42,6 +42,7 @@ Rails.application.routes.draw do
       delete 'blow_up_group'
       delete 'delete_member'
     end
+    
     collection do 
       get 'search'
       get 'search_users'

@@ -1,0 +1,16 @@
+<% groups.each do |code| %>
+	<div class="code_container row" id='validation_code_parent_<%= code.id %>'>
+		<div class="email col-lg-4">
+			<%= code.name %>
+		</div>
+
+		<div class="code col-lg-5" id='validation_code_<%= code.id %>'>
+			<%= code.member_groups.count %> members
+		</div>
+
+		<div class="col-lg-3">
+			<a href="#" class='delete-group btn btn-danger btn-lg' data-id='<%= code.id %>' data-name='<%= code.name %>' data-toggle="modal" data-target="#confirmationModal">Delete</a>
+		</div>
+	</div>
+<% end %>
+
