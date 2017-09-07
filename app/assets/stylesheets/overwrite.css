@@ -654,6 +654,72 @@
         width: 75%;
     }
 
+    .form-check-inline {
+    background-color: #ffcccc;
+    width: 19%;
+    display: inline-block;
+    padding: 2%;
+    position: relative;
+    font-size: 35px;
+    margin-bottom: 2%;
+    margin-right: 10px;
+    text-align: center;
+    border-radius: 10px;
+    }
+
+    .form-check-stacked {
+    background-color: #ffcccc;
+    width: 100%;
+    display: block;
+    padding: 2%;
+    position: relative;
+    font-size: 35px;
+    margin-bottom: 2%;
+    margin-right: 10px;
+    text-align: center;
+    border-radius: 10px;
+    }
+    .form-check-inline:hover {
+      background-color: #bf9090;
+    }
+    .form-check-stacked:hover {
+      background-color: #bf9090;
+    }
+
+
+    .form-check-inline input[type='checkbox'] {
+        display: none;
+    }
+
+    .form-check-stacked input[type='checkbox'] {
+        display: none;
+    }
+
+    .error-message {
+    background-color: red;
+    width: 100%;
+    color: wheat;
+    padding: 2%;
+    font-size: 20px;
+    text-align: center;
+    font-weight: bold;
+    height: 10px;
+    position: absolute;
+    }
+
+    .form-check {
+        /*position: relative;*/
+        /*display: inline-block;*/
+        /*width: 15%;*/
+    }
+
+    .member_covered {
+        background-color: #ffb4b4;
+    }
+
+    .selected_box {
+        background-color: red;
+    }
 
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     font-family: monospace;
@@ -670,6 +736,8 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .profile-container-edit {
     padding: 3%;
 }
+
+
 
 @media (max-width: 1697px) and (min-width: 961px) {
  .talk-bubble {

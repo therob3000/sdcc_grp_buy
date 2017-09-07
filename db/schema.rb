@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170906044106) do
+ActiveRecord::Schema.define(version: 20170907002052) do
 
   create_table "chat_messages", force: :cascade do |t|
     t.string   "message"
@@ -66,6 +66,12 @@ ActiveRecord::Schema.define(version: 20170906044106) do
     t.datetime "updated_at",                     null: false
     t.boolean  "active",         default: false
     t.string   "last_name"
+    t.boolean  "wensday"
+    t.boolean  "thursday"
+    t.boolean  "friday"
+    t.boolean  "saturday"
+    t.boolean  "sunday"
+    t.boolean  "in_progress"
   end
 
   create_table "needs", force: :cascade do |t|

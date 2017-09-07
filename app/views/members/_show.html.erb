@@ -5,8 +5,10 @@
 	<%= member.name %>
 </h2>	
 
-<p>
-	<b>Contact:  </b> <%= "#{member.email}/#{member.phone} " %>
+<p style="font-size: 15px">
+	<b>Contact:  </b> <%= "#{member.email}        #{member.phone} " %>
+	<br>
+	<a href="<%= edit_member_path(:id => member.id) %>" class='btn btn-md btn-primary' style='margin-top: 2px;'>Edit this Member</a>
 </p>
 
 <p>
@@ -14,10 +16,10 @@
 		Registered by: 
 		<br>
 		<a href="#" class='user-modal-pop btn' data-toggle="modal" data-target="#userModal" data-id='<%= member.user.try(:id) %>'>
-			<%= member.user.name %>
+			<%= member.user.try(:name) %>
 		</a>
 		<br>
-		<img src="<%= member.user.avatar_url %>" class="img-circle" alt="User Image" />
+		<img src="<%= member.user.try(:avatar_url) %>" class="img-circle" alt="User Image" />
 	</b>
 </p>
 

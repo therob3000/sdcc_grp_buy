@@ -36,33 +36,6 @@
 					<div id="error_list" style="color: red"></div>
 
 					<hr>
-					<div class="form-check form-check-inline">
-					  <label class="form-check-label">
-					  	<%= check_box_tag 'need[wensday]' %> Wensday
-					  </label>
-					</div>
-					<div class="form-check form-check-inline">
-					  <label class="form-check-label">
-					  	<%= check_box_tag 'need[thursday]' %> Thursday
-					  </label>
-					</div>
-					<div class="form-check form-check-inline">
-					  <label class="form-check-label">
-					  	<%= check_box_tag 'need[friday]' %> Friday
-					  </label>
-					</div>
-
-					<div class="form-check form-check-inline">
-					  <label class="form-check-label">
-					  	<%= check_box_tag 'need[saturday]' %> Saturday
-					  </label>
-					</div>
-
-					<div class="form-check form-check-inline">
-					  <label class="form-check-label">
-					  	<%= check_box_tag 'need[sunday]' %> Sunday
-					  </label>
-					</div>
 					<input type="submit" name="ADD">
 			</form>
 		</div>
@@ -91,6 +64,34 @@
 					<div class="form-group">
 						<label for='member[phone]'>SDCC Member ID</label>
 						<input class="form-control" id='sdcc_member_id_holder_create' type="text" name='member[sdcc_member_id]'>
+					</div>
+					<h3>Select the Days this member needs</h3>
+					<div class="form-check form-check-stacked">
+					  <label class="form-check-label">
+					  	<%= check_box_tag 'member[wensday]' %> Wensday
+					  </label>
+					</div>
+					<div class="form-check form-check-stacked">
+					  <label class="form-check-label">
+					  	<%= check_box_tag 'member[thursday]' %> Thursday
+					  </label>
+					</div>
+					<div class="form-check form-check-stacked">
+					  <label class="form-check-label">
+					  	<%= check_box_tag 'member[friday]' %> Friday
+					  </label>
+					</div>
+
+					<div class="form-check form-check-stacked">
+					  <label class="form-check-label">
+					  	<%= check_box_tag 'member[saturday]' %> Saturday
+					  </label>
+					</div>
+
+					<div class="form-check form-check-stacked">
+					  <label class="form-check-label">
+					  	<%= check_box_tag 'member[sunday]' %> Sunday
+					  </label>
 					</div>
 
 					<div id="error_list" style="color: red"></div>
@@ -123,15 +124,6 @@
 </div>
 
 <style type="text/css">
-	.form-check {
-		position: relative;
-		display: inline-block;
-		width: 15%;
-	}
-
-	.member_covered {
-		background-color: #ffb4b4;
-	}
 </style>
 <script type="text/javascript">
   var dispatcher;
@@ -142,6 +134,18 @@
   var current_user_id = <%= current_user.id %>;
   var activeDispatcher = false;
 
+  $('body').on('click', '.form-check-stacked', function(event) {
+    var checkBox = $(this).find('input[type="checkbox"]');
+    checkBox.trigger('click');
+
+    if (checkBox.is(':checked')) {
+      $(this).css('background-color','#fd7777');
+      $(this).css('color','white');
+    } else {
+      $(this).css('background-color','#ffcccc');
+      $(this).css('color','black');
+    }
+  });
 
 
 	$('body').on('submit', '#create-member-form', function(event) {

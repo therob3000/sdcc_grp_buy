@@ -1,0 +1,85 @@
+<div id="new-member-form" style='display: block; overflow-y: scroll;width: 70%;'>
+  <div class="edit-form" style="background-color: transparent">
+      <h1>Update Member</h1>
+      <%= form_for(@member) do |f| %>
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <div class="form-group">
+        <label for='member[name]'>First Name</label>
+        <input class="form-control" type="text" name='member[name]' value='<%= @member.name %>'>
+      </div>
+      <div class="form-group">
+        <label for='member[last_name]'>Last Name</label>
+        <input class="form-control" type="text" name='member[last_name]' value='<%= @member.last_name %>'>
+      </div>
+      <div class="form-group">
+        <label for='member[phone]'>Phone</label>
+        <input class="form-control" type="text" name='member[phone]' value='<%= @member.phone %>'>
+      </div>
+      <div class="form-group">
+        <label for='member[email]'>E-Mail</label>
+        <input class="form-control" type="text" name='member[email]' value='<%= @member.email %>'>
+      </div>
+      <div class="form-group">
+        <label for='member[phone]'>SDCC Member ID</label>
+        <input class="form-control" id='sdcc_member_id_holder_create' type="text" name='member[sdcc_member_id]' value='<%= @member.sdcc_member_id %>'>
+      </div>
+      <h3>Select the Days this member needs</h3>
+		      <div class="form-check form-check-inline" style="background-color:<%= @member.wensday ? "#fd7777" : "" %>;color: <%= @member.wensday ? "white" : "" %>">
+              <%= f.check_box(:wensday, checked: @member.wensday) %> Wensday
+          </div>
+          <div class="form-check form-check-inline" style="background-color:<%= @member.thursday ? "#fd7777" : "" %>;color: <%= @member.thursday ? "white" : "" %>">
+              <%= f.check_box(:thursday, checked: @member.thursday) %> Thursday
+          </div>
+          <div class="form-check form-check-inline" style="background-color:<%= @member.friday ? "#fd7777" : "" %>;color: <%= @member.friday ? "white" : "" %>">
+              <%= f.check_box(:friday, checked: @member.friday) %> Friday
+          </div>
+
+          <div class="form-check form-check-inline" style="background-color:<%= @member.saturday ? "#fd7777" : "" %>;color: <%= @member.saturday ? "white" : "" %>">
+              <%= f.check_box(:saturday, checked: @member.saturday) %> Saturday
+          </div>
+
+          <div class="form-check form-check-inline" style="background-color:<%= @member.sunday ? "#fd7777" : "" %>;color: <%= @member.sunday ? "white" : "" %>">
+              <%= f.check_box(:sunday, checked: @member.sunday) %> Sunday
+          </div>
+
+      <div id="error_list" style="color: red"></div>
+      <button type="submit" class="btn btn-primary btn-lg" style="width: 100%">Update Member</button>
+      <% end %>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+  $('body').on('click', '.form-check-inline', function(event) {
+    var checkBox = $(this).find('input[type="checkbox"]');
+    checkBox.trigger('click');
+
+    if (checkBox.is(':checked')) {
+      $(this).css('background-color','#fd7777');
+      $(this).css('color','white');
+    } else {
+      $(this).css('background-color','#ffcccc');
+      $(this).css('color','black');
+    }
+  });
+
+
+  // $('body').on('submit', '#create-member-form', function(event) {
+  //   event.preventDefault();
+  //   // create the member.
+  //   $.ajax({
+  //     url: '/members/register_member',
+  //     type: 'POST',
+  //     data: $(this).serialize(),
+  //   })
+  //   .done(function(data) {
+  //     if (data.success) {
+  //       // register the member to the group.
+  //       alert('member successfully registered');
+  //       $('#create-member-form').trigger('reset');
+  //     } else {
+  //       populateErrors(data.message);
+  //     }
+  //   })    
+  // });
+</script>

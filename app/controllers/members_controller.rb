@@ -11,6 +11,23 @@ class MembersController < ApplicationController
 		end
 	end
 
+	def edit
+		@member = Member.find(params[:id])
+	end
+
+	def update
+		@member = Member.find(params[:id])
+		@member.assign_attributes(member_params)
+
+		if @member.save
+			flash[:error] = 'Information Saved'
+		else
+			flash[:error] = @member.errors.full_messages.join(', ')	
+		end
+		
+		redirect_to :back
+	end
+
 	def activate_member
 		@member = Member.find(params[:id])
 		@member.active = true
@@ -100,21 +117,8 @@ class MembersController < ApplicationController
 					mb.member_id = @member.id
 					mb.user_id = current_user.id
 					if mb.save 
-						# create the need
-						if params[:need].nil?
-							render :json => {:success => false, :message => ["you must specify what days this member needs"]}
-							mb.delete
-							return
-						else
-							need = Need.new(need_params)
-							need.member_id = @member.id
-							if need.save
-								render :json => {:success => true, :member_id => @member.id, :member_group_id => mb.id}
-							else
-								render :json => {:success => false, :message => need.errors.full_messages}
-								return
-							end
-						end
+						render :json => {:success => true, :member_id => @member.id, :member_group_id => mb.id}
+						return
 					else
 						render :json => {:success => false, :message => mb.errors.full_messages}
 						return
@@ -172,7 +176,7 @@ class MembersController < ApplicationController
 	end
 
 	def member_params
-		params.require(:member).permit(:name, :last_name, :sdcc_member_id, :phone, :email)
+		params.require(:member).permit(:name, :last_name, :sdcc_member_id, :phone, :email, :wensday, :thursday, :friday, :saturday, :sunday)
 	end
 
 	def member_groups_params

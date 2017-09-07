@@ -10,7 +10,7 @@
 	<div class="mem-block day-holder" style='float: center;'>
 		<b>Days Needed:</b><br><br>
 		<% ['wensday','thursday','friday','saturday','sunday'].each do |day| %>
-			<% if member.needs.first && member.needs.first.attributes[day] %>
+			<% if member.needs[day] %>
 			<div class="day-block">
 				<%= day %>
 			</div>
@@ -20,10 +20,8 @@
 
 	<div class="mem-block" id="action-holder-for<%= mem_grp.try(:id) %>" style='float: right;'>
 		<% if !member.covered && current_user.is_valid? %>
-			<% if member.needs.first %>
 				<input type="text" name="" id='ticket_<%= member.id %>' placeholder='confirmation code' style='margin-bottom: 2px;width: 100%;'><br>
-				<a href="/purchases" data-id='<%= member.id %>' class='buy-ticket btn btn-sm btn-warning' member_group_id='<%= mem_grp.try(:id) %>' need-id='<%= member.needs.first.id %>' data-id='<%= member.id %>'>CONFIRM</a>
-			<% end %>
+				<a href="/purchases" data-id='<%= member.id %>' class='buy-ticket btn btn-sm btn-warning' member_group_id='<%= mem_grp.try(:id) %>' data-id='<%= member.id %>'>CONFIRM</a>
 			<% if grp && (current_user.members.map { |e| e.id }.include?(mem_grp.try(:member).try(:id))) %>
 				<a href="#" class='activate btn btn-sm btn-primary activate-this-user' data-id='<%= mem_grp.try(:id) %>' member-id='<%= member.id %>'>SELECTED</a>
 			<% end %>

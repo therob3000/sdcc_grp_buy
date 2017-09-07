@@ -25,15 +25,15 @@
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top" role="navigation">
           <% if flash[:error] %>
-            <div class="error-message" style='background-color: red;
-                                              width: 100%;
-                                              color: wheat;
-                                              padding: 2%;
-                                              font-size: 20px;
-                                              text-align: center;
-                                              font-weight: bold;'>
+            <div class="error-message">
               <%= flash[:error] %>
             </div>
+
+            <script type="text/javascript">
+              setTimeout(function(){
+                $('.error-message').fadeOut(1000);
+              },2000)
+            </script>
           <% end %>
 
           <!-- Sidebar toggle button-->
