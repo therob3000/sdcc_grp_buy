@@ -466,6 +466,7 @@
         top: -40px;
         /*position: relative;*/
         left: 3%;
+        max-height: 80px;
     }
 
     .chat-form {
