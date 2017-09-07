@@ -1,0 +1,17 @@
+<% users.each do |code| %>
+	<div class="code_container row <%= code.is_admin ? 'admin_item' : '' %>" id='validation_code_parent_<%= code.id %>'>
+		<div class="email col-lg-4">
+			<%= code.name %>
+		</div>
+
+		<div class="code col-lg-5" id='validation_code_<%= code.id %>'>
+			<%= code.email %>
+		</div>
+
+		<div class="col-lg-3">
+			<a href="#" class='promote-user btn btn-primary btn-lg' data-id='<%= code.id %>' data-email='<%= code.email %>' data-name='<%= code.name %>' data-toggle="modal" data-target="#confirmationModal"><%= code.is_admin ? "Demote" : "Promote to Admin" %></a>
+			<a href="#" class='delete-user btn btn-danger btn-lg' data-id='<%= code.id %>' data-email='<%= code.email %>' data-name='<%= code.name %>' data-toggle="modal" data-target="#confirmationModal">Delete</a>
+		</div>
+	</div>
+<% end %>
+

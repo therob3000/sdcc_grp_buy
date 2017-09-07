@@ -15,6 +15,48 @@ class AdminsController < ApplicationController
 		render :partial => 'code_results', :locals => { :codes => codes }
 	end
 
+	def users_index
+		if params[:page]
+			@users = User.paginate(:page => params[:page], :per_page => 5)		
+		else
+			@users = User.paginate(:page => 1, :per_page => 5)		
+		end
+	end
+
+	def promote
+		user = User.find(params[:id])
+		user.is_admin = true
+		if user.save
+			render :json => { :success => true, :message => 'user promoted!', :admin_id => user.id }
+		else
+			render :json => { :success => false, :message =>user.errors.full_messages.join(',') }
+		end	
+	end
+
+	def demote
+		user = User.find(params[:id])
+		user.is_admin = false
+		if user.save
+			render :json => { :success => true, :message => 'user promoted!', :admin_id => user.id }
+		else
+			render :json => { :success => false, :message =>user.errors.full_messages.join(',') }
+		end	
+	end
+
+	def banish
+		user = User.find(params[:id])
+		if user.delete
+			render :json => { :success => true, :message => 'user banished!', :delete_id => user.id }
+		else
+			render :json => { :success => false, :message =>user.errors.full_messages.join(',') }
+		end
+	end
+
+	def search_users
+		users = User.where("lower(name) like ?", "%#{params[:search].downcase}%").first(5)
+		render :partial => 'code_results_users', :locals => { :users => users }
+	end
+
 	def create
 		val_code = ValidationCode.new(code_params)
 		code = gen_code

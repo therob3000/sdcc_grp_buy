@@ -47,7 +47,16 @@
               <% end %>
               <% if current_user.try(:is_admin) %>
                 <li class="">
-                  <a href="/admins" class='btn btn-lg btn-warning'>ADMIN</a>
+                  <a href="/admins" class='btn btn-lg btn-warning'>CODES</a>
+                </li>
+                <li class="">
+                  <a href="/admins/users_index" class='btn btn-lg btn-warning'>USERS</a>
+                </li>
+                <li class="">
+                  <a href="/admins/members_index" class='btn btn-lg btn-warning'>MEMBERS</a>
+                </li>
+                <li class="">
+                  <a href="/admins/groups_index" class='btn btn-lg btn-warning'>GROUPS</a>
                 </li>
               <% end %>
               <% if current_user.try(:is_valid?) %>

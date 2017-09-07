@@ -16,12 +16,12 @@ require 'faker'
 # end
 
 
-# 40.times do 
-	# user = User.new(:email => Faker::Internet.safe_email, :name => Faker::Internet.user_name, :avatar_url => Faker::Avatar.image("my-own-slug", "50x50"), :password => 'password')
-# 	if !user.save
-# 		p user.errors.full_messages
-# 	end
-# end
+40.times do 
+	user = User.new(:email => Faker::Internet.safe_email, :name => Faker::Internet.user_name, :avatar_url => Faker::Avatar.image("my-own-slug", "50x50"), :password => 'password')
+	if !user.save
+		p user.errors.full_messages
+	end
+end
 
 # 5.times do 
 # 	ChatMessage.create(:group_id => 1, :user_id => 2, :message => Faker::Hacker.say_something_smart)
@@ -38,22 +38,22 @@ require 'faker'
 # 		p d.errors.full_messages
 # 	end
 # end
-	CRPT_KEY = ENV['CRPT_KEY'].to_i
-	CODE_STRING = ENV['CODE_STRING']
+# 	CRPT_KEY = ENV['CRPT_KEY'].to_i
+# 	CODE_STRING = ENV['CODE_STRING']
 
 
-100.times do 
-	code_array = []
-	rand(3..7).times do 
-		code = ""
-		rand(10..20).times do 
-			letter = CODE_STRING.split('').sample
-			code += letter
-		end
+# 100.times do 
+# 	code_array = []
+# 	rand(3..7).times do 
+# 		code = ""
+# 		rand(10..20).times do 
+# 			letter = CODE_STRING.split('').sample
+# 			code += letter
+# 		end
 
-		code_array << code
-	end
+# 		code_array << code
+# 	end
 
-	gen_code = code_array.join('+')
-	ValidationCode.create(:email => Faker::Internet.safe_email, :code => gen_code)
-end
+# 	gen_code = code_array.join('+')
+# 	ValidationCode.create(:email => Faker::Internet.safe_email, :code => gen_code)
+# end

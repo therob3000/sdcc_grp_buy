@@ -707,6 +707,11 @@
     position: absolute;
     }
 
+    .admin_item {
+     background-color: #3c8dbc;
+    color: white;
+        }
+
     .form-check {
         /*position: relative;*/
         /*display: inline-block;*/
