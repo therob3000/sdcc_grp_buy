@@ -174,7 +174,7 @@ class MembersController < ApplicationController
 	private
 
 	def user_owns
-		@member = Member.find(params.id)
+		@member = Member.find(params[:id])
 
 		if @member.user_id != current_user.id
 			flash[:error] = 'your not authorized for this'
