@@ -14,7 +14,7 @@
 		<h2 class='number-of-members'>This buying group is empty</h2>
 	<% else %>
 		<h2 class='number-of-members'><%= @grp.member_groups.count %> Members in this buying group</h2>
-		<h5><a href="#" id='non-covered-toggle' style="width: 100%" class='btn btn-primary btn-lg'>Show Only Non-Covered</a></h5>
+		<h5><a href="#" id='non-covered-toggle' style="width: 100%" class='btn btn-primary btn-lg'>Toggle Non-Covered Members</a></h5>
 	<% end %>
 		<div class="member-list" id='member-list'>
 			<% @grp.member_groups.each do |mem_grp| %>
@@ -415,10 +415,8 @@
  	event.preventDefault();
  	if ($('.member_covered').css('display') == 'none') {
 	 	$('.member_covered').slideDown(500);
-	 	$(this).text('Show Everyone');
  	} else {
 	 	$('.member_covered').slideUp(500);
-	 	$(this).text('Show Only Non-Covered');
  	}
  });
 
