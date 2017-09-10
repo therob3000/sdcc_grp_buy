@@ -184,7 +184,7 @@ class MembersController < ApplicationController
 		if member.save && pur.save
 			# SEND EMAIL TO THE USER
 			purchasing_member_notes = ''
-			if purchase_params["covering_id"].nil?
+			if (purchase_params["covering_id"].nil?) || (purchase_params["covering_id"] == '')
 				purchasing_member_notes = current_user.payment_info
 				purchasing_member_first_name = current_user.name
 				purchasing_member_name = "#{current_user.name} (#{current_user.email})"

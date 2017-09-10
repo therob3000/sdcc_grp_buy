@@ -25,10 +25,11 @@ class BroadcastsController < WebsocketRails::BaseController
 	def cover_member_for_group
 		room = message[:group_id]
 		member_group_id = message[:member_group_id]
+		member_id = MemberGroup.find(message[:member_group_id]).member.id
 		connection = message[:connection]
 		grps = message[:groups].split('-')
 		grps.each do |room|
-			WebsocketRails["group_#{room}"].trigger('member_covered', {member_group_id: member_group_id}, connection_id: connection)
+			WebsocketRails["group_#{room}"].trigger('member_covered', {member_id: member_id, member_group_id: member_group_id}, connection_id: connection)
 		end
 	end
 

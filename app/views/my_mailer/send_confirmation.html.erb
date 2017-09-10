@@ -4,7 +4,7 @@ Hello, <%= @member.name %><br>
 </p>
 <br>
 <p>
-      total: <b>$<%= @pur.price %></b> <br>
+      total: <b><%= number_to_currency(@pur.price) %></b> <br>
       Confirmation Code: <b><%= @pur.confirmation_code %></b> <br>
 </p>
 <br>

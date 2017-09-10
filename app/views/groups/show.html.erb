@@ -141,8 +141,9 @@
         ...
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary close-this-modal" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id='confirm-trigger'>CONFIRM</button>
+        <div class="working-message-conf" style="display: none;">Confirming...</div>
+        <button type="button" class="btn btn-secondary close-this-modal conf-modal-footer" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary conf-modal-footer" id='confirm-trigger'>CONFIRM</button>
       </div>
     </div>
   </div>
@@ -243,6 +244,10 @@
 		event.preventDefault();
 		var data = $(this).serialize();
 
+		$('.conf-modal-footer').fadeOut(500, function() {
+			$('.working-message-conf').fadeIn(500);
+		});
+
 		$.ajax({
 			url: $(this).attr('action'),
 			type: 'POST',
@@ -260,7 +265,13 @@
 				});
 				$('.member-coverage-form').trigger('reset');
 				$('.close-this-modal').trigger('click');
+				$('.working-message-conf').fadeOut(500, function() {
+					$('.conf-modal-footer').fadeIn(500);
+				});
 			} else {
+				$('.working-message-conf').fadeOut(500, function() {
+					$('.conf-modal-footer').fadeIn(500);
+				});
 				alert(data.message)
 			}
 		})
@@ -465,6 +476,7 @@
 		    // listen for any covered members across all groups in this group
 		    channel.bind("member_covered",function(mes) {
 			    $("#member_row_" + mes.member_group_id).addClass('member_covered');
+			    $('.active-button-' + mes.member_id).hide(500);
 			    $("#action-holder-for" + mes.member_group_id).html("This member has been covered");
 		    })
 
