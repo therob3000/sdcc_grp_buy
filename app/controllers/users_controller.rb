@@ -123,7 +123,7 @@ class UsersController < ApplicationController
   end
 
   def user_update_params
-    params.require(:update).permit(:name,:email,:avatar_url)
+    params.require(:update).permit(:name,:email,:avatar_url,:payment_info)
     
   end
 

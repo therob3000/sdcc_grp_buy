@@ -1,11 +1,12 @@
+<% return if member.nil? %>
 <% if mem_grp %>
-	<li class="member-item clock-slot<%= member.covered ? ' member_covered' : ' ' %><%= member.active ? ' member_active' : '' %> member_select_<%= member.id %> member_groups_marker_<%= member.id %>" id="member_row_<%= mem_grp.id %>">
+	<li class="member-item clock-slot<%= member.try(:covered) ? ' member_covered' : ' ' %><%= member.try(:active) ? ' member_active' : '' %> member_select_<%= member.try(:id) %> member_groups_marker_<%= member.try(:id) %>" id="member_row_<%= mem_grp.id %>">
 <% else %>
-	<li class="member-item clock-slot <%= member.covered ? 'member_covered' : '' %>">
+	<li class="member-item clock-slot <%= member.try(:covered) ? 'member_covered' : '' %>">
 <% end %>
 	<div class="mem-block name-holder">
-		<b>Name:</b> <a href="#" class='member-modal-pop btn' data-toggle="modal" data-target="#memberModal" data-id='<%= member.id %>'> <%= member.name %> </a><br>
-		<b>SDCC ID:</b> <br><%= member.display_last %> <%= member.sdcc_member_id %>
+		<b>Name:</b> <a href="#" class='member-modal-pop btn' data-toggle="modal" data-target="#memberModal" data-id='<%= member.try(:id) %>'> <%= member.try(:name) %> </a><br>
+		<b>SDCC ID:</b> <br><%= member.try(:display_last) %> <%= member.try(:sdcc_member_id) %>
 	</div>
 	<div class="mem-block day-holder" style='float: center;'>
 		<b>Days Needed:</b><br><br>

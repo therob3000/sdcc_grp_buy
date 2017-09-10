@@ -68,7 +68,8 @@ class BroadcastsController < WebsocketRails::BaseController
 				WebsocketRails["group_#{grp_id}"].trigger('activate_member', { :member_id => member.id,connection_id: connection })
 	    end
     else
-    		puts 'ERROR'
+    		puts 'error'
+    		puts member.errors.full_messages.join(',')
     # 	member.member_groups.map { |e| e.group_id }.each do |grp_id|
 				# WebsocketRails["group_#{grp_id}"].trigger('activate_member', { :message => member.errors.full_messages })
 	   #  end

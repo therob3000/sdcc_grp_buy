@@ -23,6 +23,11 @@
         <label for='member[phone]'>SDCC Member ID</label>
         <input class="form-control" id='sdcc_member_id_holder_create' type="text" name='member[sdcc_member_id]'>
       </div>
+      <div class="form-group">
+        <label for='member[phone]'>Payment Notes</label>
+        <textarea class="form-control" type="text" name='member[payment_info]' value=''></textarea>
+      </div>
+
       <h3>Select the Days this member needs</h3>
       <div class="form-check form-check-inline">
               <%= check_box_tag 'member[wensday]' %> Wensday

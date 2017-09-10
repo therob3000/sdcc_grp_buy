@@ -171,20 +171,62 @@ class MembersController < ApplicationController
 	end
 
 	def make_purchase
-		member = Member.find(params[:member_id])
+		member = Member.find(purchase_params['member_id'])
+		mem_grp = MemberGroup.find(params[:member_group_id])
 		member.covered = true;
 		pur = Purchase.new(purchase_params)
-
-		if purchase_params.member_id.nil?
+		pur.user_id = current_user.id
+		if purchase_params['member_id'].nil?
 			# then it was the current user that purchased for them
 			put.notes += "\n Purchased by #{current_user.name} Contact at #{current_user.email}"
 		end
 
 		if member.save && pur.save
 			# SEND EMAIL TO THE USER
+			purchasing_member_notes = ''
+			if purchase_params["covering_id"].nil?
+				purchasing_member_notes = current_user.payment_info
+				purchasing_member_first_name = current_user.name
+				purchasing_member_name = "#{current_user.name} (#{current_user.email})"
+				add_notes = current_user.payment_info
+			else
+				pur_mem = Member.find(purchase_params["covering_id"])
+				purchasing_member_notes = pur_mem.payment_info
+				purchasing_member_first_name = pur_mem.name
+				purchasing_member_name = "#{pur_mem.name} #{pur_mem.last_name} (#{pur_mem.email}. #{ pur_mem.phone ? 'phone:' + pur_mem.phone : ''})"
+				add_notes = pur_mem.payment_info
+			end
+      text_b = "Hello, #{member.name}\n"
+      text_b += "#{purchasing_member_first_name} has agreed to purchase tickets for you for the next comic con \n"
+      text_b += "\n"
+      text_b += "total: $#{pur.price} \n"
+      text_b += "Confirmation Code: #{pur.confirmation_code} \n"
+      text_b += "\n"
+
+      if add_notes
+      	text_b += "#{add_notes}\n"
+      end
+
+      text_b += "\n"
+
+      if pur.notes
+      	text_b += "#{pur.notes}\n"
+      end
+      text_b += "\n"
+      text_b += "You may connect with this person to work out payment arrangements: #{purchasing_member_name} \n"
+      text_b += "Thank you for using our Ticket ORganizer APP, and enjoy your CON! \n"
+      text_b += "FOCC \n"
+
+
+      obj = {
+        email: member.email, 
+        message: text_b
+      }
+
+      MyMailer.send_email(obj, "CONGRATULATIONS!  #{purchasing_member_first_name} has covered you for SDCC 2018!!").deliver
 
 			# render out
-			render :json => { :success => true, :member_group_id => params[:member_group_id], :groups => member.member_groups.map { |e| e.group_id }.join('-'), :group_id => params[:group_id] }
+			render :json => { :success => true, :member_group_id => mem_grp.id, :groups => member.member_groups.map { |e| e.group_id }.join('-'), :group_id => params[:group_id], :member_id => member.id }
 		else
 			errs = []
 
@@ -212,7 +254,6 @@ class MembersController < ApplicationController
 
 	def purchase_params
 		params.require(:conf).permit(:confirmation_code,:price,:covering_id,:notes,:member_id)
-		
 	end
 
 	def code_params
@@ -220,7 +261,7 @@ class MembersController < ApplicationController
 	end
 
 	def member_params
-		params.require(:member).permit(:name, :last_name, :sdcc_member_id, :phone, :email, :wensday, :thursday, :friday, :saturday, :sunday)
+		params.require(:member).permit(:name, :last_name, :sdcc_member_id, :phone, :email, :wensday, :thursday, :friday, :saturday, :sunday, :payment_info)
 	end
 
 	def member_groups_params

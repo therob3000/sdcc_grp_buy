@@ -141,8 +141,8 @@
         ...
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">CONFIRM</button>
+        <button type="button" class="btn btn-secondary close-this-modal" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id='confirm-trigger'>CONFIRM</button>
       </div>
     </div>
   </div>
@@ -237,6 +237,38 @@
 		var member_id = $(this).attr('data-id');
 		$('input[name="conf[covering_id]"').val(member_id);
 		updateCoveredName();
+	});
+
+	$('body').on('submit', '.member-coverage-form', function(event) {
+		event.preventDefault();
+		var data = $(this).serialize();
+
+		$.ajax({
+			url: $(this).attr('action'),
+			type: 'POST',
+			data: data,
+		})
+		.done(function(data) {
+			if (data.success) {
+				//  TODO:  broadcast message
+				dispatcher.trigger('cover_member', { 
+					member_id: data.member_id,
+					member_group_id:data.member_group_id,
+					group_id:data.group_id,
+					groups:data.groups, 
+					connection: connectionID
+				});
+				$('.member-coverage-form').trigger('reset');
+				$('.close-this-modal').trigger('click');
+			} else {
+				alert(data.message)
+			}
+		})
+	});
+
+	$('body').on('click', '#confirm-trigger', function(event) {
+		event.preventDefault();
+		$('.member-coverage-form').trigger('submit');
 	});
 
 	function updateCoveredName(){
@@ -432,19 +464,12 @@
 
 		    // listen for any covered members across all groups in this group
 		    channel.bind("member_covered",function(mes) {
-		    	// if (message.connection_id != connectionID) {
-		    	// 	return;
-		    	// }
 			    $("#member_row_" + mes.member_group_id).addClass('member_covered');
 			    $("#action-holder-for" + mes.member_group_id).html("This member has been covered");
 		    })
 
 		    // listen for active members
 		    channel.bind("activate_member",function(mes) {
-		    	// activate member
-			    // $(".member_select_" + mes.member_id).addClass('member_active');
-		    	// activate groups that member belongs to
-		    	// debugger
 		    	if (mes.connection_id != connectionID) {
 			    	$(".activate-button-for" + mes.member_id).fadeOut(1000, function() {
 				    	$("#action-message-for" + mes.member_id).fadeIn(1000, function() {});
@@ -454,10 +479,6 @@
 		    })
 
 		    channel.bind("deactivate_member",function(mes) {
-		    	// activate member
-			    // $(".member_select_" + mes.member_id).addClass('member_active');
-		    	// activate groups that member belongs to
-		    	// debugger $("#action-message-for" + mes.member_id)
 		    	if (mes.connection_id != connectionID) {
 			    	$("#action-message-for" + mes.member_id).fadeOut(1000, function() {
 				    	$(".activate-button-for" + mes.member_id).fadeIn(1000, function() {});
@@ -468,9 +489,6 @@
 
 		    // chatroom listener
 		    channel.bind('add_room_message', function(message) {
-		    	// if (message.connection_id != connectionID) {
-		    	// 	return;
-		    	// }
 		    	if ($('.chat-box').css('height') == "25px") {
 			    	$('.chat-box').animate({'background-color':'#b2f581'}, 500);
 			    	$('.expand-chat-log').animate({'background-color':'#b2f581'}, 500);

@@ -22,8 +22,13 @@
         </div>
 
         <div class="form-group">
-          <label for="avatarurl">Avatar URL(optional)</label>
-          <input type="avatarurl" class="form-control" value="<%= @user.avatar_url %>" name='update[avatar_url]' id="signup_avatar" aria-describedby="emailHelp" placeholder="Enter url of yourself...if you want">
+          <label for="payment_info">Payment Info/Notes</label>
+          <textarea type="avatarurl" class="form-control" name='update[payment_info]' id="payment_info"><%= @user.payment_info %></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="update[avatar_url]">Avatar URL(optional)</label>
+          <input type="text" class="form-control" value="<%= @user.avatar_url %>" name='update[avatar_url]' id="signup_avatar" aria-describedby="emailHelp" placeholder="Enter url of yourself...if you want">
         </div>
 
         <input type="submit" value='Update Info' class='btn btn-lg btn-primary sign_log_in'>

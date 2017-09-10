@@ -17,14 +17,14 @@
 		<textarea type="" name="conf[notes]" class="form-control" placeholder='Any notes on this?' style='margin-bottom: 2px;width: 100%;'>
 		</textarea>
 	</div>
-
+		<input type="hidden" name="member_group_id" value='<%= mem_grp.id %>'>
     <input type="hidden" name="conf[covering_id]" value=''>
     <input type="hidden" name="conf[member_id]" value='<%= member.id %>'>
 		<h2>Who is covering this member?</h2>
 		<div id="cover_name"></div>
 		<br>
-		<a href="#" class='btn btn-primary btn-lg covering_member_selector iam'>I AM</a>
-		<a href="#" class='btn btn-primary btn-lg covering_member_selector another'>Another member</a>
+		<a href="#" class='btn btn-primary btn-lg covering_member_selector iam'>I will cover this member</a>
+		<a href="#" class='btn btn-primary btn-lg covering_member_selector another'>Another member will cover this member</a>
 
 </form>
 
