@@ -18,13 +18,25 @@
 		<% end %>
 	</div> 
 
-	<div class="mem-block" id="action-holder-for<%= mem_grp.try(:id) %>" style='float: right;'>
-		<% if !member.covered && current_user.is_valid? %>
-				<input type="text" name="" id='ticket_<%= member.id %>' placeholder='confirmation code' style='margin-bottom: 2px;width: 100%;'><br>
-				<a href="/purchases" data-id='<%= member.id %>' class='buy-ticket btn btn-sm btn-warning' member_group_id='<%= mem_grp.try(:id) %>' data-id='<%= member.id %>'>CONFIRM</a>
-			<% if grp && (current_user.members.map { |e| e.id }.include?(mem_grp.try(:member).try(:id))) %>
-				<a href="#" class='activate btn btn-sm btn-primary activate-this-user' data-id='<%= mem_grp.try(:id) %>' member-id='<%= member.id %>'>SELECTED</a>
+	<div class="mem-block" id="action-holder-for<%= member.try(:id) %>" style='float: right;'>
+			<% if member.active && !current_user.is_buying_for?(member) %>
+					<div class="mem-block-message" id="action-message-for<%= member.try(:id) %>" style='float: right; display: block;'>
+						USER BEING COVERED
+						<hr>
+					</div>
+
+			<% else %>
+				<div class="mem-block-message" id="action-message-for<%= member.try(:id) %>" style='float: right; display: none;'>
+					USER BEING COVERED
+					<hr>
+				</div>
 			<% end %>
+		<% if !member.covered && (current_user.is_valid?) %>
+				<a href="" class='active-button active-button-<%= member.id %> btn btn-sm btn-primary cancel-this <%= current_user.is_buying_for?(member) ? 'active-button-shown' : '' %>' data-id='<%= mem_grp.try(:id) %>' member-id="<%= member.id %>">CANCEL</a>
+				<a href="" class='active-button active-button-<%= member.id %> btn btn-sm btn-primary confirm-this <%= current_user.is_buying_for?(member) ? 'active-button-shown' : '' %>' member-id="<%= member.id %>" data-toggle="modal" data-target="#purchase-confirmation-pop-up" data-id='<%= mem_grp.try(:id) %>' >CONFIRM</a>
+				<a href="#" class='activate activate-button-for<%= member.try(:id) %> btn btn-sm btn-primary activate-this-user <%= member.active ? 'active_member_style' : 'non_active_member_style' %>' data-id='<%= mem_grp.try(:id) %>' member-id='<%= member.id %>'>START BUY</a>
+
+
 		<% elsif member.covered %>
 		<div class="covered-member">	
 				This member has been covered <br>

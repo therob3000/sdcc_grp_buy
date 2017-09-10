@@ -30,6 +30,7 @@ Rails.application.routes.draw do
       get 'activate_member'
       post 'direct_message'
       get 'mark_message_seen'
+      get 'present_confirmation_partial'
     end
   end
 

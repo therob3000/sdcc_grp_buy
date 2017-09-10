@@ -31,6 +31,18 @@ class User < ApplicationRecord
     end
   end
 
+  def is_buying_for?(member)
+    if member.sponsor_id == id
+      return true
+    else
+      return false
+    end
+  end
+
+  def member_belongs()
+    # grp && (current_user.members.map { |e| e.id }.include?(mem_grp.try(:member).try(:id)))
+  end
+
   def is_valid?
     # this users validation_code must match thier assigned e-mail in the ValidationCode model
     code = ValidationCode.validate_by_email(email, decrypt_code(validation_code))

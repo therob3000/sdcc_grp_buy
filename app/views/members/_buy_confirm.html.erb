@@ -1,0 +1,14 @@
+
+	<!-- TODO LIST CURRENT MEMBERS PAYMENT CONTACTS -->
+	<h2>Who is covering this member?</h2>
+	<form action="#" method="get" class="group-search sidebar-form">
+	<input type="text" name="" id='ticket_<%= member.id %>' placeholder='confirmation code' style='margin-bottom: 2px;width: 100%;'><br>
+  <div class="input-group"> 
+    <input type="text" name="q" id='m_modal_search' class="form-control" placeholder="Search Members by SDCC member ID or name..."/>
+    <span class="input-group-btn">
+      <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
+    </span>
+  </div>
+</form>
+
+	<a href="/purchases" data-id='<%= member.id %>' class='buy-ticket btn btn-sm btn-warning' member_group_id='<%= mem_grp.try(:id) %>' data-id='<%= member.id %>'>CONFIRM</a>

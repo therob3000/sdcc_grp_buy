@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170907002052) do
+ActiveRecord::Schema.define(version: 20170909171649) do
 
   create_table "chat_messages", force: :cascade do |t|
     t.string   "message"
@@ -72,6 +72,7 @@ ActiveRecord::Schema.define(version: 20170907002052) do
     t.boolean  "saturday"
     t.boolean  "sunday"
     t.boolean  "in_progress"
+    t.integer  "sponsor_id"
   end
 
   create_table "needs", force: :cascade do |t|

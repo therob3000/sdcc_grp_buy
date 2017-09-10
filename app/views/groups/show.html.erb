@@ -123,8 +123,30 @@
 	</div>
 </div>
 
-<style type="text/css">
-</style>
+
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="purchase-confirmation-pop-up" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirm this user</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id='confirmation-body'>
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">CONFIRM</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script type="text/javascript">
   var dispatcher;
   var connection;
@@ -170,10 +192,40 @@
 		})		
 	});
 
-	$("body").on('click', '.activate-this-user', function(event) {
+	$("body").on('click', '.cancel-this', function(event) {
 		event.preventDefault();
-		dispatcher.trigger('activate_member', { member_id: $(this).attr('member-id')})
+		dispatcher.trigger('deactivate_member', { member_id: $(this).attr('member-id'), connection: connectionID });
+		// switch out buttons
+		$('.active-button-' + $(this).attr('member-id')).fadeOut(500, function() {
+			$('.activate-button-for' + $(this).attr('member-id')).fadeIn(1000);
+		});
+
+		$(".member_groups_marker_" + $(this).attr('member-id')).removeClass('member_active');
 	});
+
+
+	$("body").on('click', '.confirm-this', function(event) {
+		event.preventDefault();
+		$.ajax({
+			url: '/members/present_confirmation_partial',
+			data: {member_id: $(this).attr('member-id'), mem_group_id: $(this).attr('data-id')},
+		})
+		.done(function(data) {
+			$('#confirmation-body').html(data);
+		})
+	});
+
+
+	$("body").on('click', '.activate', function(event) {
+		event.preventDefault();
+		dispatcher.trigger('activate_member', { member_id: $(this).attr('member-id'), connection: connectionID});
+		$(this).fadeOut(1000, function() {
+			$(this).parent('').find('.active-button').fadeIn(1000);
+		});
+
+		$(".member_groups_marker_" + $(this).attr('member-id')).addClass('member_active');
+	});
+
 
 	$("body").on('submit', '#reg-member', function(event) {
 		event.preventDefault();
@@ -335,10 +387,28 @@
 		    // listen for active members
 		    channel.bind("activate_member",function(mes) {
 		    	// activate member
-		    	debugger
 			    // $(".member_select_" + mes.member_id).addClass('member_active');
 		    	// activate groups that member belongs to
-			    $(".member_groups_marker_" + mes.member_id).addClass('member_active');
+		    	// debugger
+		    	if (mes.connection_id != connectionID) {
+			    	$(".activate-button-for" + mes.member_id).fadeOut(1000, function() {
+				    	$("#action-message-for" + mes.member_id).fadeIn(1000, function() {});
+			    	});
+				    $(".member_groups_marker_" + mes.member_id).addClass('member_active');
+		    	}
+		    })
+
+		    channel.bind("deactivate_member",function(mes) {
+		    	// activate member
+			    // $(".member_select_" + mes.member_id).addClass('member_active');
+		    	// activate groups that member belongs to
+		    	// debugger $("#action-message-for" + mes.member_id)
+		    	if (mes.connection_id != connectionID) {
+			    	$("#action-message-for" + mes.member_id).fadeOut(1000, function() {
+				    	$(".activate-button-for" + mes.member_id).fadeIn(1000, function() {});
+			    	});
+				    $(".member_groups_marker_" + mes.member_id).removeClass('member_active');
+		    	}
 		    })
 
 		    // chatroom listener

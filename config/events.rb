@@ -21,6 +21,7 @@ WebsocketRails::EventMap.describe do
   subscribe :unregister, "broadcasts#delete_member_from_group"
   subscribe :cover_member, "broadcasts#cover_member_for_group"
   subscribe :activate_member, "broadcasts#activate_member"
+  subscribe :deactivate_member, "broadcasts#deactivate_member"
   subscribe :send_chat_message, "broadcasts#send_chat_message"
   subscribe :someone_typing, "broadcasts#someone_typing"
   # end

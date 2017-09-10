@@ -38,19 +38,40 @@ class BroadcastsController < WebsocketRails::BaseController
 		WebsocketRails["group_#{room}"].trigger('someone_typing', {room: room, connection_id: connection})
 	end
 
+	def deactivate_member
+		member = Member.find(message[:member_id])
+    member.active = false
+    member.sponsor_id = nil
+		connection = message[:connection]
+    # maybe i need to loop in the JS and not in the controller
+    if member.save
+	    member.member_groups.map { |e| e.group_id }.each do |grp_id|
+				WebsocketRails["group_#{grp_id}"].trigger('deactivate_member', { :member_id => member.id,connection_id: connection })
+	    end
+    else
+    		puts 'ERROR'
+    # 	member.member_groups.map { |e| e.group_id }.each do |grp_id|
+				# WebsocketRails["group_#{grp_id}"].trigger('activate_member', { :message => member.errors.full_messages })
+	   #  end
+    end	
+	end
+
 
 	def activate_member
 		member = Member.find(message[:member_id])
     member.active = true
+    member.sponsor_id = current_user.id
+		connection = message[:connection]
     # maybe i need to loop in the JS and not in the controller
     if member.save
 	    member.member_groups.map { |e| e.group_id }.each do |grp_id|
-				WebsocketRails["group_#{grp_id}"].trigger('activate_member', { :member_id => member.id})
+				WebsocketRails["group_#{grp_id}"].trigger('activate_member', { :member_id => member.id,connection_id: connection })
 	    end
     else
-    	member.member_groups.map { |e| e.group_id }.each do |grp_id|
-				WebsocketRails["group_#{grp_id}"].trigger('activate_member', { :message => member.errors.full_messages })
-	    end
+    		puts 'ERROR'
+    # 	member.member_groups.map { |e| e.group_id }.each do |grp_id|
+				# WebsocketRails["group_#{grp_id}"].trigger('activate_member', { :message => member.errors.full_messages })
+	   #  end
     end
 	end
 

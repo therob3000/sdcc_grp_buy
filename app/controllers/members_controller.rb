@@ -1,6 +1,6 @@
 class MembersController < ApplicationController
 	before_action :authenticate_user!
-	before_action :validate, :only => [:register_member,:register_member_to_group,:remove_member,:cover_member]
+	before_action :validate, :only => [:register_member,:register_member_to_group,:remove_member,:cover_member, :present_confirmation_partial]
 
 	before_action :user_owns, :only => [:edit, :update]
 
@@ -27,6 +27,12 @@ class MembersController < ApplicationController
 		end
 		
 		redirect_to :back
+	end
+
+	def present_confirmation_partial
+		mem = Member.find(params[:member_id])
+		memgrp = MemberGroup.find(params[:mem_group_id])
+		render :partial => 'buy_confirm', :locals => {:member => mem, :mem_grp => memgrp}
 	end
 
 	def activate_member
