@@ -34,15 +34,14 @@ class UsersController < ApplicationController
       temp.val_code = en_code
       temp.save
 
-      link = "<a href='#{request.protocol}#{request.host_with_port}/users/confirm_create?id=#{temp.id}&val=#{en_code}'> HERE </a>"
-      text_b = "copy and pase:  #{request.protocol}#{request.host_with_port}/users/confirm_create?id=#{temp.id}&val=#{en_code} into your browser"
-
       obj = {
         email: user_params['email'], 
-        message: text_b
+        request: request,
+        temp: temp,
+        en_code: en_code
       }
 
-      MyMailer.send_email(obj, 'Your validation link from SDCC tickets').deliver
+      MyMailer.val_link(obj, 'Your validation link from SDCC tickets').deliver
 
       redirect_to :back
     else

@@ -196,34 +196,20 @@ class MembersController < ApplicationController
 				purchasing_member_name = "#{pur_mem.name} #{pur_mem.last_name} (#{pur_mem.email}. #{ pur_mem.phone ? 'phone:' + pur_mem.phone : ''})"
 				add_notes = pur_mem.payment_info
 			end
-      text_b = "Hello, #{member.name}\n"
-      text_b += "#{purchasing_member_first_name} has agreed to purchase tickets for you for the next comic con \n"
-      text_b += "\n"
-      text_b += "total: $#{pur.price} \n"
-      text_b += "Confirmation Code: #{pur.confirmation_code} \n"
-      text_b += "\n"
-
-      if add_notes
-      	text_b += "#{add_notes}\n"
-      end
-
-      text_b += "\n"
-
-      if pur.notes
-      	text_b += "#{pur.notes}\n"
-      end
-      text_b += "\n"
-      text_b += "You may connect with this person to work out payment arrangements: #{purchasing_member_name} \n"
-      text_b += "Thank you for using our Ticket ORganizer APP, and enjoy your CON! \n"
-      text_b += "FOCC \n"
+ 
 
 
       obj = {
         email: member.email, 
-        message: text_b
+        member: member,
+        purchase: pur,
+        purchasing_member_notes: purchasing_member_notes,
+        purchasing_member_first_name: purchasing_member_first_name,
+        purchasing_member_name: purchasing_member_name,
+        add_notes: add_notes
       }
 
-      MyMailer.send_email(obj, "CONGRATULATIONS!  #{purchasing_member_first_name} has covered you for SDCC 2018!!").deliver
+      MyMailer.send_confirmation(obj, "CONGRATULATIONS!  #{purchasing_member_first_name} has covered you for SDCC 2018!!").deliver
 
 			# render out
 			render :json => { :success => true, :member_group_id => mem_grp.id, :groups => member.member_groups.map { |e| e.group_id }.join('-'), :group_id => params[:group_id], :member_id => member.id }
