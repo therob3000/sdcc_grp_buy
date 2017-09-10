@@ -215,6 +215,61 @@
 		})
 	});
 
+	$('body').on('click', '.smaller_member_item', function(event) {
+		event.preventDefault();
+		var mem_id = $(this).attr('data-id');
+		$('input[name="conf[covering_id]"]').val(mem_id);
+	});
+
+	$('body').on('click', '.iam', function(event) {
+		event.preventDefault();
+		$('input[name="conf[covering_id]"').val('');
+		updateCoveredName();
+	});
+
+	$('body').on('click', '.another', function(event) {
+		event.preventDefault();
+		$('#cover_member_box').slideDown(1000, function() {});
+	});
+
+	$('body').on('click', '.smaller_member_item', function(event) {
+		event.preventDefault();
+		var member_id = $(this).attr('data-id');
+		$('input[name="conf[covering_id]"').val(member_id);
+		updateCoveredName();
+	});
+
+	function updateCoveredName(){
+		var val = $('input[name="conf[covering_id]"').val();
+		if (val == '') {
+			$('#cover_name').html('<b>You</b> are Covering this user');
+		} else {
+			$.ajax({
+				url: '/members/find_member_name',
+				data: {id: val},
+			})
+			.done(function(data) {
+				$('#cover_name').html('<b>' + data.name + '</b> will cover this member');
+			})
+		}
+	}
+
+  $('body').on('keyup', '#m_modal_search', function(event) {
+    event.preventDefault();
+    performSearchInModal();
+  });
+
+	function performSearchInModal(){
+    var phrase = $("#m_modal_search").val();
+    $.ajax({
+      url: '/members/search_smaller',
+      data: {search: phrase},
+    })
+    .done(function(data) {
+      $('.member-list-results').html(data);
+    })    
+  }
+
 
 	$("body").on('click', '.activate', function(event) {
 		event.preventDefault();
@@ -525,5 +580,12 @@ $('body').on('click', '.expand-chat-log', function(event) {
 </script>
 
 <style type="text/css">
-
+#cover_name {
+background-color: #f5aeae;
+    padding: 2%;
+    margin: 2px;
+    width: 100%;
+    text-align: center;
+    font-size: 17px;
+}
 </style>

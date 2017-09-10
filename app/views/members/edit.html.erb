@@ -23,6 +23,10 @@
         <label for='member[phone]'>SDCC Member ID</label>
         <input class="form-control" id='sdcc_member_id_holder_create' type="text" name='member[sdcc_member_id]' value='<%= @member.sdcc_member_id %>'>
       </div>
+      <div class="form-group">
+        <label for='member[phone]'>Payment Notes</label>
+        <textarea class="form-control" type="text" name='member[payment_info]' value=''><%= @member.payment_info %></textarea>
+      </div>
       <h3>Select the Days this member needs</h3>
 		      <div class="form-check form-check-inline" style="background-color:<%= @member.wensday ? "#fd7777" : "" %>;color: <%= @member.wensday ? "white" : "" %>">
               <%= f.check_box(:wensday, checked: @member.wensday) %> Wensday

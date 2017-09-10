@@ -85,6 +85,12 @@
     border-radius: 10px;
 }
 
+.smaller_member_item {
+    height: 30px;
+    width: 100%;
+    background-color: #efffaf;
+}
+
 .member-item:hover {
     /*background-color: yellow;*/
     /*wid*/
@@ -764,7 +770,9 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     padding: 3%;
 }
 
+.covering_member_selector {
 
+}
 
 @media (max-width: 1697px) and (min-width: 961px) {
  .talk-bubble {

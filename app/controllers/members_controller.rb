@@ -1,6 +1,6 @@
 class MembersController < ApplicationController
 	before_action :authenticate_user!
-	before_action :validate, :only => [:register_member,:register_member_to_group,:remove_member,:cover_member, :present_confirmation_partial]
+	before_action :validate, :only => [:register_member,:register_member_to_group,:remove_member,:cover_member, :present_confirmation_partial, :find_member_name]
 
 	before_action :user_owns, :only => [:edit, :update]
 
@@ -103,7 +103,18 @@ class MembersController < ApplicationController
 			@members = Member.where('lower(name) like ?', "%#{params[:search].downcase}%").first(8)
 		end
 		# render :partial => "group_list", :locals => { :members => @members }
-		render :partial => 'members/member_list_part', :locals => { :members => @members}
+		render :partial => 'members/member_list_part', :locals => { :members => @members }
+	end
+
+
+	def search_smaller
+		if !!(params[:search] =~ /\A[-+]?[0-9]+\z/)
+			@members = Member.where('lower(sdcc_member_id) like ?', "%#{params[:search].downcase}%").first(4)
+		else
+			@members = Member.where('lower(name) like ?', "%#{params[:search].downcase}%").first(4)
+		end
+		# render :partial => "group_list", :locals => { :members => @members }
+		render :partial => 'members/member_list_part_small', :locals => { :members => @members, :type => 'smaller'}
 	end
 
 	def register_member_to_group
@@ -154,12 +165,25 @@ class MembersController < ApplicationController
 		render :partial => 'show', :locals => {:member => @mem}
 	end
 
-	def cover_member
+	def find_member_name
+		@mem = Member.find(params[:id])
+		render :json => {:success => true, :name => "#{@mem.name} #{@mem.last_name}"}
+	end
+
+	def make_purchase
 		member = Member.find(params[:member_id])
 		member.covered = true;
-		pur = Purchase.new(:user_id => current_user.id, :need_id => params[:need_id])
-		if member.save
-			pur.save
+		pur = Purchase.new(purchase_params)
+
+		if purchase_params.member_id.nil?
+			# then it was the current user that purchased for them
+			put.notes += "\n Purchased by #{current_user.name} Contact at #{current_user.email}"
+		end
+
+		if member.save && pur.save
+			# SEND EMAIL TO THE USER
+
+			# render out
 			render :json => { :success => true, :member_group_id => params[:member_group_id], :groups => member.member_groups.map { |e| e.group_id }.join('-'), :group_id => params[:group_id] }
 		else
 			errs = []
@@ -168,13 +192,11 @@ class MembersController < ApplicationController
 				errs << e
 			end
 
-
 			member.errors.full_messages.each do |e|
 				errs << e
 			end
 			render :json => { :success => false, :message => errs }
 		end
-
 	end
 
 	private
@@ -186,6 +208,11 @@ class MembersController < ApplicationController
 			flash[:error] = 'your not authorized for this'
 			redirect_to :back
 		end
+	end
+
+	def purchase_params
+		params.require(:conf).permit(:confirmation_code,:price,:covering_id,:notes,:member_id)
+		
 	end
 
 	def code_params

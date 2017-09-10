@@ -1,14 +1,39 @@
 
 	<!-- TODO LIST CURRENT MEMBERS PAYMENT CONTACTS -->
-	<h2>Who is covering this member?</h2>
-	<form action="#" method="get" class="group-search sidebar-form">
-	<input type="text" name="" id='ticket_<%= member.id %>' placeholder='confirmation code' style='margin-bottom: 2px;width: 100%;'><br>
-  <div class="input-group"> 
-    <input type="text" name="q" id='m_modal_search' class="form-control" placeholder="Search Members by SDCC member ID or name..."/>
-    <span class="input-group-btn">
-      <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
-    </span>
-  </div>
+	<form action="/members/make_purchase" method="post" class="member-coverage-form">
+	<div class="form-group">
+		<label for='conf[price]'>Confirmation Code:</label>
+		<input type="text" name="conf[confirmation_code]" class="form-control" placeholder='confirmation code' style='margin-bottom: 2px;width: 100%;'><br>
+	</div>
+
+		
+	<div class="form-group">
+		<label for='conf[price]'>Total Amount Paid:</label>
+		<input type="number" name="conf[price]" class="form-control" placeholder='total price' style='margin-bottom: 2px;width: 100%;'><br>
+	</div>
+	
+	<div class="form-group">
+		<label for='conf[notes]'>Any Special Notes?</label>
+		<textarea type="" name="conf[notes]" class="form-control" placeholder='Any notes on this?' style='margin-bottom: 2px;width: 100%;'>
+		</textarea>
+	</div>
+
+    <input type="hidden" name="conf[covering_id]" value=''>
+    <input type="hidden" name="conf[member_id]" value='<%= member.id %>'>
+		<h2>Who is covering this member?</h2>
+		<div id="cover_name"></div>
+		<br>
+		<a href="#" class='btn btn-primary btn-lg covering_member_selector iam'>I AM</a>
+		<a href="#" class='btn btn-primary btn-lg covering_member_selector another'>Another member</a>
+
 </form>
 
-	<a href="/purchases" data-id='<%= member.id %>' class='buy-ticket btn btn-sm btn-warning' member_group_id='<%= mem_grp.try(:id) %>' data-id='<%= member.id %>'>CONFIRM</a>
+<div id="cover_member_box" style="display: none;">
+	
+	<input type="text" name="q" id='m_modal_search' class="form-control" autocomplete="off" placeholder="Search Members by SDCC member ID or name..."/>
+	<ul class='member-list-results'>
+		<%= render :partial => 'members/member_list_part_small', :locals => { :members => current_user.members.first(4), :type => 'smaller'} %>
+	</ul>
+
+</div>
+
