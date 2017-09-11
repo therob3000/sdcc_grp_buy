@@ -20,12 +20,12 @@
 	</div> 
 
 	<div class="mem-block" id="action-holder-for<%= member.try(:id) %>" style='float: right;'>
+	<% if !grp.nil? %>
 			<% if member.active && !current_user.is_buying_for?(member) %>
 					<div class="mem-block-message" id="action-message-for<%= member.try(:id) %>" style='float: right; display: block;'>
 						USER BEING COVERED
 						<hr>
 					</div>
-
 			<% else %>
 				<div class="mem-block-message" id="action-message-for<%= member.try(:id) %>" style='float: right; display: none;'>
 					USER BEING COVERED
@@ -48,6 +48,7 @@
 		<% if grp && (current_user.groups.map { |e| e.id }.include?(grp.id)) %>
 			<a href="#" class='remove btn btn-sm btn-danger remove-this-user' data-id='<%= mem_grp.try(:id) %>'>REMOVE</a>
 		<% end %>
+	<% end %>
 	</div>
 	
 </li>

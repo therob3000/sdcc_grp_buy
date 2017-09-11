@@ -148,21 +148,7 @@
     </div>
   </div>
 </div>
-<script type="text/javascript">
-	var dispatcher_link;
-  var connection;
-  var connectionID;
-  var channel;
-  var group_room_conn;
-  var current_user_id = <%= current_user.id %>;
-  var activeDispatcher = false;
-  var group_id = <%= @grp.id %>;
-	<% if Rails.env.development? %>
-	  dispatcher_link = 'localhost:3002' + "/" + "websocket";
-	<% else %>
-  	dispatcher_link = window.document.location.host + "/" + "websocket";
-	<% end %>
-</script>
+
 
 <style type="text/css">
 #cover_name {

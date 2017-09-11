@@ -4,10 +4,10 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [:facebook]
-  has_many :members
-  has_many :purchases
-  has_many :groups
-  has_many :direct_messages
+  has_many :members, :dependent => :delete_all
+  has_many :purchases, :dependent => :delete_all
+  has_many :groups, :dependent => :delete_all
+  has_many :direct_messages, :dependent => :delete_all
   validates_uniqueness_of :name, :email
 
 

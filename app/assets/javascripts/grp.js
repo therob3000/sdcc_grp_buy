@@ -1,7 +1,8 @@
 $(document).ready(function() {
 
-
-
+	if (group_id == undefined) {
+		return;
+	}
   $('body').on('click', '.form-check-stacked', function(event) {
     var checkBox = $(this).find('input[type="checkbox"]');
     checkBox.trigger('click');
@@ -9,13 +10,11 @@ $(document).ready(function() {
     if (checkBox.is(':checked')) {
       $(this).css('background-color','#fd7777');
       $(this).css('color','white');
-    } else {
+    } else { 
       $(this).css('background-color','#ffcccc');
       $(this).css('color','black');
     }
   });
-
-
 	$('body').on('submit', '#create-member-form', function(event) {
 		event.preventDefault();
 		// create the member.
@@ -37,7 +36,6 @@ $(document).ready(function() {
 			}
 		})		
 	});
-
 	$("body").on('click', '.cancel-this', function(event) {
 		event.preventDefault();
 		dispatcher.trigger('deactivate_member', { member_id: $(this).attr('member-id'), connection: connectionID });
@@ -48,8 +46,6 @@ $(document).ready(function() {
 
 		$(".member_groups_marker_" + $(this).attr('member-id')).removeClass('member_active');
 	});
-
-
 	$("body").on('click', '.confirm-this', function(event) {
 		event.preventDefault();
 		$.ajax({
@@ -199,7 +195,7 @@ $(document).ready(function() {
 		.done(function(data) {
 			if (data.success == true) {
 				$("#reg-member").trigger('reset');
-				var obj = {connection: connectionID, room: grp_id, member_id: data.member_id, member_group_id: data.member_group_id}
+				var obj = {connection: connectionID, room: group_id, member_id: data.member_id, member_group_id: data.member_group_id}
 				dispatcher.trigger('register_member', obj)
 			} else {
 				if (data.new_member) {
@@ -426,7 +422,7 @@ $('body').on('click', '.expand-chat-log', function(event) {
   	$('.expand-chat-log').animate({'background-color':'#3c8dbc'}, 500)
   	$('.expand-chat-log').text("expand chat log");
 	}
-
+ 
 });
 
   var addCommentToDom = function(message) {

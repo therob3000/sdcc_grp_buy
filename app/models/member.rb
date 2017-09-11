@@ -1,5 +1,5 @@
 class Member < ApplicationRecord
-	has_many :member_groups
+	has_many :member_groups, :dependent => :delete_all
 	belongs_to :user
 	validates :sdcc_member_id, :email, :name, presence: true
 	validates_uniqueness_of :sdcc_member_id 
