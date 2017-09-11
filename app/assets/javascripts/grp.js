@@ -172,6 +172,8 @@ $(document).ready(function() {
 
 	$("body").on('click', '.remove-this-user', function(event) {
 		event.preventDefault();
+		$(this).text('removing');
+		$(this).attr('disabled', true);
 		var mb_id = $(this).attr('data-id');
 		removeMemberFromDom(mb_id);		
 	});
