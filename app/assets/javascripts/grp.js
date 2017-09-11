@@ -260,7 +260,7 @@ $(document).ready(function() {
 
 
 	function startDispatch(){
-	  dispatcher = new WebSocketRails(dispatcher_link);
+	  dispatcher = new WebSocketRails(window.document.location.host + "/" + "websocket");
 	  dispatcher.on_open = function(data) {
 	  	// sleep(1000);
 	  	if (!activeDispatcher) {

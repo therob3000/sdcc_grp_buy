@@ -192,11 +192,7 @@
   <% else %>
     var group_id = 'undefined';
   <% end %>
-  <% if Rails.env.development? %>
-    dispatcher_link = 'localhost:3002' + "/" + "websocket";
-  <% else %>
-    dispatcher_link = window.document.location.host + "/" + "websocket";
-  <% end %>
+
 </script>
 
 <script type="text/javascript">
