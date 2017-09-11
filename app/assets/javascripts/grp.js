@@ -1,6 +1,5 @@
 $(document).ready(function() {
-
-	if (group_id == undefined) {
+	if (group_id == 'undefined') {
 		return;
 	}
   $('body').on('click', '.form-check-stacked', function(event) {

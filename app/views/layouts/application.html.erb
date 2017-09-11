@@ -190,7 +190,7 @@
   <% if (@grp.try(:id)) %>
     var group_id = <%= @grp.try(:id) %>;
   <% else %>
-    var group_id = undefined;
+    var group_id = 'undefined';
   <% end %>
   <% if Rails.env.development? %>
     dispatcher_link = 'localhost:3002' + "/" + "websocket";
