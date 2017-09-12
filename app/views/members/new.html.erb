@@ -82,6 +82,9 @@
         // register the member to the group.
         alert('member successfully registered');
         $('#create-member-form').trigger('reset');
+        $('.form-check-inline').css('background-color','#ffcccc');
+        $('.form-check-inline').css('color','black');
+
       } else {
         populateErrors(data.message);
       }
