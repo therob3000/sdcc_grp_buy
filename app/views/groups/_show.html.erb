@@ -1,0 +1,36 @@
+<center>
+	
+
+<h2>
+	<%= group.name %>
+</h2>	
+
+<p style="font-size: 15px">
+	<br>
+	<% if current_user.has_member(member) %>
+		<a href="<%= edit_member_path(:id => group.id) %>" class='btn btn-md btn-primary' style='margin-top: 2px;'>Edit this Member</a>
+	<% end %>	
+</p>
+
+<p>
+	<b>
+		Coordinator: 
+		<br>
+		<a href="#" class='user-modal-pop btn' data-toggle="modal" data-target="#userModal" data-id='<%= group.user.try(:id) %>'>
+			<%= group.user.try(:name) %>
+		</a>
+		<br>
+		<img src="<%= group.user.try(:avatar_url) %>" class="img-circle" alt="User Image" />
+	</b>
+</p>
+
+
+
+</center>
+
+<hr>
+<h3>Members in <%= group.name %>:</h3>
+<% group.member_groups.map { |e| e.member }.each do |member| %>
+	<%= render :partial => 'members/member_list_part_small', :locals => { :member => member} %>
+
+<% end %>

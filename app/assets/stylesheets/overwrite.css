@@ -774,6 +774,10 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 
 }
 
+.img-circle {
+    max-height: 40px;
+}
+
 @media (max-width: 1697px) and (min-width: 961px) {
  .talk-bubble {
     margin: 15px;
