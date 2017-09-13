@@ -38,6 +38,9 @@
 
           <!-- Sidebar toggle button-->
           <% if current_user %>
+          <div class="info">
+            Please refresh your page if you notice that your live updates are not working (chat,etc...)
+          </div>
           <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
               <% if !current_user.try(:is_valid?) && current_user.has_a_val_code? %>
