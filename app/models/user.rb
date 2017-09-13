@@ -61,6 +61,13 @@ class User < ApplicationRecord
     direct_messages.any? { |e| e.seen == false }
   end
 
+  def has_member(member)
+    if members.include?(member)
+      return true
+    end
+    false
+  end
+
   def my_groups
     out = []
 

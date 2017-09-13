@@ -242,7 +242,6 @@
 
   $('body').on('click', '.user-modal-pop', function(event) {
     event.preventDefault();
-    /* Act on the event */
     var mem_id = $(this).attr('data-id');
     $.ajax({
       url: '/users/show_user',
@@ -252,7 +251,6 @@
       $('.modal-body').html(data);
       $('.user-modal-body').fadeIn(500, function() {});
     })
-    
   });
 
   // user-modal-pop

@@ -1,7 +1,9 @@
 <% users.each do |code| %>
 	<div class="code_container row <%= code.is_admin ? 'admin_item' : '' %>" id='validation_code_parent_<%= code.id %>'>
 		<div class="email col-lg-4">
-			<%= code.name %>
+			<a href="#" class='user-modal-pop btn chat-avatar' style="float: left;color: white;font-weight: bold;background-color: black;width: 100%" data-toggle="modal" data-target="#userModal" data-id='<%= code.try(:id) %>'><img src="<%= code.try(:avatar_url) %>" class="img-circle" alt="User Image" />
+				<%= code.name %>
+			</a>
 		</div>
 
 		<div class="code col-lg-5" id='validation_code_<%= code.id %>'>
