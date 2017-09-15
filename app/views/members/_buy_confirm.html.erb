@@ -31,9 +31,9 @@
 <div id="cover_member_box" style="display: none;">
 	
 	<input type="text" name="q" id='m_modal_search' class="form-control" autocomplete="off" placeholder="Search Members by SDCC member ID or name..."/>
-	<ul class='member-list-results'>
+	<div class='member-list-results'>
 		<%= render :partial => 'members/member_list_part_small', :locals => { :members => current_user.members.first(4), :type => 'smaller'} %>
-	</ul>
+	</div>
 
 </div>
 

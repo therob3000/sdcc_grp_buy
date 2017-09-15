@@ -61,10 +61,10 @@
 }
 
 .list-group {
- padding-left: 0;
- margin-bottom: 20px;
- width: 90%;
- padding: 3px;
+   padding-left: 0;
+   margin-bottom: 20px;
+   width: 90%;
+   padding: 3px;
 }
 
 .group-list {
@@ -662,52 +662,52 @@
         width: 100%; 
     }
 
-     .info {
+    .info {
         width: 75%;
     }
 
     .form-check-inline {
-    background-color: #ffcccc;
-    width: 19%;
-    display: inline-block;
-    padding: 2%;
-    position: relative;
-    font-size: 35px;
-    margin-bottom: 2%;
-    margin-right: 10px;
-    text-align: center;
-    border-radius: 10px;
+        background-color: #ffcccc;
+        width: 19%;
+        display: inline-block;
+        padding: 2%;
+        position: relative;
+        font-size: 35px;
+        margin-bottom: 2%;
+        margin-right: 10px;
+        text-align: center;
+        border-radius: 10px;
     }
 
     .form-check-stacked {
-    background-color: #ffcccc;
-    width: 100%;
-    display: block;
-    padding: 2%;
-    position: relative;
-    font-size: 35px;
-    margin-bottom: 2%;
-    margin-right: 10px;
-    text-align: center;
-    border-radius: 10px;
+        background-color: #ffcccc;
+        width: 100%;
+        display: block;
+        padding: 2%;
+        position: relative;
+        font-size: 35px;
+        margin-bottom: 2%;
+        margin-right: 10px;
+        text-align: center;
+        border-radius: 10px;
     }
     .form-check-inline:hover {
       background-color: #bf9090;
-    }
-    .form-check-stacked:hover {
+  }
+  .form-check-stacked:hover {
       background-color: #bf9090;
-    }
+  }
 
 
-    .form-check-inline input[type='checkbox'] {
-        display: none;
-    }
+  .form-check-inline input[type='checkbox'] {
+    display: none;
+}
 
-    .form-check-stacked input[type='checkbox'] {
-        display: none;
-    }
+.form-check-stacked input[type='checkbox'] {
+    display: none;
+}
 
-    .error-message {
+.error-message {
     background-color: red;
     width: 100%;
     color: wheat;
@@ -717,42 +717,42 @@
     font-weight: bold;
     height: 10px;
     position: absolute;
-    }
+}
 
-    .admin_item {
-     background-color: #3c8dbc;
-    color: white;
-        }
+.admin_item {
+   background-color: #3c8dbc;
+   color: white;
+}
 
-    .form-check {
-        /*position: relative;*/
-        /*display: inline-block;*/
-        /*width: 15%;*/
-    }
+.form-check {
+    /*position: relative;*/
+    /*display: inline-block;*/
+    /*width: 15%;*/
+}
 
-    .member_covered {
-        background-color: #ffb4b4;
-    }
+.member_covered {
+    background-color: #ffb4b4;
+}
 
-    .active_member_style {
-        /*background-color: white;*/
-        display: none;
-    }
+.active_member_style {
+    /*background-color: white;*/
+    display: none;
+}
 
-    .non_active_member_style {
-        display: block;
+.non_active_member_style {
+    display: block;
 
-    }
-    .active-button {
-        display: none;
-    }
+}
+.active-button {
+    display: none;
+}
 
-    .active-button-shown {
-        display: block;
-    }
-    .selected_box {
-        background-color: red;
-    }
+.active-button-shown {
+    display: block;
+}
+.selected_box {
+    background-color: red;
+}
 
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     font-family: monospace;
@@ -778,15 +778,86 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     max-height: 40px;
 }
 
-.info {
+.info_top {
     position: absolute;
     color: white;
     padding: 10px;
     font-size: 15px;
 }
 
+.modal-header {
+    background-color: #3c8dbc;
+    color: white;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+}
+
+.modal-header .close {
+    display: none;
+}
+
+.modal-content {
+    background-color: transparent;
+}
+
+.modal-body {
+    position: relative;
+    padding: 15px;
+    background-color: white;
+}
+
+.modal-footer {
+    border-top-color: #3c8dbc;
+    background-color: #3c8dbc;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.modal-footer .btn {
+    background-color: orange;
+    color: white;
+    font-weight: bold;
+
+}
+
+
+#cover_name {
+    background-color: #f5aeae;
+    background-color: transparent;
+    padding: 2%;
+    margin: 2px;
+    width: 100%;
+    text-align: center;
+    font-size: 17px;
+}
+
+.covering_member_selector {
+    width: 100%;
+    display: inline-block;
+}
+
+.smaller_member_item_smaller{
+    height: 30px;
+    width: 100%;
+    background-color: #3c8dbc;
+    margin-top: 2px;
+    color: white;
+
+}
+
+.modal-body {
+    position: relative;
+    padding: 15px;
+    background-color: #ecf0f5;
+}
+
+#cover_member_box
+{
+    margin-top: 7px;
+    margin-bottom: 7px;
+}
 @media (max-width: 1697px) and (min-width: 961px) {
- .talk-bubble {
+   .talk-bubble {
     margin: 15px;
     display: inline-block;
     position: relative;
@@ -806,24 +877,24 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .info {
     display: none;}
 
-.chat-line .user-modal-pop {
-    display: none;
-}
+    .chat-line .user-modal-pop {
+        display: none;
+    }
 
-.show-side-menu {
-    display: block;
-}
+    .show-side-menu {
+        display: block;
+    }
 
 
-.form-check {
-    position: relative;
-    display: inline-block;
-    width: 100%;
-}
+    .form-check {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+    }
 
-.clock-slot-index {
-    width: 100%;
-}
+    .clock-slot-index {
+        width: 100%;
+    }
 
 
 
