@@ -667,7 +667,8 @@
     }
 
     .form-check-inline {
-        background-color: #ffcccc;
+        /*background-color: #ffcccc;*/
+        background-color: #3c8dbc;
         width: 19%;
         display: inline-block;
         padding: 2%;
@@ -677,10 +678,12 @@
         margin-right: 10px;
         text-align: center;
         border-radius: 10px;
+        color: black;
     }
 
     .form-check-stacked {
-        background-color: #ffcccc;
+        color: black;
+        background-color: #3c8dbc;
         width: 100%;
         display: block;
         padding: 2%;

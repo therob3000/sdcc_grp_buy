@@ -10,7 +10,7 @@ $(document).ready(function() {
       $(this).css('background-color','#fd7777');
       $(this).css('color','white');
     } else { 
-      $(this).css('background-color','#ffcccc');
+      $(this).css('background-color','#3c8dbc');
       $(this).css('color','black');
     }
   });
