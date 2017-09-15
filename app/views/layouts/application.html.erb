@@ -38,9 +38,6 @@
 
           <!-- Sidebar toggle button-->
           <% if current_user %>
-          <div class="info_top">
-            Please refresh your page if you notice that your live updates are not working (chat,etc...)
-          </div>
           <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
               <% if !current_user.try(:is_valid?) && current_user.has_a_val_code? %>
@@ -194,6 +191,12 @@
     var group_id = <%= @grp.try(:id) %>;
   <% else %>
     var group_id = 'undefined';
+  <% end %>
+
+  <% if !Rails.env.development? %>
+    var server_location = window.document.location.host;
+  <% else %>
+    var server_location = 'localhost:3002';
   <% end %>
 
 </script>

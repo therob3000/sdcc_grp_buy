@@ -782,10 +782,15 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 
 .info_top {
-    position: absolute;
+    position: relative;
     color: white;
     padding: 10px;
     font-size: 15px;
+    background-color: #dd4b39;
+    font-weight: bolder;
+    text-align: center;
+    border-radius: 10px;
+    display: none;
 }
 
 .modal-header {

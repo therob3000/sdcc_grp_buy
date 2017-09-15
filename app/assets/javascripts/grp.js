@@ -262,9 +262,10 @@ $(document).ready(function() {
 
 
 	function startDispatch(){
-	  dispatcher = new WebSocketRails(window.document.location.host + "/" + "websocket");
+	  dispatcher = new WebSocketRails(server_location + "/" + "websocket");
 	  dispatcher.on_open = function(data) {
 	  	// sleep(1000);
+	  	// debugger
 	  	if (!activeDispatcher) {
 	  		// return;
 		    console.log('Connection has been established: ', data);
@@ -355,6 +356,22 @@ $(document).ready(function() {
 		    	someoneTyping();
 		    });
 
+		    dispatcher.bind('connection_closed', function() {
+					setTimeout(function(){
+						$('.info_top').fadeIn(500, function() {
+								var reconn = setInterval(function(){
+									if (dispatcher.state == 'disconnected') {
+										console.log('reconnecting...');
+										// console.log('reconnecting...');
+										startDispatch();
+									} else {
+										clearInterval(reconn);
+									}
+								}, 500);
+						});
+					}, 500);
+				});
+
 	    console.log(room_create_success);
 	  	}
 	  }
@@ -363,6 +380,9 @@ $(document).ready(function() {
 	setTimeout(function(){
 	  startDispatch();
 	}, 500);
+
+
+	// This will restart to dispatcher everytime you switch back on
 
   var someoneTyping = function(){
   	$('.someone_typing').css('display', 'block');
@@ -374,11 +394,6 @@ $(document).ready(function() {
 
 
 // chat rooom functionality
-	// var elem = document.getElementById('chat_log');
-	// var elem2 = document.getElementById('chat_container');
- //  elem.scrollTop = elem.scrollHeight;
- //  elem2.scrollTop = elem2.scrollHeight;
-
  $('body').on('keydown', '.chat-message-input', function(event) {
 		if (event.which == 13) {
 		 	event.preventDefault();
