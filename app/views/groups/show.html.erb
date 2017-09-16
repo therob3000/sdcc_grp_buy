@@ -104,21 +104,44 @@
 		</div>
 		<% end %>
 	</div>
-	<div class='col-md-6'>
-		<h2>Group Chat</h2>
-		<a href="#" class='btn btn-sm btn-primary expand-chat-log' style=''>Toggle chat log</a>
+	<div class="loading">websocket loading</div>
+	<div class='col-md-6' id='site-chat-box' style="display: none;">
+		<div class="file-folder row">
+			
+			<a href="#" class='col-md-6 btn-sm btn-primary expand-chat-log expand-chat-log-group' style='background-color: #efeacc'>Group chat</a>
+			<a href="#" class='col-md-6 btn-sm btn-primary expand-chat-log  expand-chat-log-global' style='background-color: rgb(193, 188, 158)'>Global chat</a>
 		
-		<div class="chat-box room-box">
+		</div>
+
+		<div class="chat-box chat-box-global room-box-global">
+			<div id="chat_container-global">
+				<div class="chat-form-global">
+					<form id='chat-dialog-global'>
+						<h4>Global Chat Room</h4>
+						<input type="text" name="" class='chat-input-dialog chat-message-input-global chat-message-input' scope='global' placeholder="SAy sumthin'.....">
+					</form>
+					<span class="someone_typing_global"></span>
+				</div>
+				<div class="chat-log-global" id='chat_log_global'>
+					<% @global_chat_messages.order('created_at DESC').each do |message| %>
+						<%= render :partial => 'groups/chat_line_global', :locals => { :message => message, :user => message.user, :from => 'todom' } %>			
+					<% end %>
+				</div>
+			</div>
+		</div>
+		
+		<div class="chat-box room-box chat-box-group">
 			<div id="chat_container">
 				<div class="chat-form">
-					<form>
-						<input type="text" name="" class='form-control chat-message-input' placeholder="SAy sumthin'.....">
+					<form id='chat-dialog-group'>
+						<h4>Group Chat Room</h4>
+						<input type="text" name="" class='chat-input-dialog chat-message-input-group chat-message-input' scope='group' placeholder="SAy sumthin'.....">
 					</form>
 					<span class="someone_typing">Someone is typing a message.....</span>
 				</div>
 				<div class="chat-log" id='chat_log'>
 					<% @grp.chat_messages.order('created_at DESC').each do |message| %>
-						<%= render :partial => 'groups/chat_line', :locals => { :message => message, :user => message.user, :from => 'todom' } %>			
+						<%= render :partial => 'groups/chat_line', :locals => { :message => message, :user => message.user, :from => 'group' } %>			
 					<% end %>
 				</div>
 			</div>

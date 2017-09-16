@@ -27,10 +27,7 @@ class BroadcastsController < WebsocketRails::BaseController
 		member_group_id = message[:member_group_id]
 		member_id = MemberGroup.find(message[:member_group_id]).member.id
 		connection = message[:connection]
-		grps = message[:groups].split('-')
-		grps.each do |room|
-			WebsocketRails["group_#{room}"].trigger('member_covered', {member_id: member_id, member_group_id: member_group_id}, connection_id: connection)
-		end
+		send_message('member_covered', {member_id: member_id, member_group_id: member_group_id}, connection_id: connection)
 	end
 
 	def someone_typing
@@ -46,14 +43,9 @@ class BroadcastsController < WebsocketRails::BaseController
 		connection = message[:connection]
     # maybe i need to loop in the JS and not in the controller
     if member.save
-	    member.member_groups.map { |e| e.group_id }.each do |grp_id|
-				WebsocketRails["group_#{grp_id}"].trigger('deactivate_member', { :member_id => member.id,connection_id: connection })
-	    end
+				WebsocketRails["global"].trigger('deactivate_member', { :member_id => member.id,connection_id: connection })
     else
     		puts 'ERROR'
-    # 	member.member_groups.map { |e| e.group_id }.each do |grp_id|
-				# WebsocketRails["group_#{grp_id}"].trigger('activate_member', { :message => member.errors.full_messages })
-	   #  end
     end	
 	end
 
@@ -65,24 +57,24 @@ class BroadcastsController < WebsocketRails::BaseController
 		connection = message[:connection]
     # maybe i need to loop in the JS and not in the controller
     if member.save
-	    member.member_groups.map { |e| e.group_id }.each do |grp_id|
-				WebsocketRails["group_#{grp_id}"].trigger('activate_member', { :member_id => member.id,connection_id: connection })
-	    end
+				WebsocketRails["global"].trigger('activate_member', { :member_id => member.id,connection_id: connection })
     else
     		puts 'error'
     		puts member.errors.full_messages.join(',')
-    # 	member.member_groups.map { |e| e.group_id }.each do |grp_id|
-				# WebsocketRails["group_#{grp_id}"].trigger('activate_member', { :message => member.errors.full_messages })
-	   #  end
     end
 	end
 
 	def send_chat_message
+		type = message[:type]
 		room = message[:room]
 		message_id = message[:message]
 		user_id = current_user.id
 		connection = message[:connection]
-		WebsocketRails["group_#{room}"].trigger('add_room_message', {room: room, message_id: message_id, user_id: message[:user_id], connection_id: connection})
+		if type == 'group'
+			WebsocketRails["group_#{room}"].trigger('add_room_message', {room: room, message_id: message_id, user_id: message[:user_id], connection_id: connection})
+		else
+			WebsocketRails["global"].trigger('add_global_message', {message_id: message_id, user_id: message[:user_id], connection_id: connection})
+		end
 		
 	end
 end

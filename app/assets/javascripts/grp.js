@@ -265,7 +265,11 @@ $(document).ready(function() {
 	  dispatcher = new WebSocketRails(server_location + "/" + "websocket");
 	  dispatcher.on_open = function(data) {
 	  	// sleep(1000);
-	  	// debugger
+	  	$('.loading').fadeOut(500, function() {
+	  		$('#site-chat-box').fadeIn(500, function() {
+	  			
+	  		});
+	  	});
 	  	if (!activeDispatcher) {
 	  		// return;
 		    console.log('Connection has been established: ', data);
@@ -273,6 +277,7 @@ $(document).ready(function() {
 		    connection = group_id;
 		    group_room_conn = 'group_'+ connection;
 		    channel = dispatcher.subscribe(group_room_conn);
+		    channel_global = dispatcher.subscribe('global');
 		    var room_create_success = group_room_conn + '_created';
 		    activeDispatcher = true;
 
@@ -313,14 +318,14 @@ $(document).ready(function() {
 		    })
 
 		    // listen for any covered members across all groups in this group
-		    channel.bind("member_covered",function(mes) {
+		    channel_global.bind("member_covered",function(mes) {
 			    $("#member_row_" + mes.member_group_id).addClass('member_covered');
 			    $('.active-button-' + mes.member_id).hide(500);
 			    $("#action-holder-for" + mes.member_group_id).html("This member has been covered");
 		    })
 
 		    // listen for active members
-		    channel.bind("activate_member",function(mes) {
+		    channel_global.bind("activate_member",function(mes) {
 		    	if (mes.connection_id != connectionID) {
 			    	$(".activate-button-for" + mes.member_id).fadeOut(1000, function() {
 				    	$("#action-message-for" + mes.member_id).fadeIn(1000, function() {});
@@ -329,7 +334,7 @@ $(document).ready(function() {
 		    	}
 		    })
 
-		    channel.bind("deactivate_member",function(mes) {
+		    channel_global.bind("deactivate_member",function(mes) {
 		    	if (mes.connection_id != connectionID) {
 			    	$("#action-message-for" + mes.member_id).fadeOut(1000, function() {
 				    	$(".activate-button-for" + mes.member_id).fadeIn(1000, function() {});
@@ -338,14 +343,24 @@ $(document).ready(function() {
 		    	}
 		    })
 
-		    // chatroom listener
-		    channel.bind('add_room_message', function(message) {
-		    	if ($('.chat-box').css('height') == "25px") {
-			    	$('.chat-box').animate({'background-color':'#b2f581'}, 500);
-			    	$('.expand-chat-log').animate({'background-color':'#b2f581'}, 500);
-			    	$('.expand-chat-log').text("New Message, click here to expand chat");
+		    // chatroom listeners
+		    channel_global.bind('add_global_message', function(message) {
+		    	console.log('global:' + message);
+		    	if ($('.chat-box-global').css('display') == "none") {
+			    	$('.expand-chat-log-global').css('background-color', 'red');
 		    	}
-		    	console.log(message.connection_id);
+		    	if (typeof message.connection_id != 'undefined' ) {
+			    	addCommentToDomGlobal(message);
+		    	}
+		    });
+
+		    channel.bind('add_room_message', function(message) {
+		    	if ($('.chat-box-group').css('display') == "none") {
+			    	$('.expand-chat-log-group').css('background-color', 'red');
+		    	}
+		    	// console.log(message.connection_id);
+		    	// console.log('ddffdd');
+		    	// debugger
 		    	if (typeof message.connection_id != 'undefined' ) {
 			    	addCommentToDom(message);
 		    	}
@@ -395,6 +410,7 @@ $(document).ready(function() {
 
 // chat rooom functionality
  $('body').on('keydown', '.chat-message-input', function(event) {
+ 	var type = $(this).attr('scope');
 		if (event.which == 13) {
 		 	event.preventDefault();
 		 	var message = $(this).val();
@@ -402,11 +418,11 @@ $(document).ready(function() {
 		 	$.ajax({
 		 		url: '/groups/process_message',
 		 		type: 'POST',
-		 		data: {message: {message: message, group_id: group_id}},
+		 		data: {message: {message: message, group_id: group_id}, type: type},
 		 	})
 		 	.done(function(data) {
 		 		if (data.success) {
-			 		var obj = { message: data.message, room: group_id, user_id: data.user_id, connection: connectionID};
+			 		var obj = { message: data.message, room: group_id, user_id: data.user_id, connection: connectionID, type: data.type};
 			 		dispatcher.trigger('send_chat_message', obj);
 		 		} else {
 		 			populateErrors(data.message);
@@ -428,20 +444,35 @@ $(document).ready(function() {
  	}
  });
 
-$('body').on('click', '.expand-chat-log', function(event) {
+$('body').on('click', '.expand-chat-log-group', function(event) {
 	event.preventDefault();
-	if ($('.chat-box').css('height') == '500px') {
-		$('.chat-box').animate({'height': '0px'}, 500);
-	} else {
-		$('.chat-box').animate({'height': '500px'}, 500);
-		$('.chat-box').animate({'background-color':'#efeacc'}, 500)
-  	$('.expand-chat-log').animate({'background-color':'#3c8dbc'}, 500)
-  	$('.expand-chat-log').text("expand chat log");
-	}
- 
+		// $(this).addClass('selected-chat-log');
+		// debugger
+		$(this).css('background-color', '#efeacc');
+		$(this).css('color', 'black');
+		$('.expand-chat-log-global').css('background-color', 'rgb(193, 188, 158)');
+		$('.expand-chat-log-global').css('color', 'white');
+		$('.chat-box-global').fadeOut(500, function() {
+			$('.chat-box-group').fadeIn(500, function() {});
+			
+		});
 });
 
-  var addCommentToDom = function(message) {
+$('body').on('click', '.expand-chat-log-global', function(event) {
+	event.preventDefault();
+		// debugger
+		$(this).css('background-color', '#efeacc');
+		$(this).css('color', 'black');
+		$('.expand-chat-log-group').css('background-color', 'rgb(193, 188, 158)');
+		$('.expand-chat-log-group').css('color', 'white');
+		// $(this).addClass('selected-chat-log');
+		// $('.expand-chat-log-group').removeClass('selected-chat-log');
+		$('.chat-box-group').fadeOut(500, function() {
+			$('.chat-box-global').fadeIn(500, function() {});
+		});
+});
+
+  var addCommentToDomGlobal = function(message) {
   	var message_id = message.message_id;
     // if (message.connection_id == connectionID) {
     	$.ajax({
@@ -449,15 +480,66 @@ $('body').on('click', '.expand-chat-log', function(event) {
     		data: {message_id: message_id, from: 'dom'},
     	})
     	.done(function(data) {
-	      $("#chat_log").prepend(data);
-	      $(".chat-line").slideDown(500, function() {});
+		      $("#chat_log_global").prepend(data);
+		      shakeLastMessageGrp('global');
     	})
     	
-    // }
-    // elem.scrollTop = elem.scrollHeight;
+    var elem = $('#chat_log_global');
+    elem.scrollTop = 0;
+    console.log('just received new message: ' + message);
+  }
+
+
+  var addCommentToDom = function(message) {
+  	var message_id = message.message_id;
+    	$.ajax({
+    		url: '/groups/add_comment',
+    		data: {message_id: message_id, from: 'dom'},
+    	})
+    	.done(function(data) {
+		      $("#chat_log").prepend(data);
+		      shakeLastMessageGrp('group');
+    	})
+    	
     var elem = $('#chat_log');
     elem.scrollTop = 0;
     console.log('just received new message: ' + message);
   }
-	
+
+  var shakeLastMessageGrp = function(type){
+  	if (type == 'group') {
+	  	var shakeSub = $('#chat_log .chat-line-group')[0];
+  	} else {
+	  	var shakeSub = $('#chat_log_global .chat-line')[0];
+  	}
+	  var initial=0
+	  var incre=0
+		quibble()
+    function quibble(){
+	      if(incre<10)
+	      {
+	        if(incre%2==0)
+	          {
+	            initial+=25
+	          }
+	        else
+	          {
+	            initial-=25
+	          }
+	        shakeSub.style.marginRight=initial+"px"
+	        incre+=1
+	        setTimeout(quibble,20)
+	      } else {
+	        shakeSub.style.marginRight="25px"
+
+	      }
+	    }
+
+  	// }
+
+  }
+
 });
+
+
+

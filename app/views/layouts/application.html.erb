@@ -185,7 +185,7 @@
   var connectionID;
   var channel;
   var group_room_conn;
-  var current_user_id = <%= current_user.id %>;
+  var current_user_id = <%= current_user.try(:id) %>;
   var activeDispatcher = false;
   <% if (@grp.try(:id)) %>
     var group_id = <%= @grp.try(:id) %>;

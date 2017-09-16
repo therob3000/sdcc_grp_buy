@@ -41,11 +41,16 @@ class GroupsController < ApplicationController
 	def process_message
 		mess = ChatMessage.new(message_params)
 		mess.user_id = current_user.id
+		if params[:type] == 'global'
+			mess.global_scope = true
+		end
+
+		type = params[:type]
 
 		if mess.save
-			render :json => { :success => true, :message => mess.id, :user_id => current_user.id }
+			render :json => { :success => true, :message => mess.id, :user_id => current_user.id, :type => type }
 		else 
-			render :json => { :success => false, :message => @grp.errors.full_messages}
+			render :json => { :success => false, :message => @grp.errors.full_messages, :type => type }
 		end		
 	end
 
@@ -56,6 +61,8 @@ class GroupsController < ApplicationController
 
 	def show
 		@grp = Group.find(params[:id])
+
+		@global_chat_messages = ChatMessage.global_chats
 		# @messages = ChatMessage.select { |e| e.group_id == @grp.id } 
 	end
 

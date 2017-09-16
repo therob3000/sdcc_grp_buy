@@ -9,7 +9,7 @@ class UsersController < ApplicationController
 
   def manual_login
     user = User.find_by_email(login_params['email'])
-    if user.valid_password?(login_params['password'])
+    if user && user.valid_password?(login_params['password'])
       sign_in(:user, user)
       redirect_to :back
     else
