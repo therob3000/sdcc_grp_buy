@@ -1,5 +1,5 @@
-<div class="chat-line chat-line-global">
 	<% if current_user.try(:id) == user.try(:id) %>
+	<div class="chat-line chat-line-global" style="text-align: left;">
 		<a href="#" class='user-modal-pop btn chat-avatar' data-toggle="modal" data-target="#userModal" data-id='<%= user.try(:id) %>'><img src="<%= user.avatar_url %>" class="img-circle img-circle-mod" alt="User Image" /></a> 
 		<div class="talk-bubble tri-right left-top ">
 		  <div class="talktext">
@@ -15,7 +15,10 @@
 		  </div>
 		  </div>
 		</div>
+			<br>
+	</div>
 	<% else %>
+	<div class="chat-line chat-line-global" style="text-align: right;">
 		<div class="talk-bubble tri-right right-top" style='left: 0%;'>
 		  <div class="talktext">
 		  <p>
@@ -31,6 +34,6 @@
 		  </div>
 		</div>
 		<a href="#" class='user-modal-pop btn chat-avatar' data-toggle="modal" data-target="#userModal" data-id='<%= user.try(:id) %>' style='right: 3%;'><img src="<%= user.try(:avatar_url) %>" class="img-circle img-circle-mod" alt="User Image"/></a> 
+		<br>
+	</div>
 	<% end %>
-	<br>
-</div>
