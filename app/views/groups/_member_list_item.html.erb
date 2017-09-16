@@ -19,7 +19,7 @@
 		<% end %>
 	</div> 
 
-	<div class="mem-block" id="action-holder-for<%= member.try(:id) %>" style='float: right;'>
+	<div class="mem-block web_socket_loading" id="action-holder-for<%= member.try(:id) %>" style='float: right;'>
 	<% if !grp.nil? %>
 			<% if member.active && !current_user.is_buying_for?(member) %>
 					<div class="mem-block-message" id="action-message-for<%= member.try(:id) %>" style='float: right; display: block;'>

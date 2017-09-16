@@ -1,11 +1,17 @@
 <h2><%= @grp.name %></h2>
 <div class="info_top">
-  Your live connection was interrupted, please refresh your browser to continue getting live updates
+  <%= image_tag("danger.gif") %>  Your live connection was interrupted, please refresh your browser to continue getting live updates
+</div>
+<div class="loading">
+ <%= image_tag("ajax-loader.gif") %>   websocket loading, please wait...
 </div>
 
 <p>
 	<b>Group Coordinator: <a href="#" class='user-modal-pop btn' data-toggle="modal" data-target="#userModal" data-id='<%= @grp.user.try(:id) %>'> <%= @grp.user.try(:name) %></b> </a> (<%= @grp.user.try(:email) %>)
 </p>
+
+
+
 <hr>
 <div class="row" style="width: 90%;">
 
@@ -25,7 +31,7 @@
 			<% end %>
 		</div>
 		<% if current_user.groups.map { |e| e.id }.include?(@grp.id) %>
-		<div class="create-form">
+		<div class="create-form web_socket_loading">
 			<h2>Add member to this group</h2>
 			<p>
 				<b>(Only the user that started this group may add members to this group)</b>
@@ -104,8 +110,7 @@
 		</div>
 		<% end %>
 	</div>
-	<div class="loading">websocket loading</div>
-	<div class='col-md-6' id='site-chat-box' style="display: none;">
+	<div class='col-md-6 web_socket_loading' id='site-chat-box'>
 		<div class="file-folder row">
 			
 			<a href="#" class='col-md-6 btn-sm btn-primary expand-chat-log expand-chat-log-group' style='background-color: #efeacc'>Group chat</a>

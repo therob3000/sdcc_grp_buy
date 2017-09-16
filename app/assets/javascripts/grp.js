@@ -264,10 +264,8 @@ $(document).ready(function() {
 	function startDispatch(){
 	  dispatcher = new WebSocketRails(server_location + "/" + "websocket");
 	  dispatcher.on_open = function(data) {
-	  	// sleep(1000);
 	  	$('.loading').fadeOut(500, function() {
-	  		$('#site-chat-box').fadeIn(500, function() {
-	  			
+	  		$('.web_socket_loading').fadeIn(500, function() {
 	  		});
 	  	});
 	  	if (!activeDispatcher) {
