@@ -372,15 +372,7 @@ $(document).ready(function() {
 		    dispatcher.bind('connection_closed', function() {
 					setTimeout(function(){
 						$('.info_top').fadeIn(500, function() {
-								var reconn = setInterval(function(){
-									if (dispatcher.state == 'disconnected') {
-										console.log('reconnecting...');
-										// console.log('reconnecting...');
-										startDispatch();
-									} else {
-										clearInterval(reconn);
-									}
-								}, 500);
+								$(".web_socket_loading").fadeOut(500, function() {});
 						});
 					}, 500);
 				});
