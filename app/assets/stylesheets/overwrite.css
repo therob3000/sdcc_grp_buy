@@ -225,7 +225,7 @@
     display: inline-block;
     position: relative;
     /*width: 60%;*/
-    width: 80%;
+    width: 50%;
     /*top: 35px;*/
     left: 0px;
     height: auto;
@@ -935,6 +935,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .img-circle-mod{
         border-radius: 2px;
     margin-right: 12px;
+    max-width: 50px;
 }
 @media (max-width: 1697px) and (min-width: 961px) {
    .talk-bubble {
