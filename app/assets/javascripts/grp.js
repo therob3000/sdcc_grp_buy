@@ -76,11 +76,6 @@ $(document).ready(function() {
 
 	$('body').on('click', '#browse-for-members', function(event) {
 		event.preventDefault();
-		// if ($('.browse-control').css('display') == 'none') {
-		// 	$('.browse-control').slideDown(500, function() {});
-		// } else {
-		// 	$('.browse-control').slideUp(500, function() {});
-		// }
 		toggleDis($('.browse-control'),500);
 	});
 
