@@ -9,6 +9,24 @@ class Group < ApplicationRecord
 		member_groups.map { |e| e.member }.any? { |e| e.try(:active) }
 	end
 
+	def is_fully_covered
+		member_groups.all? { |e| e.member.try(:covered) }
+	end
+
+	def number_covered
+		member_groups.select { |e| e.member.try(:covered) }.count
+	end
+
+	def coverage
+
+		if member_groups.all? { |e| e.member.try(:covered) }
+			color = '#6dff94'
+		else
+			color = '#ecf0f5'
+		end
+		color
+	end
+
 	def member_lists
 		member_groups.map { |e| "member_groups_marker_#{e.id}" }.join(' ')
 	end
