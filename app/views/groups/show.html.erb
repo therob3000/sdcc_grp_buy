@@ -3,7 +3,8 @@
   <%= image_tag("danger.gif") %>  Your live connection was interrupted, please refresh your browser to continue getting live updates  <%= image_tag("danger.gif") %>
 </div>
 <div class="loading">
- <%= image_tag("ajax-loader.gif") %>   websocket loading, please wait...
+ <%= image_tag("bar.gif") %>  <br>
+  websocket loading, please wait... (if this takes more than 20 seconds then refresh your browsers)
 </div>
 
 <p>
@@ -180,7 +181,7 @@
         ...
       </div>
       <div class="modal-footer">
-        <div class="working-message-conf" style="display: none;">Confirming...</div>
+        <div class="working-message-conf" style="display: none;">image_tag("ajax-loader.gif")</div>
         <button type="button" class="btn btn-secondary close-this-modal conf-modal-footer" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary conf-modal-footer" id='confirm-trigger'>CONFIRM</button>
       </div>
