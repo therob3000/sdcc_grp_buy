@@ -4,7 +4,7 @@ class ChatMessage < ApplicationRecord
 	order("events.created_at ASC")
 
 	def self.global_chats
-		where("global_scope = ?",true)
+		limit(20).where("global_scope = ?",true)
 	end
 
 end

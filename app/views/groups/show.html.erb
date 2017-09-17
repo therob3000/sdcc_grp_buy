@@ -146,7 +146,7 @@
 					<span class="someone_typing">Someone is typing a message.....</span>
 				</div>
 				<div class="chat-log" id='chat_log'>
-					<% @grp.chat_messages.order('created_at DESC').each do |message| %>
+					<% @grp.chat_messages.limit(20).order('created_at DESC').each do |message| %>
 						<%= render :partial => 'groups/chat_line', :locals => { :message => message, :user => message.user, :from => 'group' } %>			
 					<% end %>
 				</div>
