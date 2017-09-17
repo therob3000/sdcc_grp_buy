@@ -249,6 +249,9 @@ $(document).ready(function() {
     })
     .done(function(data) {
     	$("#member-list").append(data);
+    	if (dispatcher.state == 'connected') {
+    		$('.web_socket_loading').fadeIn(500, function() {});
+    	}
     })
   }
 

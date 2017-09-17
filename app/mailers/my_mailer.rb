@@ -1,6 +1,6 @@
 class MyMailer < ApplicationMailer
-		include ActionView::Helpers::NumberHelper
-	 def send_email(options={},subject="Your Validation code for SDCCTICKETS")
+	include ActionView::Helpers::NumberHelper
+	def send_email(options={},subject="Your Validation code for SDCCTICKETS")
     @name = options[:name]
     @email = options[:email]
     @message = options[:message]

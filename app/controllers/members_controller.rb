@@ -209,10 +209,15 @@ class MembersController < ApplicationController
         add_notes: add_notes
       }
 
-      MyMailer.send_confirmation(obj, "CONGRATULATIONS!  #{purchasing_member_first_name} has covered you for SDCC 2018!!").deliver
+      begin
+	      MyMailer.send_confirmation(obj, "CONGRATULATIONS!  #{purchasing_member_first_name} has covered you for SDCC 2018!!").deliver
+      rescue Exception => e
+				render :json => { :success => false, :member_group_id => mem_grp.id, :groups => member.member_groups.map { |e| e.group_id }.join('-'), :group_id => params[:group_id], :member_id => member.id, :message => 'Member was purchased for but the e-mail never went through, please check the user email, or contact this person yourself' }
+      	
+      end
 
 			# render out
-			render :json => { :success => true, :member_group_id => mem_grp.id, :groups => member.member_groups.map { |e| e.group_id }.join('-'), :group_id => params[:group_id], :member_id => member.id }
+			render :json => { :success => true, :member_group_id => mem_grp.id, :groups => member.member_groups.map { |e| e.group_id }.join('-'), :group_id => params[:group_id], :member_id => member.id, :message => 'purchased!' }
 		else
 			errs = []
 

@@ -41,7 +41,7 @@ class UsersController < ApplicationController
         en_code: en_code
       }
 
-      MyMailer.val_link(obj, 'Your validation link from SDCC tickets').deliver
+    MyMailer.val_link(obj, 'Your validation link from SDCC tickets').deliver
 
       redirect_to :back
     else
