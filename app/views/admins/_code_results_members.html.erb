@@ -2,7 +2,7 @@
 	<div class="code_container row" id='validation_code_parent_<%= code.id %>'>
 		<div class="email col-lg-3">
 			<a href="#" class='member-modal-pop btn' data-toggle="modal" data-target="#memberModal" data-id='<%= code.try(:id) %>' style="float: left;color: white;font-weight: bold;background-color: black;width: 100%"> <%= code.try(:name) %> 
-				<%= code.name %>
+				<%= code.try(:last_name) %>
 			</a>
 		</div>
 
