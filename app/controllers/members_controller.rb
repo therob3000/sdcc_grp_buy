@@ -243,7 +243,7 @@ class MembersController < ApplicationController
 	end
 
 	def purchase_params
-		params.require(:conf).permit(:confirmation_code,:price,:covering_id,:notes,:member_id)
+		params.require(:conf).permit(:confirmation_code,:price,:covering_id,:notes,:member_id, :wensday, :thursday, :friday, :saturday, :sunday)
 	end
 
 	def code_params

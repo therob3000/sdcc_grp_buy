@@ -4,8 +4,10 @@ Hello, <%= @member.name %><br>
 </p>
 <br>
 <p>
-      total: <b><%= number_to_currency(@pur.price) %></b> <br>
+      Total: <b><%= number_to_currency(@pur.price) %></b> <br>
       Confirmation Code: <b><%= @pur.confirmation_code %></b> <br>
+      Days Purchased: <b><%= pur.days_string %></b>
+
 </p>
 <br>
 <% if @add_notes %>

@@ -1,0 +1,38 @@
+
+<h2>All current Purchases</h2>
+<div class="search-container" style="width: 100%">
+  <form action="#" method="get" class="code-search sidebar-form">
+    <div class="input-group">
+      <input type="text" name="q" id='csearch' class="form-control" placeholder="Search purchases by member name..."/>
+      <span class="input-group-btn">
+        <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
+      </span>
+    </div>
+  </form>
+</div>
+
+<div class="results-container-codes">
+	<%= render :partial => 'code_results_purchases', :locals => { :purs => @purchases.all } %>
+	<div class="pag-contain">
+		<%= will_paginate @purchases %>
+	</div>
+</div>
+
+<script type="text/javascript">
+	function performSearch(){
+    var phrase = $("#csearch").val();
+    $.ajax({
+      url: '/purchases/search',
+      data: {search: phrase},
+    })
+    .done(function(data) {
+      $('.results-container-codes').html(data);
+    })    
+  }
+
+  $('body').on('keyup', '#csearch', function(event) {
+    event.preventDefault();
+    performSearch();
+  });
+
+</script>

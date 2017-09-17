@@ -57,8 +57,8 @@
 .content {
     padding-left: 5%;
     overflow: scroll;
-    /*height: 1000px;*/
-    height: 100%;
+    min-height: 1000px;
+    /*height: 100%;*/
 }
 
 .list-group {

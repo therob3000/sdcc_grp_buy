@@ -17,6 +17,25 @@
 		<textarea type="" name="conf[notes]" class="form-control" placeholder='Any notes on this?' style='margin-bottom: 2px;width: 100%;'>
 		</textarea>
 	</div>
+  <h3>What Days Were you able to buy?</h3>
+    <div class="form-check form-check-stacked">
+        <%= check_box_tag 'conf[wensday]' %> Wensday
+    </div>
+    <div class="form-check form-check-stacked">
+        <%= check_box_tag 'conf[thursday]' %> Thursday
+    </div>
+    <div class="form-check form-check-stacked">
+        <%= check_box_tag 'conf[friday]' %> Friday
+    </div>
+
+    <div class="form-check form-check-stacked">
+        <%= check_box_tag 'conf[saturday]' %> Saturday
+    </div>
+
+    <div class="form-check form-check-stacked">
+        <%= check_box_tag 'conf[sunday]' %> Sunday
+    </div>
+
 		<input type="hidden" name="member_group_id" value='<%= mem_grp.id %>'>
     <input type="hidden" name="conf[covering_id]" value=''>
     <input type="hidden" name="conf[member_id]" value='<%= member.id %>'>

@@ -18,6 +18,12 @@ Rails.application.routes.draw do
 
   end
 
+  resources :purchases do 
+    collection do 
+      get 'search'
+    end
+  end
+
 
   resources :members do 
     collection do

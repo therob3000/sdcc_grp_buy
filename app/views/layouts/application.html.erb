@@ -45,6 +45,12 @@
                   <a href="/" class='btn btn-lg btn-danger'>Enter validation code</a>
                 </li>
               <% end %>
+              <% if current_user.try(:is_valid?) %>
+                <li class="">
+                  <a href="/purchases" class='btn btn-lg'>PURCHASES</a>
+                </li>
+              <% end %>
+
               <% if current_user.try(:is_admin) %>
                 <li class="">
                   <a href="/admins" class='btn btn-lg btn-warning'>CODES</a>

@@ -1,0 +1,27 @@
+<% purs.each do |code| %>
+	<div class="code_container row" id='validation_code_parent_<%= code.id %>'>
+		<div class="code col-lg-3" id='validation_code_<%= code.id %>'>
+			Bought for: <b><%= "#{code.member.try(:name)} #{code.member.try(:last_name)}" %></b> 
+			<br>
+			email: <%= code.member.try(:email) %>
+			<br>
+			SDCC ID: <b><%= code.member.try(:last_name) %> <%= code.member.try(:sdcc_member_id) %></b>
+		</div>
+
+		<div class="email col-lg-3">
+				Bought by: <%= code.benefactor_name %>
+				<br>
+				Confirmation: <%= code.confirmation_code %>
+				<br>
+		</div>
+
+		<div class="email col-lg-3">
+			Total: <b><%= number_to_currency(code.price) %></b>
+		</div>
+
+		<div class="col-lg-3">
+			Days: <b><%= code.days_string %></b>
+		</div>
+	</div>
+<% end %>
+
