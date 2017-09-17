@@ -18,8 +18,7 @@ class Group < ApplicationRecord
 	end
 
 	def coverage
-
-		if member_groups.all? { |e| e.member.try(:covered) }
+		if member_groups.all? { |e| e.member.try(:covered) } && member_groups.count > 0
 			color = '#6dff94'
 		else
 			color = '#ecf0f5'
