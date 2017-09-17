@@ -109,9 +109,11 @@ $(document).ready(function() {
 					$('.conf-modal-footer').fadeIn(500);
 				});
 			} else {
+				$('.member-coverage-form').trigger('reset');
 				$('.working-message-conf').fadeOut(500, function() {
 					$('.conf-modal-footer').fadeIn(500);
 				});
+				$('.close-this-modal').trigger('click');
 				alert(data.message)
 			}
 		})
