@@ -499,6 +499,15 @@ $('body').on('click', '.expand-chat-log-global', function(event) {
     console.log('just received new message: ' + message);
   }
 
+  setInterval(function(){
+  	if (dispatcher.state != 'connected') {
+			$('.info_top').fadeIn(500, function() {
+					$(".web_socket_loading").fadeOut(500, function() {});
+			});
+  	}
+  },3000);
+
+
   var shakeLastMessageGrp = function(type){
   	if (type == 'group') {
 	  	var shakeSub = $('#chat_log .chat-line-group')[0];
@@ -527,8 +536,6 @@ $('body').on('click', '.expand-chat-log-global', function(event) {
 
 	      }
 	    }
-
-  	// }
 
   }
 
