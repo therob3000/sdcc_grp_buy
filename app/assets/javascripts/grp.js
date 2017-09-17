@@ -29,7 +29,7 @@ $(document).ready(function() {
 				$('#create-member-form').trigger('reset');
 				regMember($('#reg-member').serialize());
 				$(this).trigger('reset');
-
+				$('.add-member-footer .btn').trigger('click');
 			} else {
 				populateErrors(data.message);
 			}
@@ -56,12 +56,6 @@ $(document).ready(function() {
 		})
 	});
 
-	$('body').on('click', '.smaller_member_item', function(event) {
-		event.preventDefault();
-		var mem_id = $(this).attr('data-id');
-		$('input[name="conf[covering_id]"]').val(mem_id);
-	});
-
 	$('body').on('click', '.iam', function(event) {
 		event.preventDefault();
 		$('input[name="conf[covering_id]"').val('');
@@ -73,11 +67,41 @@ $(document).ready(function() {
 		$('#cover_member_box').slideDown(1000, function() {});
 	});
 
-	$('body').on('click', '.smaller_member_item', function(event) {
+	$('body').on('click', '.member-list-results .smaller_member_item', function(event) {
 		event.preventDefault();
 		var member_id = $(this).attr('data-id');
 		$('input[name="conf[covering_id]"').val(member_id);
 		updateCoveredName();
+	});
+
+	$('body').on('click', '#browse-for-members', function(event) {
+		event.preventDefault();
+		// if ($('.browse-control').css('display') == 'none') {
+		// 	$('.browse-control').slideDown(500, function() {});
+		// } else {
+		// 	$('.browse-control').slideUp(500, function() {});
+		// }
+		toggleDis($('.browse-control'),500);
+	});
+
+	var toggleDis = function(element, speed){
+		if (element.css('display') == 'none') {
+			element.slideDown(speed, function() {});
+		} else {
+			element.slideUp(speed, function() {});
+		}
+
+	}
+
+	$('body').on('click', '.member-list-results-add-member .smaller_member_item', function(event) {
+		event.preventDefault();
+		var member_id = $(this).attr('data-sdcc-id');
+		$('input[name="sdcc_member_id"]').val(member_id);
+		// registermember
+		regMember($('#reg-member').serialize());
+		// click close
+		$('.browse-control').slideUp(500);
+		$('.add-member-footer .btn').trigger('click');
 	});
 
 	$('body').on('submit', '.member-coverage-form', function(event) {
@@ -141,17 +165,27 @@ $(document).ready(function() {
 
   $('body').on('keyup', '#m_modal_search', function(event) {
     event.preventDefault();
-    performSearchInModal();
+    var phrase = $(this).val();
+    performSearchInModal('cover',phrase);
   });
 
-	function performSearchInModal(){
-    var phrase = $("#m_modal_search").val();
+  $('body').on('keyup', '#am_modal_search', function(event) {
+    event.preventDefault();
+    var phrase = $(this).val();
+    performSearchInModal('add',phrase);
+  });
+
+	function performSearchInModal(type_search,search_phrase){
+    // var phrase = $("#m_modal_search").val();
+    var phrase = search_phrase;
+
     $.ajax({
       url: '/members/search_smaller',
-      data: {search: phrase},
+      data: {search: phrase, type_search: type_search, group: group_id},
     })
     .done(function(data) {
       $('.member-list-results').html(data);
+      $('.member-list-results-add-member').html(data);
     })    
   }
 
@@ -170,6 +204,7 @@ $(document).ready(function() {
 	$("body").on('submit', '#reg-member', function(event) {
 		event.preventDefault();
 		regMember($(this).serialize());
+
 	});
 
 	$("body").on('click', '.remove-this-user', function(event) {
@@ -199,7 +234,8 @@ $(document).ready(function() {
 			if (data.success == true) {
 				$("#reg-member").trigger('reset');
 				var obj = {connection: connectionID, room: group_id, member_id: data.member_id, member_group_id: data.member_group_id}
-				dispatcher.trigger('register_member', obj)
+				$('.add-member-footer .btn').trigger('click');
+				dispatcher.trigger('register_member', obj);
 			} else {
 				if (data.new_member) {
 					$('#new-member-form').slideDown('500', function() {
@@ -361,9 +397,6 @@ $(document).ready(function() {
 		    	if ($('.chat-box-group').css('display') == "none") {
 			    	$('.expand-chat-log-group').css('background-color', 'red');
 		    	}
-		    	// console.log(message.connection_id);
-		    	// console.log('ddffdd');
-		    	// debugger
 		    	if (typeof message.connection_id != 'undefined' ) {
 			    	addCommentToDom(message);
 		    	}
@@ -376,9 +409,7 @@ $(document).ready(function() {
 
 		    dispatcher.bind('connection_closed', function() {
 					setTimeout(function(){
-						$('.info_top').fadeIn(500, function() {
-								$(".web_socket_loading").fadeOut(500, function() {});
-						});
+						takeOffline();
 					}, 500);
 				});
 
@@ -503,12 +534,15 @@ $('body').on('click', '.expand-chat-log-global', function(event) {
 
   setInterval(function(){
   	if (dispatcher.state != 'connected') {
-			$('.info_top').fadeIn(500, function() {
-					$(".web_socket_loading").fadeOut(500, function() {});
-			});
+  		takeOffline();
   	}
   },3000);
 
+  var takeOffline = function(){
+			$('.info_top').fadeIn(500, function() {
+					$(".web_socket_loading").fadeOut(500, function() {});
+			});
+  }
 
   var shakeLastMessageGrp = function(type){
   	if (type == 'group') {

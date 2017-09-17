@@ -98,7 +98,7 @@ class MembersController < ApplicationController
 
 	def search
 		if !!(params[:search] =~ /\A[-+]?[0-9]+\z/)
-			@members = Member.where('lower(sdcc_member_id) like ?', "%#{params[:search].downcase}%").first(8)
+			@members = Member.where('lower(sdcc_member_id) like ?', "%#{params[:search].try(:downcase)}%").first(8)
 		else
 			@members = Member.where('lower(name) like ?', "%#{params[:search].downcase}%").first(8)
 		end
@@ -109,12 +109,19 @@ class MembersController < ApplicationController
 
 	def search_smaller
 		if !!(params[:search] =~ /\A[-+]?[0-9]+\z/)
-			@members = Member.where('lower(sdcc_member_id) like ?', "%#{params[:search].downcase}%").first(4)
+			@members = Member.where('lower(sdcc_member_id) like ?', "%#{params[:search].try(:downcase)}%").first(4)
 		else
 			@members = Member.where('lower(name) like ?', "%#{params[:search].downcase}%").first(4)
 		end
 		# render :partial => "group_list", :locals => { :members => @members }
-		render :partial => 'members/member_list_part_small', :locals => { :members => @members, :type => 'smaller'}
+		if params[:type_search] == 'cover'
+			render :partial => 'members/member_list_part_small', :locals => { :members => @members, :type => 'smaller' }
+		else
+			if params[:group]
+				members = @members.delete_if { |e| e.is_part_of(params[:group].to_i) }
+			end
+			render :partial => 'members/member_list_part_small', :locals => { :members => members, :type => 'smaller_add' }
+		end
 	end
 
 	def register_member_to_group

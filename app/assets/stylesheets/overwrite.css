@@ -937,6 +937,14 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     margin-right: 12px;
     max-width: 50px;
 }
+
+.browse {
+        margin: 2px;
+    padding: 1%;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+}
 @media (max-width: 1697px) and (min-width: 961px) {
    .talk-bubble {
     margin: 15px;

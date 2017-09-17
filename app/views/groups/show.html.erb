@@ -24,6 +24,11 @@
 		<h2 class='number-of-members'>This buying group is empty</h2>
 	<% else %>
 		<h2 class='number-of-members'><%= @grp.member_groups.count %> Members in this buying group</h2>
+
+		<% if current_user.groups.map { |e| e.id }.include?(@grp.id) %>
+		<button type="button" class="btn btn-primary btn-lg web_socket_loading" style="width: 100%;" data-toggle="modal" data-target="#addUserModal">Add user</button>
+		<% end %>
+
 		<h5><a href="#" id='non-covered-toggle' style="width: 100%" class='btn btn-primary btn-lg'>Toggle Non-Covered Members</a></h5>
 	<% end %>
 		<div class="member-list" id='member-list'>
@@ -31,86 +36,8 @@
 				<%= render :partial => 'member_list_item', :locals => { :member => mem_grp.member, :mem_grp => mem_grp, :grp => @grp } %>
 			<% end %>
 		</div>
-		<% if current_user.groups.map { |e| e.id }.include?(@grp.id) %>
-		<div class="create-form web_socket_loading">
-			<h2>Add member to this group</h2>
-			<p>
-				<b>(Only the user that started this group may add members to this group)</b>
-			</p>
-			<p>
-				To register yourself or a member into this group, please provide a valid SDCC member ID here, and check off the days desired.
-			</p>
-			<form method="post" id="reg-member">
-				<input type="hidden" name="member_group[group_id]" value="<%= @grp.id %>">
-					<input type="text" name="sdcc_member_id" id='sdcc_member_id_holder' class="form-control" style='width: 100%' placeholder="SDCC member ID">
-					<div id="error_list" style="color: red"></div>
-
-					<hr>
-					<input type="submit" name="ADD">
-			</form>
-		</div>
-		<!-- id: integer, user_id: integer, sdcc_member_id: integer, name: string, phone: string, email: string, covered: boolean, -->
-		<div id="new-member-form" style='display: none;'>
-			<div class="create-form">
-				<form action='/members' method='POST' id='create-member-form'>
-					<h3>Create a new Member</h3>
-					<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-					<div class="form-group">
-						<label for='member[name]'>Name</label>
-						<input class="form-control" type="text" name='member[name]'>
-					</div>
-		      <div class="form-group">
-		        <label for='member[last_name]'>Last Name</label>
-		        <input class="form-control" type="text" name='member[last_name]'>
-		      </div>
-					<div class="form-group">
-						<label for='member[phone]'>Phone</label>
-						<input class="form-control" type="text" name='member[phone]'>
-					</div>
-					<div class="form-group">
-						<label for='member[email]'>E-Mail</label>
-						<input class="form-control" type="text" name='member[email]'>
-					</div>
-					<div class="form-group">
-						<label for='member[phone]'>SDCC Member ID</label>
-						<input class="form-control" id='sdcc_member_id_holder_create' type="text" name='member[sdcc_member_id]'>
-					</div>
-					<h3>Select the Days this member needs</h3>
-					<div class="form-check form-check-stacked">
-					  <label class="form-check-label">
-					  	<%= check_box_tag 'member[wensday]' %> Wensday
-					  </label>
-					</div>
-					<div class="form-check form-check-stacked">
-					  <label class="form-check-label">
-					  	<%= check_box_tag 'member[thursday]' %> Thursday
-					  </label>
-					</div>
-					<div class="form-check form-check-stacked">
-					  <label class="form-check-label">
-					  	<%= check_box_tag 'member[friday]' %> Friday
-					  </label>
-					</div>
-
-					<div class="form-check form-check-stacked">
-					  <label class="form-check-label">
-					  	<%= check_box_tag 'member[saturday]' %> Saturday
-					  </label>
-					</div>
-
-					<div class="form-check form-check-stacked">
-					  <label class="form-check-label">
-					  	<%= check_box_tag 'member[sunday]' %> Sunday
-					  </label>
-					</div>
-
-					<div id="error_list" style="color: red"></div>
-					<button type="submit" class="btn btn-primary">Register Member</button>
-				</form>
-			</div>
-		</div>
-		<% end %>
 	</div>
+
 	<div class='col-md-6 web_socket_loading' id='site-chat-box'>
 		<div class="file-folder row">
 			
@@ -186,6 +113,123 @@
         <button type="button" class="btn btn-primary conf-modal-footer" id='confirm-trigger'>CONFIRM</button>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- add member modal -->
+
+<!-- Modal -->
+<div id="addUserModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content content-add-member">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add Members</h4>
+      </div>
+      <div class="modal-body add-member">
+
+				<h2>Add member to this group</h2>
+				<p>
+					<b>(Only the user that started this group may add members to this group)</b>
+				</p>
+				<p>
+					To register yourself or a member into this group, please provide a valid SDCC member ID here, and check off the days desired.
+				</p>
+				<form method="post" id="reg-member">
+					<input type="hidden" name="member_group[group_id]" value="<%= @grp.id %>">
+						<input type="text" name="sdcc_member_id" id='sdcc_member_id_holder' class="form-control" style='width: 100%' placeholder="SDCC member ID">
+						<div id="error_list" style="color: red"></div>
+
+						<hr>
+						<input type="submit" style='width: 100%' class="btn btn-primary btn-lg" name="ADD">
+				</form>
+
+
+				<div class="browse">
+					<p>Or Select members from list</p>
+					<p>
+						<a href="#" id='browse-for-members' style='width: 100%' class="btn btn-primary btn-lg">Browse Members</a>
+					</p>
+				</div>
+
+				<div class="browse-control" style="display: none;">
+						<input type="text" name="q" id='am_modal_search' class="form-control" autocomplete="off" placeholder="Search Members by SDCC member ID or name..."/>
+						<div class='member-list-results-add-member'>
+						</div>
+				</div>
+
+
+				<!-- id: integer, user_id: integer, sdcc_member_id: integer, name: string, phone: string, email: string, covered: boolean, -->
+				<div id="new-member-form" style='display: none;'>
+					<div class="create-form">
+						<form action='/members' method='POST' id='create-member-form'>
+							<h3>Create a new Member</h3>
+							<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+							<div class="form-group">
+								<label for='member[name]'>Name</label>
+								<input class="form-control" type="text" name='member[name]'>
+							</div>
+				      <div class="form-group">
+				        <label for='member[last_name]'>Last Name</label>
+				        <input class="form-control" type="text" name='member[last_name]'>
+				      </div>
+							<div class="form-group">
+								<label for='member[phone]'>Phone</label>
+								<input class="form-control" type="text" name='member[phone]'>
+							</div>
+							<div class="form-group">
+								<label for='member[email]'>E-Mail</label>
+								<input class="form-control" type="text" name='member[email]'>
+							</div>
+							<div class="form-group">
+								<label for='member[phone]'>SDCC Member ID</label>
+								<input class="form-control" id='sdcc_member_id_holder_create' type="text" name='member[sdcc_member_id]'>
+							</div>
+							<h3>Select the Days this member needs</h3>
+							<div class="form-check form-check-stacked">
+							  <label class="form-check-label">
+							  	<%= check_box_tag 'member[wensday]' %> Wensday
+							  </label>
+							</div>
+							<div class="form-check form-check-stacked">
+							  <label class="form-check-label">
+							  	<%= check_box_tag 'member[thursday]' %> Thursday
+							  </label>
+							</div>
+							<div class="form-check form-check-stacked">
+							  <label class="form-check-label">
+							  	<%= check_box_tag 'member[friday]' %> Friday
+							  </label>
+							</div>
+
+							<div class="form-check form-check-stacked">
+							  <label class="form-check-label">
+							  	<%= check_box_tag 'member[saturday]' %> Saturday
+							  </label>
+							</div>
+
+							<div class="form-check form-check-stacked">
+							  <label class="form-check-label">
+							  	<%= check_box_tag 'member[sunday]' %> Sunday
+							  </label>
+							</div>
+
+							<div id="error_list" style="color: red"></div>
+							<button type="submit" class="btn btn-primary btn-lg">Register Member</button>
+						</form>
+					</div>
+				</div>
+
+
+
+      </div>
+      <div class="modal-footer add-member-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
   </div>
 </div>
 

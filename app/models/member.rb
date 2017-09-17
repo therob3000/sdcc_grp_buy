@@ -23,4 +23,8 @@ class Member < ApplicationRecord
 		end
 	end
 
+	def is_part_of(group_id)
+		member_groups.any? { |e| e.group_id == group_id }
+	end
+
 end

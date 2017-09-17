@@ -1,4 +1,7 @@
-<a href="#" class='btn smaller_member_item smaller_member_item_smaller' data-id='<%= member.id %>' style=''>
+<a href="#" class='btn smaller_member_item smaller_member_item_smaller' data-id='<%= member.id %>' data-sdcc-id='<%= member.sdcc_member_id %>' style=''>
 	 <%= member.name %> <%= member.last_name %>  <%= member.sdcc_member_id %>
+	 <% if member.covered %>
+	 	<b>COVERED</b>
+	 <% end %>
 </a>
 
