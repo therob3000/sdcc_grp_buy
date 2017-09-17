@@ -181,7 +181,7 @@
         ...
       </div>
       <div class="modal-footer">
-        <div class="working-message-conf" style="display: none;"><%= image_tag("ajax-loader.gif" %>)</div>
+        <div class="working-message-conf" style="display: none;"><%= image_tag("ajax-loader.gif") %></div>
         <button type="button" class="btn btn-secondary close-this-modal conf-modal-footer" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary conf-modal-footer" id='confirm-trigger'>CONFIRM</button>
       </div>
@@ -190,9 +190,9 @@
 </div>
 
 <% if @grp.is_fully_covered %>
-<style type="text/css">
-.content {
-	background-color: #6dff94;
-}
-</style>
+	<style type="text/css">
+	.content {
+		background-color: #6dff94;
+	}
+	</style>
 <% end %>
