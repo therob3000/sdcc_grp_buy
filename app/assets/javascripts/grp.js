@@ -5,7 +5,6 @@ $(document).ready(function() {
   $('body').on('click', '.form-check-stacked', function(event) {
     var checkBox = $(this).find('input[type="checkbox"]');
     checkBox.trigger('click');
-
     if (checkBox.is(':checked')) {
       $(this).css('background-color','#fd7777');
       $(this).css('color','white');
@@ -14,6 +13,7 @@ $(document).ready(function() {
       $(this).css('color','black');
     }
   });
+
 	$('body').on('submit', '#create-member-form', function(event) {
 		event.preventDefault();
 		// create the member.
