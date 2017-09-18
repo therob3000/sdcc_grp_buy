@@ -231,7 +231,10 @@ $(document).ready(function() {
 				var obj = {connection: connectionID, room: group_id, member_id: data.member_id, member_group_id: data.member_group_id}
 				$('.add-member-footer .btn').trigger('click');
 				dispatcher.trigger('register_member', obj);
-				// dispatcher.trigger('group_updated', obj);
+				setTimeout(function(){
+					dispatcher.trigger('group_updated', obj);
+				},1000);
+
 			} else {
 				if (data.new_member) {
 					$('#new-member-form').slideDown('500', function() {
@@ -254,9 +257,15 @@ $(document).ready(function() {
 			if (data.success) {
 				var obj = {connection: connectionID, member_group_id: data.member_group_id, groups: data.groups, group_id: data.group_id};
 				dispatcher.trigger('cover_member', obj);
-				// dispatcher.trigger('group_updated', {room: group_id});
+				setTimeout(function(){
+					dispatcher.trigger('group_updated', {room: group_id});
+				},1000);
+
 			} else {
-				// dispatcher.trigger('group_updated', {room: group_id});
+				setTimeout(function(){
+					dispatcher.trigger('group_updated', {room: group_id});
+				},1000);
+
 				populateErrors(data.message);
 			}
 		})
@@ -272,7 +281,10 @@ $(document).ready(function() {
     .done(function(data) {
     	if (data.success) {
 			  	var obj = {connection: connectionID, room: group_id, member_group_id: data.message}
-					// dispatcher.trigger('group_updated', {room: group_id});
+					setTimeout(function(){
+						dispatcher.trigger('group_updated', {room: group_id});
+					},500);
+
 					dispatcher.trigger('unregister', obj)
     	}
     })
@@ -286,6 +298,10 @@ $(document).ready(function() {
     })
     .done(function(data) {
     	$("#member-list").append(data);
+    	setTimeout(function(){
+						dispatcher.trigger('group_updated', {room: group_id});
+			},500);
+
     	if (dispatcher.state == 'connected') {
     		$('.web_socket_loading').fadeIn(500, function() {});
     	}
@@ -375,7 +391,7 @@ $(document).ready(function() {
 
 			  	if (newCount != oldCount) {
 			  		$("#side-item-count-for-group-" + group_id_specific).text(newCount);
-			  		shake($("#side-item-count-for-group-" + group_id_specific));
+			  		shake(document.getElementById("side-item-count-for-group-" + group_id_specific));
 			  	}
 		    })
 
