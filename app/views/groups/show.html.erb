@@ -19,16 +19,16 @@
 
 	<div class="member-box room-box col-md-6">
 	<% if current_user.groups.map { |e| e.id }.include?(@grp.id) %>
-	<button type="button" class="btn btn-primary btn-lg web_socket_loading" style="width: 100%;" data-toggle="modal" data-target="#addUserModal">Add Member to this Group</button>
 	<% end %>
 	<% if  @grp.member_groups.count == 1 %>
+	  <a href="#" type="button" class="btn btn-warning btn-lg web_socket_loading" style="width: 100%;" data-toggle="modal" data-target="#addUserModal">+ Member</a>
 		<h2 class='number-of-members'><%= @grp.member_groups.count %> Member in this buying group</h2>
 	<% elsif  @grp.member_groups.count == 0 %>
+	  <a href="#" type="button" class="btn btn-warning btn-lg web_socket_loading" style="width: 100%;" data-toggle="modal" data-target="#addUserModal">+ Member</a>
 		<h2 class='number-of-members'>This buying group is empty</h2>
 	<% else %>
 		<h2 class='number-of-members'><%= @grp.member_groups.count %> Members in this buying group</h2>
-
-
+	  <a href="#" type="button" class="btn btn-warning btn-lg web_socket_loading" style="width: 100%;" data-toggle="modal" data-target="#addUserModal">+ Member</a>
 		<h5><a href="#" id='non-covered-toggle' style="width: 100%" class='btn btn-primary btn-lg'>Toggle Non-Covered Members</a></h5>
 	<% end %>
 		<div class="member-list" id='member-list'>
