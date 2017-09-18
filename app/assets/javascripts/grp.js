@@ -58,7 +58,7 @@ $(document).ready(function() {
 
 	$('body').on('click', '.iam', function(event) {
 		event.preventDefault();
-		$('input[name="conf[covering_id]"').val('');
+		$('input[name="conf[covering_id]"]').val('');
 		updateCoveredName();
 	});
 
@@ -67,10 +67,10 @@ $(document).ready(function() {
 		$('#cover_member_box').slideDown(1000, function() {});
 	});
 
-	$('body').on('click', '.member-list-results .smaller_member_item', function(event) {
+	$('body').on('click', '.member-list-results .list-item .smaller_member_item', function(event) {
 		event.preventDefault();
 		var member_id = $(this).attr('data-id');
-		$('input[name="conf[covering_id]"').val(member_id);
+		$('input[name="conf[covering_id]"]').val(member_id);
 		updateCoveredName();
 	});
 
@@ -144,7 +144,7 @@ $(document).ready(function() {
 	});
 
 	function updateCoveredName(){
-		var val = $('input[name="conf[covering_id]"').val();
+		var val = $('input[name="conf[covering_id]"]').val();
 		if (val == '') {
 			$('#cover_name').html('<b>You</b> are Covering this user');
 		} else {
@@ -231,6 +231,7 @@ $(document).ready(function() {
 				var obj = {connection: connectionID, room: group_id, member_id: data.member_id, member_group_id: data.member_group_id}
 				$('.add-member-footer .btn').trigger('click');
 				dispatcher.trigger('register_member', obj);
+				// dispatcher.trigger('group_updated', obj);
 			} else {
 				if (data.new_member) {
 					$('#new-member-form').slideDown('500', function() {
@@ -253,7 +254,9 @@ $(document).ready(function() {
 			if (data.success) {
 				var obj = {connection: connectionID, member_group_id: data.member_group_id, groups: data.groups, group_id: data.group_id};
 				dispatcher.trigger('cover_member', obj);
+				// dispatcher.trigger('group_updated', {room: group_id});
 			} else {
+				// dispatcher.trigger('group_updated', {room: group_id});
 				populateErrors(data.message);
 			}
 		})
@@ -269,6 +272,7 @@ $(document).ready(function() {
     .done(function(data) {
     	if (data.success) {
 			  	var obj = {connection: connectionID, room: group_id, member_group_id: data.message}
+					// dispatcher.trigger('group_updated', {room: group_id});
 					dispatcher.trigger('unregister', obj)
     	}
     })
@@ -356,6 +360,23 @@ $(document).ready(function() {
 			    $("#member_row_" + mes.member_group_id).addClass('member_covered');
 			    $('.active-button-' + mes.member_id).hide(500);
 			    $("#action-holder-for" + mes.member_group_id).html("This member has been covered");
+		    })
+
+		    channel_global.bind("group_updated",function(mes) {
+		    	var group_id_specific = mes.group_id
+		    	var newCount = mes.count
+		    	var oldCount = $("#side-item-count-for-group-" + group_id_specific).text();
+
+			  	if (mes.complete) {
+				  	$("#side-item-group-" + group_id_specific).css('background-color', '#6dff94');
+			  	} else {
+				  	$("#side-item-group-" + group_id_specific).css('background-color', '#ffdada');
+			  	}
+
+			  	if (newCount != oldCount) {
+			  		$("#side-item-count-for-group-" + group_id_specific).text(newCount);
+			  		shake($("#side-item-count-for-group-" + group_id_specific));
+			  	}
 		    })
 
 		    // listen for active members
@@ -558,6 +579,32 @@ $('body').on('click', '.expand-chat-log-global', function(event) {
 	        else
 	          {
 	            initial-=25
+	          }
+	        shakeSub.style.marginRight=initial+"px"
+	        incre+=1
+	        setTimeout(quibble,20)
+	      } else {
+	        shakeSub.style.marginRight="25px"
+
+	      }
+	    }
+
+  }
+
+  var shake = function(shakeSub){
+	  var initial=0
+	  var incre=0
+		quibble()
+    function quibble(){
+	      if(incre<10)
+	      {
+	        if(incre%2==0)
+	          {
+	            initial+=15
+	          }
+	        else
+	          {
+	            initial-=15
 	          }
 	        shakeSub.style.marginRight=initial+"px"
 	        incre+=1

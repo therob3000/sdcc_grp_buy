@@ -1,9 +1,12 @@
   <% groups.try(:each).try(:each) do |grp| %>
-    <li class='clock-slot  <%= (!@grp.nil? && @grp.id == grp.id) ? "group_active" : "group-slot" %> li_grp_for_<%= grp.id %> <%= grp.member_lists %>' style="background-color: <%= grp.coverage %>">
+    <li id="side-item-group-<%= grp.id %>" class='clock-slot  <%= (!@grp.nil? && @grp.id == grp.id) ? "group_active" : "group-slot" %> li_grp_for_<%= grp.id %> <%= grp.member_lists %>' style="background-color: <%= grp.coverage %>">
     <% if (!@grp.nil? && @grp.id == grp.id)%>
-      <%= grp.name %> (<%= grp.number_covered %>/<%= grp.member_groups.count %>)
+      <%= grp.name %> <br>
+      coverage: <span id="side-item-count-for-group-<%= grp.id %>">	<%= grp.number_covered %>/<%= grp.member_groups.count %></span>
     <% else %>
-      <a class='group-list-item' href="/groups/<%= grp.id %>"><%= grp.name %> (<%= grp.number_covered %>/<%= grp.member_groups.count %>)</a>
+      <a class='group-list-item' href="/groups/<%= grp.id %>"><%= grp.name %> <br>
+      	coverage: <span id="side-item-count-for-group-<%= grp.id %>">	<%= grp.number_covered %>/<%= grp.member_groups.count %></span>
+      </a>
     <% end %>
     </li>
   <% end %>

@@ -22,12 +22,24 @@ class BroadcastsController < WebsocketRails::BaseController
 		member_id = message[:member_id]
 	end
 
+	def group_updated
+		group_id = message[:room]
+		grp = Group.find(group_id);
+		count = grp.count_string
+		obj = {
+			group_id: group_id, 
+			count: count
+		}
+
+		WebsocketRails["global"].trigger('group_updated', obj)
+	end
+
 	def cover_member_for_group
 		room = message[:group_id]
 		member_group_id = message[:member_group_id]
 		member_id = MemberGroup.find(message[:member_group_id]).member.id
 		connection = message[:connection]
-		WebsocketRails["global"].trigger('member_covered', {member_id: member_id, member_group_id: member_group_id}, connection_id: connection)
+		WebsocketRails["global"].trigger('member_covered', {member_id: member_id, member_group_id: member_group_id, connection_id: connection})
 	end
 
 	def someone_typing
