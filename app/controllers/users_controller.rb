@@ -58,6 +58,12 @@ class UsersController < ApplicationController
     if code == temp.val_code
       user = User.new(:name => temp.name, :password => temp.password, :password_confirmation => temp.password, :avatar_url => temp.avatar_url, :email => temp.email)
       if user.save
+        # find member with the email of this user
+        if Member.exists?(:email => user.email)
+          mem = Member.find_by_email(user.email)
+          mem.user_id = user.id
+          mem.save
+        end
         sign_in(:user, user)
         redirect_to '/'
       else

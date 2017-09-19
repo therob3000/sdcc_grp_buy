@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   resources :members do 
     collection do
       get 'cover_member'
+      get 'find_me'
       delete 'remove_member'
       post 'register_member_to_group'
       post 'register_member'

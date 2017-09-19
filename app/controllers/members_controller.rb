@@ -1,6 +1,6 @@
 class MembersController < ApplicationController
 	before_action :authenticate_user!
-	before_action :validate, :only => [:register_member,:register_member_to_group,:remove_member,:cover_member, :present_confirmation_partial, :find_member_name]
+	before_action :validate, :only => [:register_member,:register_member_to_group,:remove_member,:cover_member, :present_confirmation_partial, :find_member_name, :find_me]
 
 	before_action :user_owns, :only => [:edit, :update]
 
@@ -109,9 +109,9 @@ class MembersController < ApplicationController
 
 	def search_smaller
 		if !!(params[:search] =~ /\A[-+]?[0-9]+\z/)
-			@members = Member.where('lower(sdcc_member_id) like ?', "%#{params[:search].try(:downcase)}%").first(4)
+			@members = Member.where('lower(sdcc_member_id) like ? AND user_id = ?', "%#{params[:search].try(:downcase)}%", current_user.id).first(4)
 		else
-			@members = Member.where('lower(name) like ?', "%#{params[:search].downcase}%").first(4)
+			@members = Member.where('lower(name) like ? AND user_id = ?', "%#{params[:search].downcase}%", current_user.id).first(4)
 		end
 		# render :partial => "group_list", :locals => { :members => @members }
 		if params[:type_search] == 'cover'
@@ -239,6 +239,16 @@ class MembersController < ApplicationController
 
 			render :json => { :success => false, :message => errs, :email_status => email_status }
 		end
+	end
+
+	def find_me
+		if Member.exists?(:email => params[:email])
+			member_id = Member.find_by_email(params[:email]).id
+		else
+			member_id = ''
+		end
+
+		render :json => { :member_id => member_id }
 	end
 
 	private

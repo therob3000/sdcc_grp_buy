@@ -58,7 +58,14 @@ $(document).ready(function() {
 
 	$('body').on('click', '.iam', function(event) {
 		event.preventDefault();
-		$('input[name="conf[covering_id]"]').val('');
+		$.ajax({
+			url: '/members/find_me',
+			data: {email: $(this).attr('my_email')},
+		})
+		.done(function(data) {
+			$('input[name="conf[covering_id]"]').val(data.member_id);
+		})
+		
 		updateCoveredName();
 	});
 
