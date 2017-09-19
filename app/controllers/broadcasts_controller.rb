@@ -24,13 +24,20 @@ class BroadcastsController < WebsocketRails::BaseController
 
 	def group_updated
 		group_id = message[:room]
-		grp = Group.find(group_id);
-		count = grp.count_string
+		count = message[:count]
+		total = count.split('/')[1]
+		covered = count.split('/')[0]
+		if covered == total
+			complete = true
+		else
+			complete = false
+		end
+
 		obj = {
 			group_id: group_id, 
-			count: count
+			count: count,
+			complete: complete
 		}
-
 		WebsocketRails["global"].trigger('group_updated', obj)
 	end
 

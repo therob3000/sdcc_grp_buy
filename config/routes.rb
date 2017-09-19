@@ -68,6 +68,7 @@ Rails.application.routes.draw do
 
   resources :groups do 
     collection do 
+      get 'get_count'
       get 'add_comment'
       get 'present_member'
       get 'search'

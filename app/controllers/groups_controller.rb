@@ -16,6 +16,13 @@ class GroupsController < ApplicationController
 		render :partial => 'groups/group_list_sidebar', :locals => { :groups => @groups}
 	end
 
+	def get_count
+		@group = Group.find(params[:group_id])
+		count = @group.count_string
+
+		render :json => { :count => count }
+	end
+
 	def private_search
 		@groups = Group.where('lower(name) like ? and user_id = ?', "%#{params[:search]}%", current_user.id)
 		# render :partial => "group_list_sidebar", :locals => { :groups => @groups }

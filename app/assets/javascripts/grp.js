@@ -67,12 +67,6 @@ $(document).ready(function() {
 		$('#cover_member_box').slideDown(1000, function() {});
 	});
 
-	$('body').on('click', '.member-list-results .list-item .smaller_member_item', function(event) {
-		event.preventDefault();
-		var member_id = $(this).attr('data-id');
-		$('input[name="conf[covering_id]"]').val(member_id);
-		updateCoveredName();
-	});
 
 	$('body').on('click', '#browse-for-members', function(event) {
 		event.preventDefault();
@@ -88,7 +82,15 @@ $(document).ready(function() {
 
 	}
 
-	$('body').on('click', '.member-list-results-add-member .smaller_member_item', function(event) {
+	$('body').on('click', '.member-list-results .list-member .smaller_member_item', function(event) {
+		// debugger
+		event.preventDefault();
+		var member_id = $(this).attr('data-id');
+		$('input[name="conf[covering_id]"]').val(member_id);
+		updateCoveredName();
+	});
+
+	$('body').on('click', '.member-list-results-add-member .list-member .smaller_member_item', function(event) {
 		event.preventDefault();
 		var member_id = $(this).attr('data-sdcc-id');
 		$('input[name="sdcc_member_id"]').val(member_id);
@@ -113,8 +115,11 @@ $(document).ready(function() {
 			data: data,
 		})
 		.done(function(data) {
+			getGroupCount();
+			$('.working-message-conf').fadeOut(500, function() {
+				$('.conf-modal-footer').fadeIn(500);
+			});
 			if (data.success) {
-				//  TODO:  broadcast message
 				dispatcher.trigger('cover_member', { 
 					member_id: data.member_id,
 					member_group_id:data.member_group_id,
@@ -124,16 +129,21 @@ $(document).ready(function() {
 				});
 				$('.member-coverage-form').trigger('reset');
 				$('.close-this-modal').trigger('click');
-				$('.working-message-conf').fadeOut(500, function() {
-					$('.conf-modal-footer').fadeIn(500);
-				});
 			} else {
-				$('.member-coverage-form').trigger('reset');
-				$('.working-message-conf').fadeOut(500, function() {
-					$('.conf-modal-footer').fadeIn(500);
-				});
-				$('.close-this-modal').trigger('click');
-				alert(data.message)
+				if (data.email_status == 'failed') {
+					$('.member-coverage-form').trigger('reset');
+
+					dispatcher.trigger('cover_member', { 
+						member_id: data.member_id,
+						member_group_id:data.member_group_id,
+						group_id:data.group_id,
+						groups:data.groups, 
+						connection: connectionID
+					});
+					$('.close-this-modal').trigger('click');
+				} else {
+					alert(data.message)
+				}
 			}
 		})
 	});
@@ -231,10 +241,6 @@ $(document).ready(function() {
 				var obj = {connection: connectionID, room: group_id, member_id: data.member_id, member_group_id: data.member_group_id}
 				$('.add-member-footer .btn').trigger('click');
 				dispatcher.trigger('register_member', obj);
-				setTimeout(function(){
-					dispatcher.trigger('group_updated', obj);
-				},1000);
-
 			} else {
 				if (data.new_member) {
 					$('#new-member-form').slideDown('500', function() {
@@ -254,19 +260,12 @@ $(document).ready(function() {
 			data: {member_id: member_id, need_id: need_id, member_group_id: member_group_id, group_id: group_id},
 		})
 		.done(function(data) {
+			getGroupCount();
 			if (data.success) {
 				var obj = {connection: connectionID, member_group_id: data.member_group_id, groups: data.groups, group_id: data.group_id};
 				dispatcher.trigger('cover_member', obj);
-				setTimeout(function(){
-					dispatcher.trigger('group_updated', {room: group_id});
-				},1000);
-
 			} else {
-				setTimeout(function(){
-					dispatcher.trigger('group_updated', {room: group_id});
-				},1000);
-
-				populateErrors(data.message);
+				// populateErrors(data.message);
 			}
 		})
 		
@@ -281,13 +280,25 @@ $(document).ready(function() {
     .done(function(data) {
     	if (data.success) {
 			  	var obj = {connection: connectionID, room: group_id, member_group_id: data.message}
+					dispatcher.trigger('unregister', obj);
 					setTimeout(function(){
-						dispatcher.trigger('group_updated', {room: group_id});
-					},500);
-
-					dispatcher.trigger('unregister', obj)
+						getGroupCount();
+					},1000)
+			
     	}
     })
+  }
+
+  var getGroupCount = function (){
+		setTimeout(function(){
+	  	$.ajax({
+	  		url: '/groups/get_count',
+	  		data: {group_id: group_id},
+	  	})
+	  	.done(function(data) {
+				dispatcher.trigger('group_updated', {count: data.count, room: group_id});
+	  	})
+		},500);
   }
 
   var addMemberToDom = function(message) {
@@ -298,13 +309,10 @@ $(document).ready(function() {
     })
     .done(function(data) {
     	$("#member-list").append(data);
-    	setTimeout(function(){
-						dispatcher.trigger('group_updated', {room: group_id});
-			},500);
-
     	if (dispatcher.state == 'connected') {
-    		$('.web_socket_loading').fadeIn(500, function() {});
+    		$('.web_socket_loading').fadeIn(500);
     	}
+    	getGroupCount();
     })
   }
 
@@ -383,15 +391,26 @@ $(document).ready(function() {
 		    	var newCount = mes.count
 		    	var oldCount = $("#side-item-count-for-group-" + group_id_specific).text();
 
+		    	if (mes.group_id != group_id) {
+				  	$("#side-item-group-" + group_id_specific).css("border-left", "10px solid red");
+		    	}
 			  	if (mes.complete) {
 				  	$("#side-item-group-" + group_id_specific).css('background-color', '#6dff94');
+				  	if (group_id == group_id_specific) {
+				  		$(".content").css('background-color', '#6dff94');
+				  	} 
 			  	} else {
-				  	$("#side-item-group-" + group_id_specific).css('background-color', '#ffdada');
+				  	$("#side-item-group-" + group_id_specific).css('background-color', '#ecf0f5');
+			  		$(".content").css('background-color', 'transparent');
+
 			  	}
 
+		  		$("#side-item-count-for-group-" + group_id_specific).text(newCount);
 			  	if (newCount != oldCount) {
-			  		$("#side-item-count-for-group-" + group_id_specific).text(newCount);
-			  		shake(document.getElementById("side-item-count-for-group-" + group_id_specific));
+			  		$("#side-item-count-for-group-" + group_id_specific).css('background-color', 'yellow');
+			  		setTimeout(function(){
+				  		$("#side-item-count-for-group-" + group_id_specific).css('background-color', 'transparent');
+			  		},1000)
 			  	}
 		    })
 
@@ -557,8 +576,9 @@ $('body').on('click', '.expand-chat-log-global', function(event) {
     	.done(function(data) {
 		      $("#chat_log").prepend(data);
 		      shakeLastMessageGrp('group');
-    	})
-    	
+    	});
+
+    	getGroupCount();
     var elem = $('#chat_log');
     elem.scrollTop = 0;
     console.log('just received new message: ' + message);

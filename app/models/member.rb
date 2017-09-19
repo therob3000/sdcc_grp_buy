@@ -23,6 +23,14 @@ class Member < ApplicationRecord
 		end
 	end
 
+	def active
+		!sponsor_id.nil?
+	end
+
+	def covered
+		Purchase.exists?(:member_id => id)
+	end
+
 	def is_part_of(group_id)
 		member_groups.any? { |e| e.group_id == group_id }
 	end
