@@ -1,0 +1,37 @@
+<% @groups.each do |grp| %>
+<div class="master-list-group row">
+	<div class="col-lg-3">
+		<a href="/groups/<%= grp.id %>"><%=grp.name%></a>
+	</div>
+	<div class="col-lg-3 mast-tab-col">
+		dsfsd
+	</div>
+	<div class="col-lg-3 mast-tab-col">
+		dsd
+	</div>
+	<div class="col-lg-3 mast-tab-col">
+		dsd
+	</div>
+
+</div>
+<% end %>
+
+<style type="text/css">
+	.master-list-group {
+    background-color: #c9d588;
+    width: 90%;
+    margin-bottom: 10px;
+    padding: 7px;
+    border-radius: 10px;
+	}
+
+	.master-list-group a{
+		border-style: none;
+	}
+
+	.mast-tab-col {
+		    background-color: transparent;
+    margin-left: 0px;
+    padding: 17px;
+	}
+</style>
