@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170917015856) do
+ActiveRecord::Schema.define(version: 20171019012741) do
 
   create_table "chat_messages", force: :cascade do |t|
     t.string   "message"
@@ -58,7 +58,7 @@ ActiveRecord::Schema.define(version: 20170917015856) do
 
   create_table "members", force: :cascade do |t|
     t.integer  "user_id"
-    t.integer  "sdcc_member_id"
+    t.string   "sdcc_member_id"
     t.string   "name"
     t.string   "phone"
     t.string   "email"
