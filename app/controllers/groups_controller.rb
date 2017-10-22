@@ -58,7 +58,7 @@ class GroupsController < ApplicationController
 		if mess.save
 			render :json => { :success => true, :message => mess.id, :user_id => current_user.id, :type => type }
 		else 
-			render :json => { :success => false, :message => @grp.errors.full_messages, :type => type }
+			render :json => { :success => false, :message => mess.errors.full_messages, :type => type }
 		end		
 	end
 
