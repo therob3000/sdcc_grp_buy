@@ -1,4 +1,5 @@
 class AdminsController < ApplicationController
+	require "csv"
 	before_action :authenticate_user!, :validate_admin
 	include SecurityHelper
 
@@ -22,6 +23,51 @@ class AdminsController < ApplicationController
 		else
 			render :json => { :success => false, :message => member.errors.full_messages.join(',') }
 		end
+	end
+
+	def upload_csv
+    myfile = params[:file]
+		@rowarraydisp = CSV.read(myfile.path)
+		keys = []
+		errors = []
+		success = []
+		 	
+		@rowarraydisp.each_with_index do |row,idx|
+			if idx == 0
+				keys = row	
+			else			
+				obj = {}
+				row.each_with_index do |r,number|
+					obj[keys[number]] = r
+				end
+
+				# create the member
+				creation_obj = {
+					:user_id => current_user.id,
+					:sdcc_member_id => obj['CC Member ID'],
+					:email => obj['CC email address'],
+					:name => obj['First name'], 
+					:last_name => obj['Last name'], 
+					:wensday => true, 
+					:thursday => true, 
+					:friday => true, 
+					:saturday => true, 
+					:sunday => true
+				}
+				mem = Member.new(creation_obj)
+				if mem.save
+					success << "Created member: #{obj['CC Member ID']}"
+				else
+					errors << "#{obj['CC Member ID']}: #{mem.errors.full_messages.join(',')}"
+				end
+			end
+		end
+
+		 	
+		# render :json => { :errors => error, :success => success }
+		flash[:errors] = errors
+		flash[:success] = success
+		redirect_to :back
 	end
 
 	def groups_index

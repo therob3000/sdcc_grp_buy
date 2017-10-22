@@ -6,7 +6,11 @@
 <% end %>
 	<div class="mem-block name-holder">
 		<b>Name:</b> <a href="#" class='member-modal-pop btn' data-toggle="modal" data-target="#memberModal" data-id='<%= member.try(:id) %>'> <%= member.try(:name) %> </a><br>
-		<b>SDCC ID:</b> <br><%= member.try(:display_last) %> <%= member.try(:sdcc_member_id) %>
+		<b>SDCC ID:</b> <br>
+		<%= member.try(:display_last) %> 
+		<b>
+			<%= member.try(:sdcc_member_id) %>
+		</b>
 	</div>
 	<div class="mem-block day-holder" style='float: center;'>
 		<b>Days Needed:</b><br><br>
@@ -23,7 +27,7 @@
 	<% if !grp.nil? %>
 			<% if member.covered %>
 					<div class="covered-member">	
-							This member has been covered <br>
+							This member has been bought for <br>
 					</div>
 			<% elsif member.active && !current_user.is_buying_for?(member) %>
 					<div class="mem-block-message" id="action-message-for<%= member.try(:id) %>" style='float: right; display: block;'>

@@ -55,6 +55,7 @@ Rails.application.routes.draw do
     end
     
     collection do 
+      post 'upload_csv'
       get 'search'
       get 'search_users'
       get 'search_members'

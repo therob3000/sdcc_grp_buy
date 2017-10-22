@@ -29,6 +29,7 @@ class MembersController < ApplicationController
 		redirect_to :back
 	end
 
+
 	def present_confirmation_partial
 		mem = Member.find(params[:member_id])
 		memgrp = MemberGroup.find(params[:mem_group_id])

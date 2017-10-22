@@ -55,6 +55,7 @@ gem 'websocket-rails', github: 'recurser/websocket-rails', branch: 'bugfix/388-l
 
 # gem 'aws-sdk', '~> 2'
 # gem 'aws-sdk-rails'
+# gem 'csv'
 
 group :development, :test do
   gem 'sqlite3'
