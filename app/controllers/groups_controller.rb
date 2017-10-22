@@ -50,7 +50,7 @@ class GroupsController < ApplicationController
 		mess.user_id = current_user.id
 		if params[:type] == 'global'
 			mess.global_scope = true
-			mess.group_id = nil
+			# mess.group_id = nil
 		end
 
 		type = params[:type]
