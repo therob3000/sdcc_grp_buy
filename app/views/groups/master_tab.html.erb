@@ -1,22 +1,59 @@
-<% @groups.each do |grp| %>
+<div class="info_top">
+  <%= image_tag("danger.gif") %>  Your live connection was interrupted, please refresh your browser to continue getting live updates  <%= image_tag("danger.gif") %>
+</div>
+<div class="loading">
+ <%= image_tag("bar.gif") %>  <br>
+  websocket loading, please wait... (if this takes more than 5 seconds then refresh your browser)
+</div>
+
+<div class="web_socket_loading room-box col-md-6">
+	
 <div class="master-list-group row">
-	<div class="col-lg-3">
-		<a href="/groups/<%= grp.id %>"><%=grp.name%></a>
+	<div class="col-lg-3 header-col">
+		GROUP NAME
 	</div>
-	<div class="col-lg-3 mast-tab-col">
-		dsfsd
+	<div class="col-lg-7 header-col mast-tab-col">
+		PROGRESS
 	</div>
-	<div class="col-lg-3 mast-tab-col">
-		dsd
+	<div class="col-lg-2 header-col mast-tab-col">
+		TOTAL MEMBERS
 	</div>
-	<div class="col-lg-3 mast-tab-col">
-		dsd
+</div>
+
+<% @groups.each do |grp| %>
+<% next if grp.member_groups.count <= 0 %>
+	<div class="master-list-group row" id="master_tab_group_<%= grp.id %>">
+		<%= render :partial => 'groups/master_tab_group', :locals => { :grp => grp } %>
 	</div>
+	
+<% end %>
+</div>
+<div class='col-md-6 web_socket_loading' id='site-chat-box'>
+	
+
+<div class="chat-box chat-box-global room-box-global" style='display: block;'>
+			<div id="chat_container-global">
+				<div class="chat-form-global">
+					<form id='chat-dialog-global'>
+						<h4>Global Chat Room</h4>
+						<input type="text" name="" class='chat-input-dialog chat-message-input-global chat-message-input' scope='global' placeholder="SAy sumthin'.....">
+					</form>
+					<span class="someone_typing_global"></span>
+				</div>
+				<div class="chat-log-global" id='chat_log_global'>
+					<% @global_chat_messages.order('created_at DESC').each do |message| %>
+						<%= render :partial => 'groups/chat_line_global', :locals => { :message => message, :user => message.user, :from => 'todom' } %>			
+					<% end %>
+				</div>
+			</div>
+		</div>
 
 </div>
-<% end %>
-
 <style type="text/css">
+	.header-col {
+		font-weight: bold;
+	}
+
 	.master-list-group {
     background-color: #c9d588;
     width: 90%;

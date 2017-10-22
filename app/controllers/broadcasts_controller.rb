@@ -46,7 +46,7 @@ class BroadcastsController < WebsocketRails::BaseController
 		member_group_id = message[:member_group_id]
 		member_id = MemberGroup.find(message[:member_group_id]).member.id
 		connection = message[:connection]
-		WebsocketRails["global"].trigger('member_covered', {member_id: member_id, member_group_id: member_group_id, connection_id: connection})
+		WebsocketRails["global"].trigger('member_covered', {member_id: member_id, member_group_id: member_group_id, group_id: room, connection_id: connection})
 	end
 
 	def someone_typing

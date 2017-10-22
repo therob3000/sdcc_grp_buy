@@ -1,0 +1,14 @@
+		<div class="col-lg-3">
+			<a href="/groups/<%= grp.id %>"><%=grp.name%></a>
+		</div>
+		<div class="col-lg-7 mast-tab-col">
+			<div class="progress">
+			  <div class="progress-bar" role="progressbar" aria-valuenow="<%= grp.count_percent %>"
+			  aria-valuemin="0" aria-valuemax="100" style="width:<%= grp.count_percent %>%">
+			    <%= grp.count_percent %>
+			  </div>
+			</div>
+		</div>
+		<div class="col-lg-2 mast-tab-col">
+			<%= grp.count_string %>
+		</div>

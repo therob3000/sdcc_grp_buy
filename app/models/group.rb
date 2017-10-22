@@ -17,6 +17,16 @@ class Group < ApplicationRecord
 		member_groups.select { |e| e.member.try(:covered) }.count
 	end
 
+	def count_percent
+		if member_groups.count > 0
+			output = (number_covered.to_f / member_groups.count.to_f)*100
+		else
+			output = 0
+		end
+	
+		output		
+	end
+
 	def count_string
 		"#{number_covered}/#{member_groups.count}"
 	end

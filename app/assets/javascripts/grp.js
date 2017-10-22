@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	if (group_id == 'undefined') {
+	if (group_id == 'undefined' && group_id != 'master_tab') {
 		return;
 	}
   $('body').on('click', '.form-check-stacked', function(event) {
@@ -354,9 +354,6 @@ $(document).ready(function() {
 
 		    // listen for newly registered members
 		    channel.bind("member_registered", function(mes) {
-		    	// if (message.connection_id != connectionID) {
-		    	// 	return;
-		    	// }
 		    	var number = mes.num_of_ppl;
 		    	if (number == 1) {
 			    	$(".number-of-members").text(number + ' Member in this buying group')
@@ -370,10 +367,8 @@ $(document).ready(function() {
 
 		    // listen for any dropped members
 		    channel.bind("unregister_member",function(mes) {
-		    	// if (message.connection_id != connectionID) {
-		    	// 	return;
-		    	// }
 		    	var number = mes.num_of_ppl;
+
 		    	if (number == 1) {
 			    	$(".number-of-members").text(number + ' Member in this buying group')
 		    	} else if (number == 0) {
@@ -383,7 +378,7 @@ $(document).ready(function() {
 		    	}
 		    	$("#member_row_" + mes.member_group_id).fadeOut('500', function() {
 				    $("#member_row_" + mes.member_group_id).remove();
-		    	});;
+		    	});
 		    })
 
 		    // listen for any covered members across all groups in this group
@@ -393,10 +388,24 @@ $(document).ready(function() {
 			    $("#action-holder-for" + mes.member_group_id).html("This member has been covered");
 		    })
 
+
+
 		    channel_global.bind("group_updated",function(mes) {
 		    	var group_id_specific = mes.group_id
 		    	var newCount = mes.count
 		    	var oldCount = $("#side-item-count-for-group-" + group_id_specific).text();
+
+
+			    if (group_id == 'master_tab') {
+			    	// find the row and update the percent
+			    	$.ajax({
+			    		url: '/groups/present_master_partial',
+			    		data: {group_id: group_id_specific}
+			    	})
+			    	.done(function(html) {
+				    	$("#master_tab_group_" + group_id_specific).html(html);
+			    	})
+			    }
 
 		    	if (mes.group_id != group_id) {
 				  	$("#side-item-group-" + group_id_specific).css("border-left", "10px solid red");

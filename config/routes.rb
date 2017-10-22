@@ -75,7 +75,9 @@ Rails.application.routes.draw do
       get 'present_member'
       get 'search'
       get 'private_search'
+      get 'present_master_partial'
       post 'process_message'
+      get 'master_tab'
     end
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

@@ -45,12 +45,17 @@ class GroupsController < ApplicationController
 		end
 	end
 
+	def present_master_partial
+		grp = Group.find(params[:group_id])
+		render :partial => 'groups/master_tab_group', :locals => { :grp => grp }
+	end
+
 	def process_message
 		mess = ChatMessage.new(message_params)
 		mess.user_id = current_user.id
 		if params[:type] == 'global'
 			mess.global_scope = true
-			# mess.group_id = nil
+			mess.group_id = nil
 		end
 
 		type = params[:type]
@@ -62,6 +67,12 @@ class GroupsController < ApplicationController
 		end		
 	end
 
+	def master_tab
+		@groups = Group.all
+		@page = 'master_tab'
+		@global_chat_messages = ChatMessage.global_chats
+	end
+
 	def add_comment
 		message = ChatMessage.find(params[:message_id])
 		render :partial => 'groups/chat_line', :locals => { :message => message, :user => message.user, :from => params[:from] }
@@ -69,7 +80,7 @@ class GroupsController < ApplicationController
 
 	def show
 		@grp = Group.find(params[:id])
-
+		@page = 'group_show_page'
 		@global_chat_messages = ChatMessage.global_chats
 		# @messages = ChatMessage.select { |e| e.group_id == @grp.id } 
 	end

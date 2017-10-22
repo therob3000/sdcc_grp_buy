@@ -1,5 +1,5 @@
 class ChatMessage < ApplicationRecord
-	belongs_to :group
+	belongs_to :group, optional: true
 	belongs_to :user
 	order("events.created_at ASC")
 

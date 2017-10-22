@@ -53,6 +53,9 @@
 
               <% if current_user.try(:is_admin) %>
                 <li class="">
+                  <a href="/groups/master_tab" class='btn btn-lg btn-warning'>Master View</a>
+                </li>
+                <li class="">
                   <a href="/admins" class='btn btn-lg btn-warning'>CODES</a>
                 </li>
                 <li class="">
@@ -195,6 +198,8 @@
   var activeDispatcher = false;
   <% if (@grp.try(:id)) %>
     var group_id = <%= @grp.try(:id) %>;
+  <% elsif @page == 'master_tab' %>
+    var group_id = 'master_tab';
   <% else %>
     var group_id = 'undefined';
   <% end %>
