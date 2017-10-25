@@ -109,12 +109,14 @@ class MembersController < ApplicationController
 
 
 	def search_smaller
-		if !!(params[:search] =~ /\A[-+]?[0-9]+\z/)
-			@members = Member.where('lower(sdcc_member_id) like ? AND user_id = ?', "%#{params[:search].try(:downcase)}%", current_user.id).first(4)
-		else
-			@members = Member.where('lower(name) like ? AND user_id = ?', "%#{params[:search].downcase}%", current_user.id).first(4)
-		end
+		# if !!(params[:search] =~ /\A[-+]?[0-9]+\z/)
+		# 	@members = Member.where('lower(sdcc_member_id) like ? or lower(name) like ? or lower(last_name) like ?', "%#{params[:search].try(:downcase)}%","%#{params[:search].downcase}%","%#{params[:search].downcase}%").first(4)
+		# else
+		# 	@members = Member.where('lower(name) like ?', "%#{params[:search].downcase}%").first(4)
+		# end
 		# render :partial => "group_list", :locals => { :members => @members }
+		@members = Member.where('lower(sdcc_member_id) like ? or lower(name) like ? or lower(last_name) like ?', "%#{params[:search].try(:downcase)}%","%#{params[:search].downcase}%","%#{params[:search].downcase}%").first(4)
+		
 		if params[:type_search] == 'cover'
 			render :partial => 'members/member_list_part_small', :locals => { :members => @members, :type => 'smaller' }
 		else
