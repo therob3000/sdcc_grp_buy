@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   resources :purchases do 
     collection do 
       get 'search'
+      get 'send_out_confirmation'
     end
   end
 

@@ -48,20 +48,20 @@ class PurchasesController < ApplicationController
       obj = {
         email: member.email, 
         member: member,
-        purchase: pur,
+        pur_id: purchase.id,
         purchasing_member_notes: purchasing_member_notes,
         purchasing_member_first_name: purchasing_member_first_name,
         purchasing_member_name: purchasing_member_name,
         add_notes: add_notes
       }
 
-      begin
+      # begin
 	      MyMailer.send_confirmation(obj, "CONGRATULATIONS!  #{purchasing_member_first_name} has covered you for SDCC 2018!!").deliver
 				# render out
 				render :json => { :success => true, :member_group_id => mem_grp.id, :groups => member.member_groups.map { |e| e.group_id }.join('-'), :group_id => params[:group_id], :member_id => member.id, :message => 'purchased!' }
-      rescue Exception => e
-				render :json => { :success => false, :member_group_id => mem_grp.id, :groups => member.member_groups.map { |e| e.group_id }.join('-'), :group_id => params[:group_id], :member_id => member.id, :message => 'Member was purchased for but the e-mail never went through, please check the user email, or contact this person yourself' }
-      end
+    #   rescue Exception => e
+				# render :json => { :success => false, :member_group_id => mem_grp.id, :groups => member.member_groups.map { |e| e.group_id }.join('-'), :group_id => params[:group_id], :member_id => member.id, :message => 'Member was purchased for but the e-mail never went through, please check the user email, or contact this person yourself' }
+    #   end
 
 		else
 			errs = []
@@ -75,6 +75,27 @@ class PurchasesController < ApplicationController
 			end
 			render :json => { :success => false, :message => errs }
 		end
+	end
+
+	def send_out_confirmation
+		# find the purchase
+		# Purchase(id: integer, user_id: integer, need_id: integer, created_at: datetime, updated_at: datetime, member_id: integer, confirmation_code: integer, covering_id: integer, price: float, notes: text, wensday: boolean, thursday: boolean, friday: boolean, saturday: boolean, sunday: boolean, in_progress: boolean)
+		purchase = Purchase.find(params[:purchase_id])
+		member = purchase.member
+		purchasing_member_first_name = purchase.benefactor_name
+
+		obj = {
+        email: member.email, 
+        member: member,
+        pur: purchase,
+        purchasing_member_notes: purchase.notes,
+        purchasing_member_first_name: purchase.benefactor_name,
+        purchasing_member_name: purchase.benefactor_name,
+        add_notes: ""
+      }
+
+		MyMailer.send_confirmation(obj, "CONGRATULATIONS!  #{purchasing_member_first_name} has covered you for SDCC 2018!!").deliver
+		render :json => { :success => true }
 	end
 
 

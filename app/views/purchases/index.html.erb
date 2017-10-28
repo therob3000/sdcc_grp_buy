@@ -30,6 +30,20 @@
     })    
   }
 
+  $('body').on('click', '.send_confirmation', function(event) {
+    event.preventDefault();
+    var purchase_id = $(this).attr('purchase-id');
+    // debugger
+    $.ajax({
+      url: '/purchases/send_out_confirmation',
+      data: {purchase_id: purchase_id},
+    })
+    .done(function(data) {
+      console.log(data);
+    })
+    
+  });
+
   $('body').on('keyup', '#csearch', function(event) {
     event.preventDefault();
     performSearch();

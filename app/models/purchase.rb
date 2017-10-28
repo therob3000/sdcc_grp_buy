@@ -29,7 +29,7 @@ class Purchase < ApplicationRecord
 				m_name = 'user not found'
 			end
 		else
-			member = user
+			member = current_user
 			m_name = "#{member.name}"
 		end
 

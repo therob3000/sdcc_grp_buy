@@ -1,12 +1,12 @@
-Hello, <%= @member.name %><br>
+Hello, <%= @member.try(:name) %><br>
 <p>
       <b><%= @purchasing_member_first_name %></b> has agreed to purchase tickets for you for the next comic con <br>
 </p>
 <br>
 <p>
-      Total: <b><%= number_to_currency(@pur.price) %></b> <br>
-      Confirmation Code: <b><%= @pur.confirmation_code %></b> <br>
-      Days Purchased: <b><%= pur.days_string %></b>
+      Total: <b><%= number_to_currency(@pur.try(:price)) %></b> <br>
+      Confirmation Code: <b><%= @pur.try(:confirmation_code) %></b> <br>
+      Days Purchased: <b><%= @pur.try(:days_string) %></b>
 
 </p>
 <br>
@@ -17,9 +17,9 @@ Hello, <%= @member.name %><br>
 <% end %>
 <br>
 
-<% if @pur.notes %>
+<% if @pur.try(:notes) %>
 <p>
-      <%= @pur.notes %><br>
+      <%= @pur.try(:notes) %><br>
 </p>
 <% end %>
 <br>
