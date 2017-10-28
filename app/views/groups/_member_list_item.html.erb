@@ -36,16 +36,12 @@
 					</div>
 			<% elsif member.active && !current_user.is_buying_for?(member) %>
 					<div class="mem-block-message" id="action-message-for<%= member.try(:id) %>" style='float: right; display: block;'>
-						MEMBER BEING COVERED
+						PURCHASE IN PROGRESS
 					</div>
-			<% else %>
-				<div class="mem-block-message" id="action-message-for<%= member.try(:id) %>" style='float: right; display: none;'>
-					MEMBER BEING COVERED
-				</div>
 			<% end %>
 
 			
-		<% if !member.full_covered && (current_user.is_valid?) %>
+		<% if !(member.full_covered) && (current_user.is_valid?) %>
 			
 				<a href="" class='active-button active-button-<%= member.id %> btn btn-sm btn-primary cancel-this <%= current_user.is_buying_for?(member) ? 'active-button-shown' : '' %>' data-id='<%= mem_grp.try(:id) %>' member-id="<%= member.id %>">CANCEL</a>
 				<a href="" class='active-button active-button-<%= member.id %> btn btn-sm btn-primary confirm-this <%= current_user.is_buying_for?(member) ? 'active-button-shown' : '' %>' member-id="<%= member.id %>" data-toggle="modal" data-target="#purchase-confirmation-pop-up" data-id='<%= mem_grp.try(:id) %>' >CONFIRM</a>
