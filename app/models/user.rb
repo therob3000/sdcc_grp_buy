@@ -34,7 +34,7 @@ class User < ApplicationRecord
   end
 
   def is_buying_for?(member)
-    if member.sponsor_id == id
+    if (member.sponsor_id == id) || !member.active
       return true
     else
       return false
