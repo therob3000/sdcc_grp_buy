@@ -7,8 +7,10 @@ class User < ApplicationRecord
   has_many :members, :dependent => :delete_all
   has_many :purchases, :dependent => :delete_all
   has_many :groups, :dependent => :delete_all
+  has_many :followed_groups, :dependent => :delete_all
   has_many :direct_messages, :dependent => :delete_all
   validates_uniqueness_of :name, :email
+  after_create :transfer_member_self
 
 
 
@@ -76,13 +78,31 @@ class User < ApplicationRecord
       out << grp
     end
 
+    # all groups followed by user
+    followed_groups.all.each do |grp|
+      out << grp.group
+    end
+
     # all groups with a member created/sponsored by user
     members.each do |mem|
       mem.member_groups.each do |mg|
         out << mg.group
       end
-    end      
+    end
+
+
 
     out.uniq
+  end
+
+
+  private
+
+  def transfer_member_self
+    member_self = Member.find_by_email(email)
+    if member_self
+      member_self.user_id = id
+      member_self.save
+    end
   end
 end

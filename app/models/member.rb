@@ -15,6 +15,10 @@ class Member < ApplicationRecord
 		}
 	end
 
+	def checked_in
+		checked_in_date == Date.today
+	end
+
 	def display_last
 		if last_name.nil?
 			name.split(' ').last

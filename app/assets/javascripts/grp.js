@@ -381,6 +381,18 @@ $(document).ready(function() {
 		    	});
 		    })
 
+  		    // listen for any checked in members
+		    channel_global.bind("check_in_member",function(mes) {
+		    	// checkInMember(mes);
+		    	member_id = mes.member_id
+		    	$(".check-in-button-for" + member_id).fadeOut(300, function() {
+		    		$(".activate-button-for" + member_id).fadeIn(300, function() {
+		    			$(this).parents('.member-item').removeClass('member_not_checked_in')
+		    			$(this).parents('.member-item').addClass('member_checked_in')
+		    		});
+		    	});
+		    })
+
 		    // listen for any covered members across all groups in this group
 		    channel_global.bind("member_covered",function(mes) {
 			    $("#member_row_" + mes.member_group_id).addClass('member_covered');
@@ -500,6 +512,13 @@ $(document).ready(function() {
 
   }
 
+// check in funcitonality
+$('body').on('click', '.check-in', function(event) {
+	event.preventDefault();
+	var member_id = $(this).attr('member-id');
+	var obj = { room: group_id, member_id: member_id, connection: connectionID };
+	dispatcher.trigger('check_in_member', obj);
+});
 
 // chat rooom functionality
  $('body').on('keydown', '.chat-message-input', function(event) {
@@ -582,6 +601,10 @@ $('body').on('click', '.expand-chat-log-global', function(event) {
     console.log('just received new message: ' + message);
   }
 
+  var checkInMember = function(message) {
+  	// "check-in-button-for" + message.member_id
+  }
+
 
   var addCommentToDom = function(message) {
   	var message_id = message.message_id;
@@ -593,6 +616,7 @@ $('body').on('click', '.expand-chat-log-global', function(event) {
 		      $("#chat_log").prepend(data);
 		      shakeLastMessageGrp('group');
     	});
+
 
     	getGroupCount();
     var elem = $('#chat_log');

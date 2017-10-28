@@ -73,6 +73,7 @@ Rails.application.routes.draw do
       get 'get_count'
       get 'add_comment'
       get 'present_member'
+      post 'follow_group'
       get 'search'
       get 'private_search'
       get 'present_master_partial'

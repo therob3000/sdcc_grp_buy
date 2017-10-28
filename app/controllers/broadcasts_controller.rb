@@ -9,6 +9,17 @@ class BroadcastsController < WebsocketRails::BaseController
 		WebsocketRails["group_#{room}"].trigger('member_registered', {room: room, member_group_id: member_group_id, member_id: member_id, connection_id: connection, :num_of_ppl => number})
 	end
 
+	def check_in_member
+		room = message[:room]
+		member_id = message[:member_id]
+		connection = message[:connection]
+		member = Member.find(member_id)
+		member.checked_in_date = Date.today
+		if member.save
+			WebsocketRails["global"].trigger('check_in_member', {room: room, member_id: member_id, connection_id: connection })
+		end
+	end
+
 	def delete_member_from_group
 		room = message[:room]
 		member_group_id = message[:member_group_id]

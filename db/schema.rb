@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171019012741) do
+ActiveRecord::Schema.define(version: 20171028190751) do
 
   create_table "chat_messages", force: :cascade do |t|
     t.string   "message"
@@ -29,6 +29,13 @@ ActiveRecord::Schema.define(version: 20171019012741) do
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
     t.boolean  "seen",         default: false
+  end
+
+  create_table "followed_groups", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "group_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "groups", force: :cascade do |t|
@@ -63,9 +70,9 @@ ActiveRecord::Schema.define(version: 20171019012741) do
     t.string   "phone"
     t.string   "email"
     t.boolean  "covered"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
-    t.boolean  "active",         default: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.boolean  "active",          default: false
     t.string   "last_name"
     t.boolean  "wensday"
     t.boolean  "thursday"
@@ -75,6 +82,7 @@ ActiveRecord::Schema.define(version: 20171019012741) do
     t.boolean  "in_progress"
     t.integer  "sponsor_id"
     t.text     "payment_info"
+    t.date     "checked_in_date"
   end
 
   create_table "needs", force: :cascade do |t|

@@ -140,7 +140,7 @@
 .clock-slot {
     list-style: none;
     background-color: #c3e9ff;
-    padding: 1%;
+    padding: 4px;
     border-radius: 10px;
     margin: 2px;
     font-size: 12px;
@@ -893,6 +893,12 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     color: white;
     font-weight: bold;
 
+}
+.member_not_checked_in {
+    background-color: red;
+}
+.member_checked_in {
+        background-color: #cbcbcb;
 }
 
 

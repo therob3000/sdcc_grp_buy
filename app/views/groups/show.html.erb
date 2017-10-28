@@ -11,7 +11,7 @@
 	<b>Group Coordinator: <a href="#" class='user-modal-pop btn' data-toggle="modal" data-target="#userModal" data-id='<%= @grp.user.try(:id) %>'> <%= @grp.user.try(:name) %></b> </a> (<%= @grp.user.try(:email) %>)
 </p>
 
-
+<%= "#{current_user.id}. dafs"%>
 
 <hr>
 <div class="row" style="width: 90%;">

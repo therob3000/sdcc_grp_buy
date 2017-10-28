@@ -64,6 +64,23 @@
     })    
   }
 
+  $('body').on('click', '.follow-this-group', function(event) {
+    event.preventDefault();
+    var user_id = $(this).attr('user-id');
+    var group_id = $(this).attr('group-id');
+
+    $.ajax({
+      url: '/groups/follow_group',
+      type: 'POST',
+      data: {follow: {user_id: user_id, group_id: group_id}},
+    })
+    .done(function(data) {
+      $('.follow-this-group-for-' + data.group_id).fadeOut(100);
+      $('.message_for_' + data.group_id).text(data.message);
+    })
+
+    
+  });
 
   $('body').on('keyup', '#gsearch', function(event) {
     event.preventDefault();

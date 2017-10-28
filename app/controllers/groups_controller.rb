@@ -23,8 +23,17 @@ class GroupsController < ApplicationController
 		render :json => { :count => count }
 	end
 
+	def follow_group
+		@group = Group.find(follow_params[:group_id])
+		@group_follow = FollowedGroup.new(follow_params)
+		if @group_follow.save
+			render :json => { :message => "#{@group.name} followed by you", :group_id => @group.id }
+		end
+	end
+
 	def private_search
-		@groups = Group.where('lower(name) like ? and user_id = ?', "%#{params[:search]}%", current_user.id)
+		# @groups = Group.where('lower(name) like ? and user_id = ?', "%#{params[:search]}%", current_user.id)
+		@groups = Group.where('lower(name) like ?', "%#{params[:search]}%")
 		# render :partial => "group_list_sidebar", :locals => { :groups => @groups }
 		render :partial => 'groups/group_list_sidebar', :locals => { :groups => @groups}
 	end
@@ -98,6 +107,10 @@ class GroupsController < ApplicationController
 	end
 
 	private
+
+	def follow_params
+		params.require(:follow).permit(:user_id, :group_id)
+	end
 
 	def message_params
 		params.require(:message).permit(:message, :group_id)

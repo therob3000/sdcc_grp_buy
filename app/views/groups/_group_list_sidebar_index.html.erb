@@ -4,7 +4,15 @@
 	    <% if (!@grp.nil? && @grp.id == grp.id)%>
 	      <%= grp.name %> (<%= grp.member_groups.count %>)
 	    <% else %>
-		      <a class='group-list-item group-list-item-index' href="/groups/<%= grp.id %>"><%= grp.name %> (<%= grp.member_groups.count %>) </a><a href="#" class='user-modal-pop btn chat-avatar' style="float: right;" data-toggle="modal" data-target="#userModal" data-id='<%= user.try(:id) %>'><img src="<%= user.try(:avatar_url) %>" class="img-circle" alt="User Image" /></a> 
+		      <a class='group-list-item group-list-item-index' href="/groups/<%= grp.id %>"><%= grp.name %> (<%= grp.member_groups.count %>) </a>
+
+		      <% if !current_user.followed_groups.include? (grp) %>
+			      <a class="follow-this-group follow-this-group-for-<%= grp.id %> btn btn-sm btn-primary" user-id='<%= current_user.id %>' group-id='<%= grp.id %>'>Follow this group</a>
+		      <% end %>
+
+		      <p class="message_for_<%= grp.id %>"></p>
+
+		      <a href="#" class='user-modal-pop btn chat-avatar' style="float: right; margin-right: 10px" data-toggle="modal" data-target="#userModal" data-id='<%= user.try(:id) %>'><img src="<%= user.try(:avatar_url) %>" class="img-circle" alt="User Image" /></a> 
 	    <% end %>
     </li>
   <% end %>
