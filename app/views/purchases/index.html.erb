@@ -39,7 +39,11 @@
       data: {purchase_id: purchase_id},
     })
     .done(function(data) {
-      console.log(data);
+      if (data.success) {
+        $(".confirmtion_for" + data.purchase_id).hide(200, function() {
+          alert('email sent');
+        });
+      }
     })
     
   });

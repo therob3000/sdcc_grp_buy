@@ -3,6 +3,7 @@ class Member < ApplicationRecord
 	belongs_to :user
 	validates :sdcc_member_id, :email, :name, presence: true
 	validates_uniqueness_of :sdcc_member_id 
+	has_many :purchases
 
 
 	def needs

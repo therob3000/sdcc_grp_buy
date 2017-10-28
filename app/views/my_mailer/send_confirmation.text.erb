@@ -1,8 +1,8 @@
 Hello, <%= @member.name %> 
 <%= @purchasing_member_first_name %>has agreed to purchase tickets for you for the next comic con  
  
-total: <%= number_to_currency(@pur.try(:price)) %>  
-Confirmation Code: <%= @pur.try(:confirmation_code) %>  
+total: <%= number_to_currency(@purchase.try(:price)) %>  
+Confirmation Code: <%= @purchase.try(:confirmation_code) %>  
  
 
 <% if @add_notes %>
@@ -10,8 +10,8 @@ Confirmation Code: <%= @pur.try(:confirmation_code) %>
 <% end %>
  
 
-<% if @pur.try(:notes) %>
-      <%= @pur.try(:notes) %> 
+<% if @purchase.try(:notes) %>
+      <%= @purchase.try(:notes) %> 
 <% end %>
  
 You may connect with this person to work out payment arrangements: <%= @purchasing_member_name %> 

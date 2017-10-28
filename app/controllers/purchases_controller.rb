@@ -48,7 +48,7 @@ class PurchasesController < ApplicationController
       obj = {
         email: member.email, 
         member: member,
-        pur_id: purchase.id,
+        purchase: purchase,
         purchasing_member_notes: purchasing_member_notes,
         purchasing_member_first_name: purchasing_member_first_name,
         purchasing_member_name: purchasing_member_name,
@@ -87,7 +87,7 @@ class PurchasesController < ApplicationController
 		obj = {
         email: member.email, 
         member: member,
-        pur: purchase,
+        purchase: purchase,
         purchasing_member_notes: purchase.notes,
         purchasing_member_first_name: purchase.benefactor_name,
         purchasing_member_name: purchase.benefactor_name,
@@ -95,7 +95,7 @@ class PurchasesController < ApplicationController
       }
 
 		MyMailer.send_confirmation(obj, "CONGRATULATIONS!  #{purchasing_member_first_name} has covered you for SDCC 2018!!").deliver
-		render :json => { :success => true }
+		render :json => { :success => true, :purchase_id => purchase.id }
 	end
 
 
