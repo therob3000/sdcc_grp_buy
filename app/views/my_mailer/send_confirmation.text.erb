@@ -1,8 +1,9 @@
 Hello, <%= @member.name %> 
+<% purchase = (@purchase.nil? ? @member.purchases.last : @purchase) %>
 <%= @purchasing_member_first_name %>has agreed to purchase tickets for you for the next comic con  
  
 total: <%= number_to_currency(@purchase.try(:price)) %>  
-Confirmation Code: <%= @purchase.try(:confirmation_code) %>  
+Confirmation Code: <%= purchase.try(:confirmation_code) %>  
  
 
 <% if @add_notes %>
@@ -10,7 +11,7 @@ Confirmation Code: <%= @purchase.try(:confirmation_code) %>
 <% end %>
  
 
-<% if @purchase.try(:notes) %>
+<% if purchase.try(:notes) %>
       <%= @purchase.try(:notes) %> 
 <% end %>
  

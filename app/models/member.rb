@@ -7,13 +7,33 @@ class Member < ApplicationRecord
 
 
 	def needs
-		{
-			'wensday' => wensday,
-			'thursday' => thursday,
-			'friday' => friday,
-			'saturday' => saturday,
-			'sunday' => sunday
+		output = {
+			'wensday' => (days_bought["wensday"] ? false : wensday),
+			'thursday' => (days_bought["thursday"] ? false : thursday),
+			'friday' => (days_bought["friday"] ? false : friday),
+			'saturday' => (days_bought["saturday"] ? false : saturday),
+			'sunday' => (days_bought["sunday"] ? false : sunday)
 		}
+	end
+
+	def days_bought
+		tally = {
+			'wensday' => false,
+			'thursday' => false,
+			'friday' => false,
+			'saturday' => false,
+			'sunday' => false
+		}
+
+		purchases.each do |pur|
+			["wensday","thursday","friday","saturday","sunday"].each do |day|
+				if pur[day]
+					tally[day] = true
+				end
+			end
+		end
+
+		tally
 	end
 
 	def checked_in
@@ -34,6 +54,10 @@ class Member < ApplicationRecord
 
 	def covered
 		Purchase.exists?(:member_id => id)
+	end
+
+	def full_covered
+		needs.values.all? { |e| !e }
 	end
 
 	def is_part_of(group_id)

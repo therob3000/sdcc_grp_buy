@@ -42,8 +42,12 @@ class PurchasesController < ApplicationController
 				purchasing_member_name = "#{pur_mem.name} #{pur_mem.last_name} (#{pur_mem.email}. #{ pur_mem.phone ? 'phone:' + pur_mem.phone : ''})"
 				add_notes = pur_mem.payment_info
 			end
- 
-
+ 	
+			# if the member still has some days needed then we make thier active status false
+			if !member.full_covered
+				member.active = false
+				member.save
+			end
 
       obj = {
         email: member.email, 

@@ -2,7 +2,6 @@
 <% if mem_grp %>
 	<li class="member-item <%= member.checked_in ? 'member_checked_in' : 'member_not_checked_in' %> clock-slot<%= member.try(:covered) ? ' member_covered' : ' ' %><%= member.try(:active) ? ' member_active' : '' %> member_select_<%= member.try(:id) %> member_groups_marker_<%= member.try(:id) %>" id="member_row_<%= mem_grp.id %>">
 <% else %>
-
 	<li class="member-item clock-slot <%= member.try(:covered) ? 'member_covered' : '' %>">
 <% end %>
 	<div class="mem-block name-holder">
@@ -11,6 +10,12 @@
 		<b>
 			<%= member.try(:sdcc_member_id) %>
 		</b>
+
+		<% if member.covered && !member.full_covered %>
+		<div class="covered-member">	
+				bought for / still needs <br>
+		</div>
+		<% end %>
 	</div>
 	<div class="mem-block day-holder" style='float: center;'>
 		<b>Days Needed:</b><br><br>
@@ -25,9 +30,9 @@
 
 	<div class="mem-block web_socket_loading" id="action-holder-for<%= member.try(:id) %>" style='float: right;'>
 	<% if !grp.nil? %>
-			<% if member.covered %>
+			<% if member.full_covered %>
 					<div class="covered-member">	
-							This member has been bought for <br>
+							This member has been fully bought for <br>
 					</div>
 			<% elsif member.active && !current_user.is_buying_for?(member) %>
 					<div class="mem-block-message" id="action-message-for<%= member.try(:id) %>" style='float: right; display: block;'>
@@ -40,7 +45,7 @@
 			<% end %>
 
 			
-		<% if !member.covered && (current_user.is_valid?) %>
+		<% if !member.full_covered && (current_user.is_valid?) %>
 			
 				<a href="" class='active-button active-button-<%= member.id %> btn btn-sm btn-primary cancel-this <%= current_user.is_buying_for?(member) ? 'active-button-shown' : '' %>' data-id='<%= mem_grp.try(:id) %>' member-id="<%= member.id %>">CANCEL</a>
 				<a href="" class='active-button active-button-<%= member.id %> btn btn-sm btn-primary confirm-this <%= current_user.is_buying_for?(member) ? 'active-button-shown' : '' %>' member-id="<%= member.id %>" data-toggle="modal" data-target="#purchase-confirmation-pop-up" data-id='<%= mem_grp.try(:id) %>' >CONFIRM</a>
