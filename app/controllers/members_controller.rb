@@ -26,7 +26,7 @@ class MembersController < ApplicationController
 			flash[:error] = @member.errors.full_messages.join(', ')	
 		end
 		
-		redirect_to :back
+	redirect_to :back
 	end
 
 
