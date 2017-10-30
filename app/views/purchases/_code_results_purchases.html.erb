@@ -9,7 +9,7 @@
 		</div>
 
 		<div class="email col-lg-3">
-				Bought by: <%= code.benefactor_name %>
+				Bought by: <%= code.benefactor_name(current_user) %>
 				<br>
 				Confirmation: <%= code.confirmation_code %>
 				<br>

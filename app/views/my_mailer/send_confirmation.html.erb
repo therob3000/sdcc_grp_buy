@@ -6,6 +6,9 @@ Hello, <%= @member.try(:name) %><br>
 </p>
 <br>
 <p>
+      <i>please note that the total reflects the price for an adult, if you are a senior or junior badge holder, this might not accurately reflect your total, please check with your buyer</i>
+      <br>
+      <br>
       Total: <b><%= number_to_currency(purchase.try(:price)) %></b> <br>
       Confirmation Code: <b><%= purchase.try(:confirmation_code) %></b> <br>
       Days Purchased: <b><%= purchase.try(:days_string) %></b>

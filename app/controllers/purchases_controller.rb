@@ -83,18 +83,17 @@ class PurchasesController < ApplicationController
 
 	def send_out_confirmation
 		# find the purchase
-		# Purchase(id: integer, user_id: integer, need_id: integer, created_at: datetime, updated_at: datetime, member_id: integer, confirmation_code: integer, covering_id: integer, price: float, notes: text, wensday: boolean, thursday: boolean, friday: boolean, saturday: boolean, sunday: boolean, in_progress: boolean)
 		purchase = Purchase.find(params[:purchase_id])
 		member = purchase.member
-		purchasing_member_first_name = purchase.benefactor_name
+		purchasing_member_first_name = purchase.benefactor_name(current_user)
 
 		obj = {
         email: member.email, 
         member: member,
         purchase: purchase,
         purchasing_member_notes: purchase.notes,
-        purchasing_member_first_name: purchase.benefactor_name,
-        purchasing_member_name: purchase.benefactor_name,
+        purchasing_member_first_name: purchase.benefactor_name(current_user),
+        purchasing_member_name: purchase.benefactor_name(current_user),
         add_notes: ""
       }
 
@@ -106,6 +105,6 @@ class PurchasesController < ApplicationController
 	private 
 
 	def purchase_params
-		params.require(:conf).permit(:confirmation_code,:price,:covering_id,:notes,:member_id, :wensday, :thursday, :friday, :saturday, :sunday)
+		params.require(:conf).permit(:confirmation_code,:price,:covering_id,:notes,:member_id,:wensday,:thursday,:friday,:saturday,:sunday)
 	end
 end

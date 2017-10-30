@@ -2,7 +2,10 @@ Hello, <%= @member.name %>
 <% purchase = (@purchase.nil? ? @member.purchases.last : @purchase) %>
 <%= @purchasing_member_first_name %>has agreed to purchase tickets for you for the next comic con  
  
-total: <%= number_to_currency(@purchase.try(:price)) %>  
+<i>please note that the total reflects the price for an adult, if you are a senior or junior badge holder, this might not accurately reflect your total, please check with your buyer</i> 
+<br>
+<br>
+total: <%= number_to_currency(@purchase.try(:price)) %> 
 Confirmation Code: <%= purchase.try(:confirmation_code) %>  
  
 
