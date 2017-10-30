@@ -6,7 +6,7 @@
 </h2>	
 
 <p style="font-size: 15px">
-	<b>Contact:  </b> <%= "#{member.email}        #{member.phone} " %>
+	<b>Contact:  </b> <%= "#{member.contact_info(current_user)} " %>
 	<br>
 	<% if current_user.has_member(member) %>
 		<a href="<%= edit_member_path(:id => member.id) %>" class='btn btn-md btn-primary' style='margin-top: 2px;'>Edit this Member</a>

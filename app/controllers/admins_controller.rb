@@ -31,6 +31,7 @@ class AdminsController < ApplicationController
 		keys = []
 		errors = []
 		success = []
+
 		 	
 		@rowarraydisp.each_with_index do |row,idx|
 			next if idx < 3
@@ -52,6 +53,7 @@ class AdminsController < ApplicationController
 				member_first_name = obj['First name']
 				member_last_name = obj['LastName']
 				days_bought_for_member = obj['Days Bought']
+				days_bought_for_email = obj['Buyer Email']
 
 
 				# create the member
@@ -65,9 +67,7 @@ class AdminsController < ApplicationController
 				}
 
 				# mapping: what does the 
-				# if needed_days.nil?
-				# 	byebug
-				# end
+
 				if needed_days.downcase.sub(" ","") == '4day+pn'
 					days_needed = {
 						:wensday => true,
@@ -122,15 +122,19 @@ class AdminsController < ApplicationController
 				end
 
 				# if there is a 'Days Bought' and 'Buyer Email'
-				if !days_bought_for_member.nil? && days_bought_for_member != ''
-					# make a purchase (if one doesnt exists)
-					purchase = make_purchase(obj,cci_id)
-						if purchase.save
-							purchase.send_out_confirmation(current_user)
-							success << "#{obj['Buyer Email']} created purchase for #{cci_id}"
-						else
-							errors << "#{cci_id}: #{purchase.errors.full_messages.join(',')}"
-						end
+				if !params[:first].nil? && !Purchase.exists?(:member_id => mem.id)
+					if (!days_bought_for_member.nil? && days_bought_for_member != '') || (!days_bought_for_email.nil? && days_bought_for_email != '')
+						# make a purchase (if one doesnt exists)
+						purchase = make_purchase(obj,cci_id)
+							if purchase.save
+								if params[:send_email]
+									purchase.send_out_confirmation(current_user)
+								end
+								success << "#{obj['Buyer Email']} created purchase for #{cci_id}"
+							else
+								errors << "#{cci_id}: #{purchase.errors.full_messages.join(',')}"
+							end
+					end
 				end
 
 				if mem.save
@@ -157,77 +161,83 @@ class AdminsController < ApplicationController
 			:sunday => false
 		}
 
-		if obj['Days Bought'].downcase.sub(" ","") == '4day+pn'
-			days_bought = {
-				:wensday => true,
-				:thursday => true,
-				:friday => true,
-				:saturday => true,
-				:sunday => true
-			}	
-		elsif obj['Days Bought'].downcase.sub(" ","") == 'pn'
-			days_bought = {
-				:wensday => true,
-				:thursday => false,
-				:friday => false,
-				:saturday => false,
-				:sunday => false
-			}	
-		elsif obj['Days Bought'].downcase.sub(" ","") == '4day'
-			days_bought = {
-				:wensday => false,
-				:thursday => true,
-				:friday => true,
-				:saturday => true,
-				:sunday => true
-			}	
-		elsif obj['Days Bought'].downcase.sub(" ","") == 'thursdayonly'
-			days_bought = {
-				:wensday => false,
-				:thursday => true,
-				:friday => false,
-				:saturday => false,
-				:sunday => false
-			}
-		elsif obj['Days Bought'].downcase.sub(" ","") == 'fridayonly'
-			days_bought = {
-				:wensday => false,
-				:thursday => false,
-				:friday => true,
-				:saturday => false,
-				:sunday => false
-			}
-		elsif obj['Days Bought'].downcase.sub(" ","") == 'saturdayonly'
-			days_bought = {
-				:wensday => false,
-				:thursday => false,
-				:friday => false,
-				:saturday => true,
-				:sunday => false
-			}
-		elsif obj['Days Bought'].downcase.sub(" ","") == 'sundayonly'
-			days_bought = {
-				:wensday => false,
-				:thursday => false,
-				:friday => false,
-				:saturday => false,
-				:sunday => true
-			}
-		else
-			obj['Days Bought'].split('+').each do |dayi|
-				day = dayi.sub(" ","")
-				if day.downcase == 'wen' || day.downcase == 'wens' || day.downcase == 'wensday'
-					days_bought[:wensday] = true
-				elsif day.downcase == 'thur' || day.downcase == 'thurs' || day.downcase == 'thursday'
-					days_bought[:thursday] = true
-				elsif day.downcase == 'fri' || day.downcase == 'friday' 
-					days_bought[:friday] = true
-				elsif day.downcase == 'sat' || day.downcase == 'saturday' 
-					days_bought[:saturday] = true
-				elsif day.downcase == 'sun' || day.downcase == 'sunday'
-					days_bought[:sunday] = true
+		warning = ""
+
+		if obj['Days Bought']
+			if obj['Days Bought'].downcase.sub(" ","") == '4day+pn'
+				days_bought = {
+					:wensday => true,
+					:thursday => true,
+					:friday => true,
+					:saturday => true,
+					:sunday => true
+				}	
+			elsif obj['Days Bought'].downcase.sub(" ","") == 'pn'
+				days_bought = {
+					:wensday => true,
+					:thursday => false,
+					:friday => false,
+					:saturday => false,
+					:sunday => false
+				}	
+			elsif obj['Days Bought'].downcase.sub(" ","") == '4day'
+				days_bought = {
+					:wensday => false,
+					:thursday => true,
+					:friday => true,
+					:saturday => true,
+					:sunday => true
+				}	
+			elsif obj['Days Bought'].downcase.sub(" ","") == 'thursdayonly'
+				days_bought = {
+					:wensday => false,
+					:thursday => true,
+					:friday => false,
+					:saturday => false,
+					:sunday => false
+				}
+			elsif obj['Days Bought'].downcase.sub(" ","") == 'fridayonly'
+				days_bought = {
+					:wensday => false,
+					:thursday => false,
+					:friday => true,
+					:saturday => false,
+					:sunday => false
+				}
+			elsif obj['Days Bought'].downcase.sub(" ","") == 'saturdayonly'
+				days_bought = {
+					:wensday => false,
+					:thursday => false,
+					:friday => false,
+					:saturday => true,
+					:sunday => false
+				}
+			elsif obj['Days Bought'].downcase.sub(" ","") == 'sundayonly'
+				days_bought = {
+					:wensday => false,
+					:thursday => false,
+					:friday => false,
+					:saturday => false,
+					:sunday => true
+				}
+			else
+				obj['Days Bought'].split('+').each do |dayi|
+					day = dayi.sub(" ","")
+					if day.downcase == 'wen' || day.downcase == 'wens' || day.downcase == 'wensday'
+						days_bought[:wensday] = true
+					elsif day.downcase == 'thur' || day.downcase == 'thurs' || day.downcase == 'thursday'
+						days_bought[:thursday] = true
+					elsif day.downcase == 'fri' || day.downcase == 'friday' 
+						days_bought[:friday] = true
+					elsif day.downcase == 'sat' || day.downcase == 'saturday' 
+						days_bought[:saturday] = true
+					elsif day.downcase == 'sun' || day.downcase == 'sunday'
+						days_bought[:sunday] = true
+					end
 				end
 			end
+		else
+			warning = "This buyer did not specify what days were bought."
 		end
 
 		# find the covering member or user
@@ -244,7 +254,7 @@ class AdminsController < ApplicationController
 			covering_id: covering_member.try(:id),
 			buyer_email: buyer_email,
 			price: calc_price(obj['Days Bought']), 
-			notes: obj['Notes'], 
+			notes: "#{warning}  #{obj['Notes']}", 
 			wensday: days_bought[:wensday], 
 			thursday: days_bought[:thursday], 
 			friday: days_bought[:friday], 
@@ -256,6 +266,8 @@ class AdminsController < ApplicationController
 	end
 
 	def calc_price(days)
+		return 0.00 if days.nil?
+		
 		pricing = {
 			:wensday => 45.00,
 			:thursday => 63.00,

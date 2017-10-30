@@ -50,6 +50,14 @@ class User < ApplicationRecord
     code = ValidationCode.validate_by_email(email, decrypt_code(validation_code))
   end
 
+  def contact_info(viewing_user)
+    if viewing_user.is_valid?
+      "#{name} / #{email}"
+    else
+      "---protected---"
+    end
+  end
+
   def is_admin?
     is_admin == true
   end

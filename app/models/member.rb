@@ -40,6 +40,14 @@ class Member < ApplicationRecord
 		checked_in_date == Date.today
 	end
 
+	def contact_info(viewing_user)
+    if viewing_user.is_valid?
+      "#{name} / #{email}"
+    else
+      "---protected---"
+    end
+  end
+
 	def display_last
 		if last_name.nil?
 			name.split(' ').last
