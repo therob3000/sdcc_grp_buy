@@ -18,7 +18,7 @@ Confirmation Code: <%= purchase.try(:confirmation_code) %>
       <%= @purchase.try(:notes) %> 
 <% end %>
  
-You may connect with this person to work out payment arrangements: <%= @purchasing_member_name %> 
+You may connect with this person to work out payment arrangements: <%= purchase.buyer_email %> 
 
 
 Thank you for using our Ticket ORganizer APP, and enjoy your CON!  \n
