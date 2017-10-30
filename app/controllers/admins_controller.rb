@@ -346,7 +346,7 @@ class AdminsController < ApplicationController
 			end
 		end
 
-		total = 0
+		total = 5.00
 
 		days_bought.each do |key,value|
 			if value
