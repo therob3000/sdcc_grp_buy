@@ -37,6 +37,8 @@ gem 'jbuilder', '~> 2.5'
 gem 'devise'
 gem 'faker'
 gem 'omniauth'
+gem 'activerecord-session_store'
+# rails generate active_record:session_migration
 # gem 'omniauth-facebook', '1.4.0'
 gem 'omniauth-facebook'
 gem 'bootstrap-sass', '~> 3.2.0'

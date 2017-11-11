@@ -54,12 +54,15 @@ class Purchase < ApplicationRecord
 		mail
 	end
 
-	def send_out_confirmation(current_user)
+	def send_out_confirmation(current_user,env=nil)
 		# find the purchase
 		purchasing_member_first_name = benefactor_name(current_user)
-
+		email_to = member.email
+		if env == 'dev'
+			email_to = 'laomatt1@gmail.com'
+		end
 		obj = {
-        email: member.email, 
+        email: email_to, 
         member: member,
         purchase: nil,
         purchasing_member_notes: notes,

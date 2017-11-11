@@ -58,9 +58,11 @@ Rails.application.routes.draw do
     collection do 
       post 'upload_csv'
       get 'search'
+      get 'grab_csv_progress'
       get 'search_users'
       get 'search_members'
       get 'search_groups'
+      get 'csv_upload'
       get 'users_index'
       get 'members_index'
       get 'groups_index'

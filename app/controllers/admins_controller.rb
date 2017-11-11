@@ -29,10 +29,21 @@ class AdminsController < ApplicationController
     myfile = params[:file]
 		@rowarraydisp = CSV.read(myfile.path)
 		keys = []
-		errors = []
-		success = []
+		messages = []
+		@errors = []
 
-		 	
+		legend = {
+			"CCID" => params[:sdcc_id],
+			"LastName" => params[:lastname],
+			"FirstName" => params[:firstname],
+			"Email" => params[:email],
+			"DaysNeeded" => params[:daysneeded],
+			"DaysBought" => params[:daysbought],
+			"BuyerEmail" => params[:buyeremail],
+			"Notes" => params[:notes]
+		}
+
+		total_rows = @rowarraydisp.length		 	
 		@rowarraydisp.each_with_index do |row,idx|
 			next if idx < 3
 			next if idx == 4
@@ -44,17 +55,24 @@ class AdminsController < ApplicationController
 					obj[keys[number]] = r
 				end
 				# map variables
-				cci_id = obj['CCI ID']
+				cci_id = obj[legend["CCID"]]
 
 				next if cci_id.nil?
 
-				needed_days = obj['Days Needed']
-				cc_email = obj['Email']
-				member_first_name = obj['First name']
-				member_last_name = obj['LastName']
-				days_bought_for_member = obj['Days Bought']
-				days_bought_for_email = obj['Buyer Email']
+				needed_days = obj[legend["DaysNeeded"]]
+				cc_email = obj[legend["Email"]]
 
+				member_first_name = obj[legend["FirstName"]] 
+
+				if member_first_name.nil?
+					member_first_name = obj[legend["LastName"]]
+				end
+
+				member_last_name = obj[legend["LastName"]]
+				days_bought_for_member = obj[legend["DaysBought"]]
+				days_bought_for_email = obj[legend["BuyerEmail"]]
+				these_notes = obj[legend["Notes"]]
+# byebug
 
 				# create the member
 				# TODO: map to what days needed
@@ -116,8 +134,10 @@ class AdminsController < ApplicationController
 				mem = Member.find_by_sdcc_member_id(cci_id)
 
 				if mem
+					already_in = true
 					mem.assign_attributes(edit_obj)
 				else
+					already_in = false
 					mem = Member.new(creation_obj)
 				end
 
@@ -125,32 +145,43 @@ class AdminsController < ApplicationController
 				if !params[:first].nil? && !Purchase.exists?(:member_id => mem.id)
 					if (!days_bought_for_member.nil? && days_bought_for_member != '') || (!days_bought_for_email.nil? && days_bought_for_email != '')
 						# make a purchase (if one doesnt exists)
-						purchase = make_purchase(obj,cci_id)
+						obj2 = {
+							'Days Bought' => days_bought_for_member,
+							'Buyer Email' => days_bought_for_email,
+							'Email' => cc_email,
+							'Notes' => these_notes,
+						}
+						purchase = make_purchase(obj2,cci_id)
 							if purchase.save
 								if params[:send_email]
-									purchase.send_out_confirmation(current_user)
+									if Rails.env.development?
+										purchase.send_out_confirmation(current_user,'dev')
+									else
+										purchase.send_out_confirmation(current_user, 'prod')
+									end
 								end
-								success << "#{obj['Buyer Email']} created purchase for #{cci_id}"
+								messages << "<li class='success-message'>#{obj['Buyer Email']} created purchase for #{cci_id}</li>"
 							else
-								errors << "#{cci_id}: #{purchase.errors.full_messages.join(',')}"
+								messages << "<li class='error-message'>#{cci_id}: #{purchase.errors.full_messages.join(',')}</li>"
 							end
 					end
 				end
 
 				if mem.save
-					success << "Created member: #{cci_id}"
+					if already_in
+						messages << "<li class='success-message'>Updated member: #{cci_id}</li>"
+					else
+						messages << "<li class='success-message'>Created member: #{cci_id}</li>"
+					end
 				else
-					errors << "#{cci_id}: #{mem.errors.full_messages.join(',')}"
+					messages << "<li class='error-message'>#{cci_id}: #{mem.errors.full_messages.join(',')}</li>"
 				end
 			end
 		end
 
-		 	
-		# render :json => { :errors => error, :success => success }
-		flash[:errors] = @errors
-		flash[:success] = @success
-		redirect_to :back
+		render :json => { :success => true, :messages => messages.join(', ') }
 	end
+
 
 	def make_purchase(obj,cci_id)
 		days_bought = {
