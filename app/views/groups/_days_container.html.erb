@@ -1,0 +1,7 @@
+<% ['wensday','thursday','friday','saturday','sunday'].each do |day| %>
+	<% if member.needs[day] %>
+		<div class="day-block" style="background-color: <%= member.days_bought[day] ? 'red' : 'white' %>;">
+			<%= day %>
+		</div>
+	<% end %>
+<% end %>

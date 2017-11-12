@@ -1,6 +1,5 @@
 <div id="upload-csv">
     <h2>CSV upload</h2>
-
   <%= form_tag({:action => "upload_csv"}, multipart: true) do %>
     <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
   <div class="form-check label-checker">
@@ -17,6 +16,12 @@
     </label>
   </div>
 
+  <div class="form-group">
+    <label for='group_name'>New Group?</label>
+    <input type="text" name="group_name" class="form-control control-text" placeholder='Group name (if you want to make a group for these members)'>
+  </div>
+<hr>
+<h3>Key mappings</h3>
   <div class="form-group">
     <label for='sdcc_id'>SDCC ID</label>
     <input type="text" name="sdcc_id" class="form-control control-text" value='CCI ID'>
@@ -108,6 +113,14 @@
   .label-checker {
         padding: 8px;
     display: inline;
+  }
+
+  .error-message {
+    color: red;
+  }
+
+  .success_message {
+    color: green;
   }
 
   .control-text {

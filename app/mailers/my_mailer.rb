@@ -15,6 +15,16 @@ class MyMailer < ApplicationMailer
     @purchasing_member_name = options[:purchasing_member_name,]
     @add_notes = options[:add_notes]
     @email = options[:email]
+
+    # obj_log = {
+    #     to: @email, 
+    #     from: 'site',
+    #     body: subject
+    #     type: 'log'
+    #   }
+      
+    # Email.make_log(obj_log)
+
     mail(:to => @email, :subject => subject)
   end
 

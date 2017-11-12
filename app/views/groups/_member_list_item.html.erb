@@ -5,27 +5,19 @@
 	<li class="member-item clock-slot <%= member.try(:covered) ? 'member_covered' : '' %>">
 <% end %>
 	<div class="mem-block name-holder">
-		<b>Name:</b> <a href="#" class='member-modal-pop btn' data-toggle="modal" data-target="#memberModal" data-id='<%= member.try(:id) %>'> <%= member.try(:name) %> </a><br>
-		<%= member.try(:display_last) %> 
+		<a href="#" class='member-modal-pop btn' data-toggle="modal" data-target="#memberModal" data-id='<%= member.try(:id) %>'> <%= member.try(:display_last) %> </a>  
 		<b>
 			<%= member.try(:sdcc_member_id) %>
 		</b>
 
-		<% if member.covered && !member.full_covered %>
+		<% if member.has_purchase && !member.full_covered %>
 		<div class="covered-member">	
-				bought for / still needs <br>
+				bought for / still needs
 		</div>
 		<% end %>
 	</div>
-	<div class="mem-block day-holder" style='float: center;'>
-		<b>Days Needed:</b><br><br>
-		<% ['wensday','thursday','friday','saturday','sunday'].each do |day| %>
-			<% if member.needs[day] %>
-			<div class="day-block">
-				<%= day %>
-			</div>
-			<% end %>
-		<% end %>
+	<div class="mem-block day-holder day-holder-for<%= member.id %>" style='float: center;'>
+		<%= render :partial => 'groups/days_container', :locals => { :member => member } %>
 	</div> 
 
 	<div class="mem-block web_socket_loading" id="action-holder-for<%= member.try(:id) %>" style='float: right;'>
@@ -50,14 +42,16 @@
 				<a href="" class='active-button active-button-<%= member.id %> btn btn-sm btn-primary cancel-this <%= current_user.is_buying_for?(member) ? 'active-button-shown' : '' %>' data-id='<%= mem_grp.try(:id) %>' member-id="<%= member.id %>" style="display: none;">CANCEL</a>
 				<a href="" class='active-button active-button-<%= member.id %> btn btn-sm btn-primary confirm-this <%= current_user.is_buying_for?(member) ? 'active-button-shown' : '' %>' member-id="<%= member.id %>" style="display: none;" data-toggle="modal" data-target="#purchase-confirmation-pop-up" data-id='<%= mem_grp.try(:id) %>' >CONFIRM</a>
 			<% end %>
+
 			<% if member.active %>
-				<a href="#" class='activate activate-button-for<%= member.try(:id) %> btn btn-sm btn-primary activate-this-user <%= member.active ? 'active_member_style' : 'non_active_member_style' %>' style="display: none" data-id='<%= mem_grp.try(:id) %>' member-id='<%= member.id %>'>START BUY</a>
+				<a href="#" class='activate activate-button-for<%= member.try(:id) %> btn btn-sm btn-primary activate-this-user <%= member.active ? 'active_member_style' : 'non_active_member_style' %>' style="display: <%= member.checked_in ? 'inline-block' : 'none' %>;width: 30%;" data-id='<%= mem_grp.try(:id) %>' member-id='<%= member.id %>'>START BUY</a>
 			<% else %>
-				<a href="#" class='activate activate-button-for<%= member.try(:id) %> btn btn-sm btn-primary activate-this-user <%= member.active ? 'active_member_style' : 'non_active_member_style' %>' style="display: <%= member.checked_in ? 'block' : 'none' %>" data-id='<%= mem_grp.try(:id) %>' member-id='<%= member.id %>'>START BUY</a>
+				<a href="#" class='activate activate-button-for<%= member.try(:id) %> btn btn-sm btn-primary activate-this-user <%= member.active ? 'active_member_style' : 'non_active_member_style' %>' style="display: <%= member.checked_in ? 'inline-block' : 'none' %>; width: 30%;" data-id='<%= mem_grp.try(:id) %>' member-id='<%= member.id %>'>START BUY</a>
 			<% end %>
-				<% if !member.checked_in %>
-					<a href="#" class='check-in check-in-button-for<%= member.try(:id) %> btn btn-sm btn-primary check-in-this-user <%= member.active ? 'active_member_style' : 'non_active_member_style' %>' data-id='<%= mem_grp.try(:id) %>' member-id='<%= member.id %>'>CHECK IN</a>
-				<% end %>
+
+			<% if !member.checked_in %>
+				<a href="#" class='check-in check-in-button-for<%= member.try(:id) %> btn btn-sm btn-warning check-in-this-user <%= member.active ? 'active_member_style' : 'non_active_member_style' %>' data-id='<%= mem_grp.try(:id) %>' member-id='<%= member.id %>'>CHECK IN</a>
+			<% end %>
 
 		<% end %>
 		

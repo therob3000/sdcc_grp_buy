@@ -43,6 +43,20 @@ class AdminsController < ApplicationController
 			"Notes" => params[:notes]
 		}
 
+		if params[:group_name]
+			group_name = params[:group_name]
+			new_group = Group.find_by_name(group_name)
+			if new_group.nil? 
+				new_group = Group.new({:user_id => current_user.id, :name => group_name})
+				if new_group.save
+					messages << "<li class='success-message'>Created Group: #{group_name}</li>"
+				end
+					messages << "<li class='error-message'>Failed to Create Group: #{group_name} #{new_group.errors.full_messages.join(',')}</li>"
+			end
+		else
+			new_group = nil
+		end
+
 		total_rows = @rowarraydisp.length		 	
 		@rowarraydisp.each_with_index do |row,idx|
 			next if idx < 3
@@ -72,7 +86,6 @@ class AdminsController < ApplicationController
 				days_bought_for_member = obj[legend["DaysBought"]]
 				days_bought_for_email = obj[legend["BuyerEmail"]]
 				these_notes = obj[legend["Notes"]]
-# byebug
 
 				# create the member
 				# TODO: map to what days needed
@@ -153,7 +166,7 @@ class AdminsController < ApplicationController
 						}
 						purchase = make_purchase(obj2,cci_id)
 							if purchase.save
-								if params[:send_email]
+								if params[:send_email] && !email_opt_out(mem.email)
 									if Rails.env.development?
 										purchase.send_out_confirmation(current_user,'dev')
 									else
@@ -168,11 +181,14 @@ class AdminsController < ApplicationController
 				end
 
 				if mem.save
+					
 					if already_in
 						messages << "<li class='success-message'>Updated member: #{cci_id}</li>"
 					else
 						messages << "<li class='success-message'>Created member: #{cci_id}</li>"
 					end
+
+					# TODO: if the member isn't already in new_group, than make a new MemberGroup
 				else
 					messages << "<li class='error-message'>#{cci_id}: #{mem.errors.full_messages.join(',')}</li>"
 				end
@@ -180,6 +196,11 @@ class AdminsController < ApplicationController
 		end
 
 		render :json => { :success => true, :messages => messages.join(', ') }
+	end
+
+	def email_opt_out(email)
+		list = Email.opted_out_emails
+		list.include?(email)
 	end
 
 

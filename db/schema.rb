@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171109034315) do
+ActiveRecord::Schema.define(version: 20171111204157) do
 
   create_table "chat_messages", force: :cascade do |t|
     t.string   "message"
@@ -29,6 +29,16 @@ ActiveRecord::Schema.define(version: 20171109034315) do
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
     t.boolean  "seen",         default: false
+  end
+
+  create_table "emails", force: :cascade do |t|
+    t.string   "to"
+    t.string   "from"
+    t.string   "cc"
+    t.text     "body"
+    t.string   "type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "followed_groups", force: :cascade do |t|

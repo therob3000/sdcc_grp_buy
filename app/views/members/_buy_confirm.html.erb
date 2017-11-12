@@ -18,21 +18,21 @@
 		</textarea>
 	</div>
   <h3>What Days Were you able to buy?</h3>
-    <div class="form-check form-check-stacked">
+    <div class="form-check form-check-stacked" style="display: <%= !member.days_bought['wensday'] ? 'block' : 'none' %>">
         <%= check_box_tag 'conf[wensday]' %> Wensday
     </div>
-    <div class="form-check form-check-stacked">
+    <div class="form-check form-check-stacked" style="display: <%= !member.days_bought['thursday'] ? 'block' : 'none' %>">
         <%= check_box_tag 'conf[thursday]' %> Thursday
     </div>
-    <div class="form-check form-check-stacked">
+    <div class="form-check form-check-stacked" style="display: <%= !member.days_bought['friday'] ? 'block' : 'none' %>">
         <%= check_box_tag 'conf[friday]' %> Friday
     </div>
 
-    <div class="form-check form-check-stacked">
+    <div class="form-check form-check-stacked" style="display: <%= !member.days_bought['saturday'] ? 'block' : 'none' %>">
         <%= check_box_tag 'conf[saturday]' %> Saturday
     </div>
 
-    <div class="form-check form-check-stacked">
+    <div class="form-check form-check-stacked" style="display: <%= !member.days_bought['sunday'] ? 'block' : 'none' %>">
         <%= check_box_tag 'conf[sunday]' %> Sunday
     </div>
 

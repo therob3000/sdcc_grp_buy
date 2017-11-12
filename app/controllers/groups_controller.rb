@@ -23,6 +23,13 @@ class GroupsController < ApplicationController
 		render :json => { :count => count }
 	end
 
+	def present_day_container
+		member_id = params[:member_id]
+		member = Member.find(member_id)
+
+		render :partial => 'groups/days_container', :locals => { :member => member }
+	end
+
 	def follow_group
 		@group = Group.find(follow_params[:group_id])
 		@group_follow = FollowedGroup.new(follow_params)

@@ -397,6 +397,17 @@ $(document).ready(function() {
 		    channel_global.bind("member_covered",function(mes) {
 			    $("#member_row_" + mes.member_group_id).addClass('member_covered');
 			    $('.active-button-' + mes.member_id).hide(500);
+
+			    member_id = mes.member_id
+			    $.ajax({
+			    	url: '/groups/present_day_container',
+			    	data: {member_id: mes.member_id},
+			    })
+			    .done(function(html) {
+			    	$('.day-holder-for' + member_id).html(html);
+			    })
+			    
+
 			    $("#action-holder-for" + mes.member_group_id).html("This member has been covered");
 		    })
 
