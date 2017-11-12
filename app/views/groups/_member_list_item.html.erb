@@ -24,7 +24,7 @@
 	<% if !grp.nil? %>
 			<% if member.full_covered %>
 					<div class="covered-member">	
-							THIS MEMBER HAS BEEN FULLY BOUGHT FOR <br>
+							PURCHASE COMPLETED
 					</div>
 			<% elsif member.active && !current_user.is_buying_for?(member) %>
 					<div class="mem-block-message" id="action-message-for<%= member.try(:id) %>" style='float: right; display: block;'>
