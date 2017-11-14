@@ -9,26 +9,20 @@
 		<b>
 			<%= member.try(:sdcc_member_id) %>
 		</b>
-
-		<% if member.has_purchase && !member.full_covered %>
-		<div class="covered-member">	
-				bought for / still needs
-		</div>
-		<% end %>
 	</div>
 	<div class="mem-block day-holder day-holder-for<%= member.id %>" style='float: center;'>
-		<%= render :partial => 'groups/days_container', :locals => { :member => member } %>
+		<%= render :partial => 'groups/days_container', :locals => { :member => member, :day_map => {'wensday' => 'WENS','thursday' => 'THURS','friday' => 'FRI','saturday' => 'SAT','sunday' => 'SUN'} } %>
 	</div> 
 
 	<div class="mem-block web_socket_loading" id="action-holder-for<%= member.try(:id) %>" style='float: right;'>
 	<% if !grp.nil? %>
 			<% if member.full_covered %>
 					<div class="covered-member">	
-							PURCHASE COMPLETED
+							COMPLETE
 					</div>
 			<% elsif member.active && !current_user.is_buying_for?(member) %>
 					<div class="mem-block-message" id="action-message-for<%= member.try(:id) %>" style='float: right; display: block;'>
-						PURCHASE IN PROGRESS
+						IN PROGRESS
 					</div>
 			<% end %>
 
@@ -44,9 +38,9 @@
 			<% end %>
 
 			<% if member.active %>
-				<a href="#" class='activate activate-button-for<%= member.try(:id) %> btn btn-sm btn-primary activate-this-user <%= member.active ? 'active_member_style' : 'non_active_member_style' %>' style="display: <%= member.checked_in ? 'inline-block' : 'none' %>;width: 30%;" data-id='<%= mem_grp.try(:id) %>' member-id='<%= member.id %>'>START BUY</a>
+				<a href="#" class='activate activate-button-for<%= member.try(:id) %> btn btn-sm btn-primary activate-this-user <%= member.active ? 'active_member_style' : 'non_active_member_style' %>' style="display: <%= member.checked_in ? 'inline-block' : 'none' %>;width: 30%;" data-id='<%= mem_grp.try(:id) %>' member-id='<%= member.id %>'>START</a>
 			<% else %>
-				<a href="#" class='activate activate-button-for<%= member.try(:id) %> btn btn-sm btn-primary activate-this-user <%= member.active ? 'active_member_style' : 'non_active_member_style' %>' style="display: <%= member.checked_in ? 'inline-block' : 'none' %>; width: 30%;" data-id='<%= mem_grp.try(:id) %>' member-id='<%= member.id %>'>START BUY</a>
+				<a href="#" class='activate activate-button-for<%= member.try(:id) %> btn btn-sm btn-primary activate-this-user <%= member.active ? 'active_member_style' : 'non_active_member_style' %>' style="display: <%= member.checked_in ? 'inline-block' : 'none' %>; width: 30%;" data-id='<%= mem_grp.try(:id) %>' member-id='<%= member.id %>'>START</a>
 			<% end %>
 
 			<% if !member.checked_in %>

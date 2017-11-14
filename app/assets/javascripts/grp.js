@@ -567,6 +567,18 @@ $('body').on('click', '.check-in', function(event) {
  	}
  });
 
+
+ $('body').on('click', '#non-checked-in-toggle', function(event) {
+ 	event.preventDefault();
+ 	if ($('.member_covered').css('display') == 'none') {
+	 	$('.member_not_checked_in').slideDown(500);
+ 	} else {
+	 	$('.member_not_checked_in').slideUp(500);
+ 	}
+ });
+
+ // non-checked-in-toggle
+
 $('body').on('click', '.expand-chat-log-group', function(event) {
 	event.preventDefault();
 		// $(this).addClass('selected-chat-log');

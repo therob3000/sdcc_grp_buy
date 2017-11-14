@@ -104,13 +104,13 @@
 .mem-block {
     display: inline-block;
     margin-right: 3%;
-    padding: 7px;
-    padding: 1%;
-    border-radius: 10px;
+    /*padding: 7px;*/
+    /*padding: 1%;*/
+    /*border-radius: 10px;*/
     margin: 2px;
     font-size: 12px;
     overflow-y: auto;
-    background-color: #bdd7e6;
+    background-color: transparent;
 }
 
 .mem-block a {
@@ -123,9 +123,9 @@
 .day-block {
     display: inline-block;
     background-color: white;
-    margin-right: 2%;
+    margin-right: 0px;
     padding: 1%;
-    border-radius: 10px;
+    border-radius: 0px;
     font-weight: bold;
 }
 
@@ -137,6 +137,8 @@
 
 .day-holder {
     width: 33%;
+    padding-left: 3px;
+    padding-right: 3px;
 
 }
 
@@ -170,10 +172,10 @@
 }
 
 .mem-block {
-    height: 50px;
+    /*height: 50px;*/
     width: 32%;
-        padding-top: 8px;
-    padding-bottom: 9px;
+        /*padding-top: 8px;*/
+    /*padding-bottom: 9px;*/
 }
 
 .name-holder {
@@ -902,10 +904,10 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 
 }
 .member_not_checked_in {
-    background-color: red;
+    background-color: transparent;
 }
 .member_checked_in {
-        background-color: #cbcbcb;
+        background-color: #74ff74;
 }
 
 
