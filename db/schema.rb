@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171111204157) do
+ActiveRecord::Schema.define(version: 20171126194014) do
 
   create_table "chat_messages", force: :cascade do |t|
     t.string   "message"
@@ -55,6 +55,14 @@ ActiveRecord::Schema.define(version: 20171111204157) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "invites", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "email"
+    t.boolean  "accepted",   default: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
   create_table "member_group_petitions", force: :cascade do |t|
     t.integer  "member_id"
     t.integer  "user_id"
@@ -93,6 +101,11 @@ ActiveRecord::Schema.define(version: 20171111204157) do
     t.integer  "sponsor_id"
     t.text     "payment_info"
     t.date     "checked_in_date"
+    t.boolean  "min_wensday",     default: false
+    t.boolean  "min_thursday",    default: false
+    t.boolean  "min_friday",      default: false
+    t.boolean  "min_saturday",    default: false
+    t.boolean  "min_sunday",      default: false
   end
 
   create_table "needs", force: :cascade do |t|

@@ -1,0 +1,17 @@
+<% invites.each do |list_item| %>
+	<div class="code_container row <%= list_item.accepted ? 'admin_item' : '' %>" id='invite_parent_<%= list_item.id %>'>
+		<div class="list_item col-lg-2" id='validation_code_<%= list_item.id %>'>
+			<%= list_item.email %>
+		</div>
+
+		<div class="code col-lg-8" id='validation_code_<%= list_item.id %>'>
+			<%= list_item.accepted? ? 'accepted' : 'pending' %>
+		</div>
+
+		<div class="col-lg-2">
+			<a href="#" class='email-invite-user btn btn-primary btn-lg' data-id='<%= list_item.id %>' data-email='<%= list_item.email %>' data-toggle="modal" data-target="#confirmationModal">Send</a>
+			<a href="#" class='delete-invite-user btn btn-danger btn-lg' data-id='<%= list_item.id %>' data-email='<%= list_item.email %>' data-toggle="modal" data-target="#confirmationModal">Delete</a>
+		</div>
+	</div>
+<% end %>
+

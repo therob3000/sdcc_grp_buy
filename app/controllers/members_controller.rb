@@ -49,7 +49,7 @@ class MembersController < ApplicationController
 	end
 
 	def validate_user
-		code = code_params['code']
+		code = code_params['code'].strip
 		db_code = ValidationCode.find_by_email(current_user.email)
 		if db_code.code == decrypt_code(code)
 			current_user.validation_code = code
@@ -274,7 +274,7 @@ class MembersController < ApplicationController
 	end
 
 	def member_params
-		params.require(:member).permit(:name, :last_name, :sdcc_member_id, :phone, :email, :wensday, :thursday, :friday, :saturday, :sunday, :payment_info)
+		params.require(:member).permit(:name, :last_name, :sdcc_member_id, :phone, :email, :wensday, :min_wensday, :thursday, :min_thursday, :friday, :min_friday, :saturday, :min_saturday, :sunday, :min_sunday, :payment_info)
 	end
 
 	def member_groups_params

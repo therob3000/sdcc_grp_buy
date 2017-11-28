@@ -19,8 +19,50 @@
 </div>
 
 
+<h2>Invites</h2>
+<div class="results-container-codes">
+  <%= render :partial => 'code_results_invites', :locals => { :invites => Invite.all } %>
+</div>
+
+<div class="create-form create-invite-form">  
+  <h3>Invite by Email</h3>
+  <form id="create-new-invite" action='<%= create_invite_admins_path %>' method='POST'>
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+    <div class="form-group">
+      <label for="invite[email]">email</label>
+      <input type="text" name="invite[email]" class='form-control'>
+    </div>
+    <div class="form-group">
+      <input type="submit" name="create" class='btn btn-primary btn-lg'>
+    </div>
+  </form>
+</div>
 
 <script type="text/javascript">
+  // create an invite x
+  // send an invite
+  // delete an invite
+
+// invite js
+$('body').on('click', '.email-invite-user', function(event) {
+  event.preventDefault();
+  var html = ""
+  html += 'Email to '+ $(this).attr('data-email')+'? <br><br>';
+  html += "<a href='/admins/" + $(this).attr('data-id') + "/send_invite' method='get' class='ajax-button-invite btn btn-primary btn-lg'>SEND</a>";
+
+  $('#confirmationModal .modal-body .edit-modal-content').html(html);
+});
+
+$('body').on('click', '.delete-invite-user', function(event) {
+  event.preventDefault();
+  var html = ""
+  html += 'Cancel invite for '+ $(this).attr('data-email')+'? <br><br>';
+  html += "<a href='/admins/" + $(this).attr('data-id') + "/delete_invite' method='delete' class='ajax-button-invite btn btn-danger btn-lg'>DELETE</a>";
+
+  $('#confirmationModal .modal-body .edit-modal-content').html(html);
+});
+// invite js
+
 $('body').on('click', '.email-code-user', function(event) {
 	event.preventDefault();
 	var html = ""
@@ -101,8 +143,42 @@ $('body').on('click', '.delete-user', function(event) {
 
   		}
   	})
+  });
 
-  	
+  $('body').on('click', '.ajax-button-invite', function(event) {
+    event.preventDefault();
+    $(this).parent().html('working...');
+    var method = $(this).attr('method');
+    var url = $(this).attr('href');
+
+    $.ajax({
+      url: url,
+      type: method
+    })
+    .done(function(data) {
+      $('.edit-modal-content').html('...done');
+      if (data.success) {
+        $('#success_mess').html(data.message);
+        $('#success_mess').fadeIn(500, function() {
+          setTimeout(function(){
+            $('.status-message').fadeOut(1000);
+          },2000)
+        });
+        $('#errors_mess').html('');
+        // $("#csearch").trigger('keyup');
+         if (data.delete_id != '') {
+          $('#invite_parent_' + data.delete_id).hide(500);
+        }
+      } else {
+        $('#success_mess').html('');
+        $('#errors_mess').html(data.message);
+         $('#errors_mess').fadeIn(500, function() {
+          setTimeout(function(){
+            $('.status-message').fadeOut(1000);
+          },2000)
+        });
+      }
+    })
   });
 
 

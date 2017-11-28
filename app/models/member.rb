@@ -38,6 +38,22 @@ class Member < ApplicationRecord
 
 	end
 
+	def min_days
+		output = {
+			'wensday' => min_wensday,
+			'thursday' => min_thursday,
+			'friday' => min_friday,
+			'saturday' => min_saturday,
+			'sunday' => min_sunday			
+		}
+
+		if output.values.any? { |e| e == true }
+			output
+		else
+			nil
+		end
+	end
+
 	def days_bought
 		tally = {
 			'wensday' => false,

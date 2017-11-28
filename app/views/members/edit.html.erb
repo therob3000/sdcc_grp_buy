@@ -46,6 +46,26 @@
               <%= f.check_box(:sunday, checked: @member.sunday) %> Sunday
           </div>
 
+
+      <h3>Select the MINIMUM Days this member would like</h3>
+          <div class="form-check form-check-inline" style="background-color:<%= @member.min_wensday ? "#fd7777" : "" %>;color: <%= @member.min_wensday ? "white" : "" %>">
+              <%= f.check_box(:min_wensday, checked: @member.min_wensday) %> Wensday
+          </div>
+          <div class="form-check form-check-inline" style="background-color:<%= @member.min_thursday ? "#fd7777" : "" %>;color: <%= @member.min_thursday ? "white" : "" %>">
+              <%= f.check_box(:min_thursday, checked: @member.min_thursday) %> Thursday
+          </div>
+          <div class="form-check form-check-inline" style="background-color:<%= @member.min_friday ? "#fd7777" : "" %>;color: <%= @member.min_friday ? "white" : "" %>">
+              <%= f.check_box(:min_friday, checked: @member.min_friday) %> Friday
+          </div>
+
+          <div class="form-check form-check-inline" style="background-color:<%= @member.min_saturday ? "#fd7777" : "" %>;color: <%= @member.min_saturday ? "white" : "" %>">
+              <%= f.check_box(:min_saturday, checked: @member.min_saturday) %> Saturday
+          </div>
+
+          <div class="form-check form-check-inline" style="background-color:<%= @member.min_sunday ? "#fd7777" : "" %>;color: <%= @member.min_sunday ? "white" : "" %>">
+              <%= f.check_box(:min_sunday, checked: @member.min_sunday) %> Sunday
+          </div>
+
       <div id="error_list" style="color: red"></div>
       <button type="submit" class="btn btn-primary btn-lg" style="width: 100%">Update Member</button>
       <% end %>

@@ -10,6 +10,7 @@ class User < ApplicationRecord
   has_many :followed_groups, :dependent => :delete_all
   has_many :direct_messages, :dependent => :delete_all
   validates_uniqueness_of :name, :email
+  validate :filter_whitelist
   after_create :transfer_member_self
 
 
@@ -31,6 +32,20 @@ class User < ApplicationRecord
         user.email = data["email"] if user.email.blank?
       end
     end
+  end
+
+  def filter_whitelist
+    # populate with admins
+    emails = ["ncdsbuyinggroup@gmail.com", "beckymcholland@cox.net","laomatt1@gmail.com"]
+    # get rest emails from the database of invitees from Invite model
+    invite_emails = Invite.all.map { |e| e.email }
+
+    total_emails = invite_emails + emails
+
+    if !total_emails.include?(email)
+      errors.add(:email, "#{email} is not invited to this app.")
+    end
+
   end
 
   def is_buying_for?(member)

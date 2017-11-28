@@ -465,13 +465,66 @@ class AdminsController < ApplicationController
 		end
 	end
 
+	# Invites
+	def create_invite
+		invite = Invite.new(invite_params)
+		invite.user_id = current_user.id
+		if invite.save
+			flash[:update] = 'invite created'
+		else
+			flash[:error] = invite.errors.full_messages.join(',')
+		end
+
+		redirect_to :back
+	end
+
+	def send_invite
+		# create validation_code
+			email = Invite.find(params[:id]).email
+			val_code = ValidationCode.find_by_email(email)
+			errors = []
+
+			if val_code
+				code = val_code.code
+			else
+				val_code = ValidationCode.new(:email => email)
+				code = gen_code
+				val_code.code = code
+				if !val_code.save
+					errors += val_code.errors
+				end
+			end
+
+			obj = {
+				email: email, 
+				message: "your validation code is: #{encrypt_code(val_code.code)}"
+			}
+			send_email_to_email(obj)
+			# send the invite and the validation_code to the email
+			if errors.empty?
+				render :json => { :success => true, :message => "email sent to #{email}", :id => val_code.id }
+			else
+				render :json => { :success => false, :message => errors.join(',') }
+			end
+	end
+
+	def delete_invite
+		invite = Invite.find(params[:id])
+		if invite.delete
+			render :json => { :success => true, :message => 'invite cancelled!', :delete_id => invite.id }
+		else
+			render :json => { :success => false, :message => invite.errors.full_messages.join(',') }
+		end
+		
+	end
+
 	def promote
 		user = User.find(params[:id])
 		user.is_admin = true
 		if user.save
 			render :json => { :success => true, :message => 'user promoted!', :admin_id => user.id }
 		else
-			render :json => { :success => false, :message =>user.errors.full_messages.join(',') }
+			render :json => { :success => false, :message => user.errors.full_messages.join(',') }
 		end	
 	end
 
@@ -481,7 +534,7 @@ class AdminsController < ApplicationController
 		if user.save
 			render :json => { :success => true, :message => 'user promoted!', :admin_id => user.id }
 		else
-			render :json => { :success => false, :message =>user.errors.full_messages.join(',') }
+			render :json => { :success => false, :message => user.errors.full_messages.join(',') }
 		end	
 	end
 
@@ -490,7 +543,7 @@ class AdminsController < ApplicationController
 		if user.delete
 			render :json => { :success => true, :message => 'user banished!', :delete_id => user.id }
 		else
-			render :json => { :success => false, :message =>user.errors.full_messages.join(',') }
+			render :json => { :success => false, :message => user.errors.full_messages.join(',') }
 		end
 	end
 
@@ -520,7 +573,7 @@ class AdminsController < ApplicationController
 		if val_code.save
 			render :json => { :success => true, :message => "code reset for #{val_code.email}", :code => code, :id => val_code.id }
 		else
-			render :json => { :success => false, :message =>val_code.errors.full_messages.join(',') }
+			render :json => { :success => false, :message => val_code.errors.full_messages.join(',') }
 		end
 	end
 
@@ -540,7 +593,7 @@ class AdminsController < ApplicationController
 		if val_code.save
 			render :json => { :success => true, :message => "email sent to #{email}", :code => code, :id => val_code.id }
 		else
-			render :json => { :success => false, :message =>val_code.errors.full_messages.join(',') }
+			render :json => { :success => false, :message => val_code.errors.full_messages.join(',') }
 		end
 	end
 
@@ -556,12 +609,17 @@ class AdminsController < ApplicationController
 		if val_code.delete
 			render :json => { :success => true, :message => 'deleted', :code => code, :delete_id => val_code.id }
 		else
-			render :json => { :success => false, :message =>val_code.errors.full_messages.join(',') }
+			render :json => { :success => false, :message => val_code.errors.full_messages.join(',') }
 		end
 	end
 
 
 	private
+
+	def invite_params
+		params.require(:invite).permit(:email)
+		
+	end
 
 	def code_params
 		params.require(:code).permit(:email)

@@ -48,15 +48,18 @@ Rails.application.routes.draw do
   resources :admins do 
     member do 
       get 'send_email'
+      get 'send_invite'
       patch 'promote'
       patch 'demote'
       delete 'banish'
+      delete 'delete_invite'
       delete 'blow_up_group'
       delete 'delete_member'
     end
     
     collection do 
       post 'upload_csv'
+      post 'create_invite'
       get 'search'
       get 'grab_csv_progress'
       get 'search_users'

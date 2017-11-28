@@ -1,7 +1,23 @@
-<% ['wensday','thursday','friday','saturday','sunday'].each do |day| %>
-	<% if member.needs[day] %>
-		<div class="day-block" style="background-color: <%= member.days_bought[day] ? 'red' : 'white' %>;">
-				<%= day_map[day] %>
-		</div>
+<% if type == 'need' %>
+
+	<% ['wensday','thursday','friday','saturday','sunday'].each do |day| %>
+		<% if member.needs[day] %>
+			<div class="day-block" style="background-color: <%= member.days_bought[day] ? 'red' : 'white' %>;color: <%= member.days_bought[day] ? 'white' : 'black' %>;">
+					<%= day_map[day] %>
+			</div>
+		<% end %>
+	<% end %>
+
+<% else %>
+	<% if member.min_days %>
+		<% ['wensday','thursday','friday','saturday','sunday'].each do |day| %>
+			<% if member.min_days[day] && member.needs[day] %>
+				<div class="day-block" style="background-color: <%= member.days_bought[day] ? 'red' : '#d9fcd9' %>;color: <%= member.days_bought[day] ? 'white' : 'black' %>;">
+						<%= day_map[day] %>
+				</div>
+			<% end %>
+		<% end %>
+	<% else %>
+		NO MINIMUM SPECIFIED
 	<% end %>
 <% end %>

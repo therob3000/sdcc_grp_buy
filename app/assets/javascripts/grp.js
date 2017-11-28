@@ -383,12 +383,23 @@ $(document).ready(function() {
 
   		    // listen for any checked in members
 		    channel_global.bind("check_in_member",function(mes) {
-		    	// checkInMember(mes);
 		    	member_id = mes.member_id
 		    	$(".check-in-button-for" + member_id).fadeOut(300, function() {
+		    		$(".check-out-button-for" + member_id).fadeIn(300);
 		    		$(".activate-button-for" + member_id).fadeIn(300, function() {
-		    			$(this).parents('.member-item').removeClass('member_not_checked_in')
-		    			$(this).parents('.member-item').addClass('member_checked_in')
+		    			$(this).parents('.member-item').removeClass('member_not_checked_in');
+		    			$(this).parents('.member-item').addClass('member_checked_in');
+		    		});
+		    	});
+		    })
+
+		    channel_global.bind("check_out_member",function(mes) {
+		    	member_id = mes.member_id
+		    	$(".check-out-button-for" + member_id).fadeOut(300, function() {
+		    		$(".check-in-button-for" + member_id).fadeIn(300);
+		    		$(".activate-button-for" + member_id).fadeOut(300, function() {
+		    			$(this).parents('.member-item').removeClass('member_checked_in');
+		    			$(this).parents('.member-item').addClass('member_not_checked_in');
 		    		});
 		    	});
 		    })
@@ -529,6 +540,14 @@ $('body').on('click', '.check-in', function(event) {
 	var member_id = $(this).attr('member-id');
 	var obj = { room: group_id, member_id: member_id, connection: connectionID };
 	dispatcher.trigger('check_in_member', obj);
+});
+
+// check out funcitonality
+$('body').on('click', '.check-out', function(event) {
+	event.preventDefault();
+	var member_id = $(this).attr('member-id');
+	var obj = { room: group_id, member_id: member_id, connection: connectionID };
+	dispatcher.trigger('check_out_member', obj);
 });
 
 // chat rooom functionality

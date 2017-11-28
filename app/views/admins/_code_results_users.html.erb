@@ -1,18 +1,18 @@
-<% users.each do |code| %>
-	<div class="code_container row <%= code.is_admin ? 'admin_item' : '' %>" id='validation_code_parent_<%= code.id %>'>
+<% users.each do |list_item| %>
+	<div class="code_container row <%= list_item.is_admin ? 'admin_item' : '' %>" id='validation_code_parent_<%= list_item.id %>'>
 		<div class="email col-lg-4">
-			<a href="#" class='user-modal-pop btn chat-avatar' style="float: left;color: white;font-weight: bold;background-color: black;width: 100%" data-toggle="modal" data-target="#userModal" data-id='<%= code.try(:id) %>'><img src="<%= code.try(:avatar_url) %>" class="img-circle" alt="User Image" />
-				<%= code.name %>
+			<a href="#" class='user-modal-pop btn chat-avatar' style="float: left;color: white;font-weight: bold;background-color: black;width: 100%" data-toggle="modal" data-target="#userModal" data-id='<%= list_item.try(:id) %>'><img src="<%= list_item.try(:avatar_url) %>" class="img-circle" alt="User Image" />
+				<%= list_item.name %>
 			</a>
 		</div>
 
-		<div class="code col-lg-5" id='validation_code_<%= code.id %>'>
-			<%= code.email %>
+		<div class="list_item col-lg-5" id='validation_code_<%= list_item.id %>'>
+			<%= list_item.email %>
 		</div>
 
 		<div class="col-lg-3">
-			<a href="#" class='promote-user btn btn-primary btn-lg' data-id='<%= code.id %>' data-email='<%= code.email %>' data-name='<%= code.name %>' data-toggle="modal" data-target="#confirmationModal"><%= code.is_admin ? "Demote" : "Promote to Admin" %></a>
-			<a href="#" class='delete-user btn btn-danger btn-lg' data-id='<%= code.id %>' data-email='<%= code.email %>' data-name='<%= code.name %>' data-toggle="modal" data-target="#confirmationModal">Delete</a>
+			<a href="#" class='promote-user btn btn-primary btn-lg' data-id='<%= list_item.id %>' data-email='<%= list_item.email %>' data-name='<%= list_item.name %>' data-toggle="modal" data-target="#confirmationModal"><%= list_item.is_admin ? "Demote" : "Promote to Admin" %></a>
+			<a href="#" class='delete-user btn btn-danger btn-lg' data-id='<%= list_item.id %>' data-email='<%= list_item.email %>' data-name='<%= list_item.name %>' data-toggle="modal" data-target="#confirmationModal">Delete</a>
 		</div>
 	</div>
 <% end %>

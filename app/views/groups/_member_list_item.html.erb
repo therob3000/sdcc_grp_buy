@@ -11,7 +11,11 @@
 		</b>
 	</div>
 	<div class="mem-block day-holder day-holder-for<%= member.id %>" style='float: center;'>
-		<%= render :partial => 'groups/days_container', :locals => { :member => member, :day_map => {'wensday' => 'WENS','thursday' => 'THURS','friday' => 'FRI','saturday' => 'SAT','sunday' => 'SUN'} } %>
+		WANTED: 
+		<%= render :partial => 'groups/days_container', :locals => { :type => 'need', :member => member, :day_map => {'wensday' => 'WENS','thursday' => 'THURS','friday' => 'FRI','saturday' => 'SAT','sunday' => 'SUN'} } %>
+		<br>
+		MIN BADGE:
+		<%= render :partial => 'groups/days_container', :locals => { :type => 'min', :member => member, :day_map => {'wensday' => 'WENS','thursday' => 'THURS','friday' => 'FRI','saturday' => 'SAT','sunday' => 'SUN'} } %>
 	</div> 
 
 	<div class="mem-block web_socket_loading" id="action-holder-for<%= member.try(:id) %>" style='float: right;'>
@@ -43,8 +47,13 @@
 				<a href="#" class='activate activate-button-for<%= member.try(:id) %> btn btn-sm btn-primary activate-this-user <%= member.active ? 'active_member_style' : 'non_active_member_style' %>' style="display: <%= member.checked_in ? 'inline-block' : 'none' %>; width: 30%;" data-id='<%= mem_grp.try(:id) %>' member-id='<%= member.id %>'>START</a>
 			<% end %>
 
-			<% if !member.checked_in %>
+			<% if member.checked_in %>
+				<a href="#" class='check-in check-in-button-for<%= member.try(:id) %> btn btn-sm btn-warning check-in-this-user <%= member.active ? 'active_member_style' : 'non_active_member_style' %>' data-id='<%= mem_grp.try(:id) %>' member-id='<%= member.id %>' style='display: none;'>CHECK IN</a>
+				<a href="#" class='check-out btn btn-sm btn-danger uncheck-in-this-user check-out-button-for<%= member.try(:id) %>' data-id='<%= mem_grp.try(:id) %>' member-id='<%= member.id %>'>UN-CHECK</a>
+			<% else %>
 				<a href="#" class='check-in check-in-button-for<%= member.try(:id) %> btn btn-sm btn-warning check-in-this-user <%= member.active ? 'active_member_style' : 'non_active_member_style' %>' data-id='<%= mem_grp.try(:id) %>' member-id='<%= member.id %>'>CHECK IN</a>
+				<a href="#" class='check-out btn btn-sm btn-danger uncheck-in-this-user check-out-button-for<%= member.try(:id) %>' data-id='<%= mem_grp.try(:id) %>' member-id='<%= member.id %>' style='display: none;'>UN-CHECK</a>
+				
 			<% end %>
 
 		<% end %>

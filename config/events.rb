@@ -26,6 +26,7 @@ WebsocketRails::EventMap.describe do
   subscribe :someone_typing, "broadcasts#someone_typing"
   subscribe :group_updated, "broadcasts#group_updated"
   subscribe :check_in_member, "broadcasts#check_in_member"
+  subscribe :check_out_member, "broadcasts#check_out_member"
   # end
   # The above will handle an event triggered on the client like `product.new`.
 end
