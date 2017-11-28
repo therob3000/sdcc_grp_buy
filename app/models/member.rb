@@ -4,6 +4,7 @@ class Member < ApplicationRecord
 	validates :sdcc_member_id, :email, :last_name, presence: true
 	validates_uniqueness_of :sdcc_member_id 
 	has_many :purchases
+	validate :user_is_admin, :on => :create
 
 
 	def needs
@@ -36,6 +37,12 @@ class Member < ApplicationRecord
 
 		output
 
+	end
+
+	def user_is_admin
+		if !user.is_admin?
+			errors.add(:user_id, "Only Admins may register members.")
+		end
 	end
 
 	def min_days

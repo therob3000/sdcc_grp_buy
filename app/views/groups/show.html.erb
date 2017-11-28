@@ -49,15 +49,17 @@
 		<div class="file-folder row">
 			
 			<a href="#" class='col-md-6 btn-sm btn-primary expand-chat-log expand-chat-log-group' style='background-color: #efeacc'>Group chat</a>
-			<a href="#" class='col-md-6 btn-sm btn-primary expand-chat-log  expand-chat-log-global' style='background-color: rgb(193, 188, 158)'>Global chat</a>
-		
+			<% if current_user.is_admin? %>
+			<a href="#" class='col-md-6 btn-sm btn-primary expand-chat-log  expand-chat-log-global' style='background-color: rgb(193, 188, 158)'>Admin chat</a>
+			<% end %>
 		</div>
 
+		<% if current_user.is_admin? %>
 		<div class="chat-box chat-box-global room-box-global">
 			<div id="chat_container-global">
 				<div class="chat-form-global">
 					<form id='chat-dialog-global'>
-						<h4>Global Chat Room</h4>
+						<h4>Admin Chat Room</h4>
 						<input type="text" name="" class='chat-input-dialog chat-message-input-global chat-message-input' scope='global' placeholder="SAy sumthin'.....">
 					</form>
 					<span class="someone_typing_global"></span>
@@ -70,6 +72,7 @@
 			</div>
 		</div>
 		
+	 <% end %>
 		<div class="chat-box room-box chat-box-group">
 			<div id="chat_container">
 				<div class="chat-form">
@@ -88,6 +91,8 @@
 			</div>
 		</div>
 	</div>
+
+
 </div>
 
 
