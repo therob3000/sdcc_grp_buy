@@ -86,6 +86,10 @@
     border-radius: 10px;
 }
 
+.member-item-container {
+    list-style: none;
+}
+
 .smaller_member_item {
     height: 30px;
     width: 100%;

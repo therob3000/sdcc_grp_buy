@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171126194014) do
+ActiveRecord::Schema.define(version: 20171128053359) do
 
   create_table "chat_messages", force: :cascade do |t|
     t.string   "message"
@@ -77,8 +77,9 @@ ActiveRecord::Schema.define(version: 20171126194014) do
     t.integer  "member_id"
     t.integer  "user_id"
     t.integer  "group_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.integer  "order",      default: 0
   end
 
   create_table "members", force: :cascade do |t|
