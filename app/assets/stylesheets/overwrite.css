@@ -8,7 +8,9 @@
 	padding: 0;
 }
 
-
+.ui-state-highlight {
+    background-color: transparent;
+}
 
 .content-wrapper {
 	height: 100%;

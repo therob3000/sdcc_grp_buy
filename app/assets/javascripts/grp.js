@@ -534,106 +534,44 @@ $(document).ready(function() {
 
   }
 
-// if the cookie 
-var group_order = [];
-
 // drag and drop
 function initiateDragDrop(){
-  	$.each($(".member-item-container"), function(index, val) {
-    	var thisOrder = $(val).attr('order');
-  		var mem_g_id = $(val.firstElementChild).attr('member_group_id');
 
-  		var object = {
-  			order: thisOrder,
-  			mem_g_id: mem_g_id
-  		}
-  		group_order.push(object);
-		});
+	$("#table_sort").sortable({
+		update: function( event, ui ) {
+			// var currentMember = ui.item.attr('member_group_id');
+			// debugger
+	  	var order = [];
+		  $.each($(".member-item-container"), function(index, val) {
+	      	// var thisOrder = $(val).attr('order');
+	      	var thisOrder = index;
+	    		var mem_g_id = $(val.firstElementChild).attr('member_group_id');
 
-  	var newGrpOrd = {}
-		$.each($(".member-item-container"), function(index, val) {
-			newGrpOrd[index] = $(val).html();
-		});
+	    		var object = {
+	    			order: thisOrder,
+	    			mem_g_id: mem_g_id
+	    		}
+	    		order.push(object);
+	  	});
 
-  var currentlyDraggedElement;
+  		console.log(order);
+    	var orderObj = JSON.stringify(order);
+	  	$.ajax({
+	  		url: '/groups/present_member_list_partial',
+	  		data: {group_id: group_id, order: orderObj},
+	  	})
+	  	.done(function(data) {
+	  		$('#member-list').html(data);
+				initiateDragDrop();
+	  	})
 
-	$(".member-item-container .member-item").draggable({});
-
-	$(".member-item-container").droppable({
-			// accept: ".member-item"
-	    drop: function( event, ui ) {
-					var containerTop = ui.offset.top;
-		    	ui.draggable.css('left', '0');
-		    	ui.draggable.css('top', containerTop);
-	      	// center the dropped member item in the container
-	      	// re assign order number of all items.
-	      	// make orders and ids a json array object and ajax it to server
-	      	var currentIdx = $(this).attr('order');
-	      	var currentMember = ui.draggable.attr('member_group_id');
-	      	order = [];
-	      	
-	      	$.each($(".member-item-container"), function(index, val) {
-			      	var thisOrder = $(val).attr('order');
-		      		var mem_g_id = $(val.firstElementChild).attr('member_group_id');
-
-		      		var object = {
-		      			order: thisOrder,
-		      			mem_g_id: mem_g_id
-		      		}
-		      		order.push(object);
-	      	});
-
-	      	// start incrementing down order starting at the current index
-	      	// debugger
-	      	var orderObj = JSON.stringify(order);
-	     //  	$.ajax({
-	     //  		url: '/groups/present_member_list_partial',
-	     //  		data: {group_id: group_id, order: orderObj},
-	     //  	})
-	     //  	.done(function(data) {
-	     //  		$('#member-list').html(data);
-						// initiateDragDrop();
-	     //  	})
-	      	
-					// initiateDragDrop();
-	    },
-	    over: function( event, ui ) {
-	      	// highlight the spot
-		    	$(this).css('background-color', 'red');
-
-	      	// center the dropped member item in the container
-	      	var currentIdx = $(this).attr('order');
-	      	var currentDraggedIdx = ui.draggable.attr('order');
-	      	var containerTop = ui.offset.top;
-		    	ui.draggable.css('left', '0');
-		    	ui.draggable.css('top', containerTop);
-					// debugger
-	      	// re-render the list
-	      	$.each($(".member-item-container"), function(index, val) {
-	      		// increment down one if the index is larger than the currentIDX
-
-	      		var toInsert = newGrpOrd[index];
-	      		if (index > currentIdx) {
-		      		toInsert = newGrpOrd[index + 1];
-	      		} 
-
-	      		$("#member-item-container_" + index).html(toInsert);
-	      	});
-
-	    },
-	    out: function( event, ui ) {
-	      	// center the dropped member item in the container
-	      	// un highlight the spot
-		    	$(this).css('background-color', 'transparent');
-	      	// move all below member items up one spot
-	    }
-	  });
+		}
+	});
 	
 }
 
 initiateDragDrop();
 
-// $('body').droppable({})
 
 // check in funcitonality
 $('body').on('click', '.check-in', function(event) {

@@ -79,10 +79,9 @@ class GroupsController < ApplicationController
 		else
 			preferences = {}
 		end
-		# save
-		current_user.update_attributes(:order_prefs => preferences.to_json)
+		current_user.order_prefs = preferences.to_json
+		current_user.save
 		group_order = preferences
-		# re render
 		render :partial => 'main_member_list', :locals => {:grp => grp,:order => group_order}
 	end
 
@@ -120,9 +119,8 @@ class GroupsController < ApplicationController
 		@grp_order = nil
 		if current_user.order_prefs
 			prefs = JSON.parse(current_user.order_prefs.try(:to_s))
-			@grp_order = prefs[@grp.id]
+			@grp_order = prefs[@grp.id.to_s]
 		end
-		
 		# if the group order preferences is blank, then just run the order as normal
 		@global_chat_messages = ChatMessage.global_chats
 		# @messages = ChatMessage.select { |e| e.group_id == @grp.id } 
