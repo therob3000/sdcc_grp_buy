@@ -1,0 +1,15 @@
+	
+<% if params[:order] %>
+	<!-- sort the members based on order -->
+	<% 
+		order = JSON.parse(params[:order]) 
+		member_grps = order.sort_by {|e| e['order'] }.map { |e| grp.member_groups.find(e['mem_g_id']) }
+	%>
+	<% member_grps.each_with_index do |mem_grp,idx| %>
+		<%= render :partial => 'member_list_item', :locals => { :member => mem_grp.member, :mem_grp => mem_grp, :grp => @grp, :idx => idx } %>
+	<% end %>
+<% else %>
+	<% grp.member_groups.each_with_index do |mem_grp,idx| %>
+		<%= render :partial => 'member_list_item', :locals => { :member => mem_grp.member, :mem_grp => mem_grp, :grp => @grp, :idx => idx } %>
+	<% end %>
+<% end %>

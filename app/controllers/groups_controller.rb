@@ -66,6 +66,26 @@ class GroupsController < ApplicationController
 		render :partial => 'groups/master_tab_group', :locals => { :grp => grp }
 	end
 
+	def present_member_list_partial
+		# update the group order based on the jason obj provided
+		order_obj = JSON.parse(params[:order])
+		grp = Group.find(params[:group_id])
+
+		# search current users order preferences obj and parse it 
+		if current_user.order_prefs
+			# reassign
+			preferences = JSON.parse(current_user.order_prefs.to_s)
+			preferences[params[:group_id]] = order_obj
+		else
+			preferences = {}
+		end
+		# save
+		current_user.update_attributes(:order_prefs => preferences.to_json)
+		group_order = preferences
+		# re render
+		render :partial => 'main_member_list', :locals => {:grp => grp,:order => group_order}
+	end
+
 	def process_message
 		mess = ChatMessage.new(message_params)
 		mess.user_id = current_user.id
@@ -97,6 +117,13 @@ class GroupsController < ApplicationController
 	def show
 		@grp = Group.find(params[:id])
 		@page = 'group_show_page'
+		@grp_order = nil
+		if current_user.order_prefs
+			prefs = JSON.parse(current_user.order_prefs.try(:to_s))
+			@grp_order = prefs[@grp.id]
+		end
+		
+		# if the group order preferences is blank, then just run the order as normal
 		@global_chat_messages = ChatMessage.global_chats
 		# @messages = ChatMessage.select { |e| e.group_id == @grp.id } 
 	end

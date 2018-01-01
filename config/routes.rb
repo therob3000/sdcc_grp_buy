@@ -83,6 +83,7 @@ Rails.application.routes.draw do
       get 'search'
       get 'private_search'
       get 'present_master_partial'
+      get 'present_member_list_partial'
       post 'process_message'
       get 'master_tab'
       get 'present_day_container'

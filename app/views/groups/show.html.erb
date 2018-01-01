@@ -39,9 +39,7 @@
 		<h5><a href="#" id='non-checked-in-toggle' style="width: 100%" class='btn btn-primary btn-lg'>Toggle Non-Checked in Members</a></h5>
 	<% end %>
 		<div class="member-list" id='member-list'>
-			<% @grp.member_groups.each do |mem_grp| %>
-				<%= render :partial => 'member_list_item', :locals => { :member => mem_grp.member, :mem_grp => mem_grp, :grp => @grp } %>
-			<% end %>
+			<%= render :partial => 'main_member_list', :locals => {:grp => @grp, :order => @grp_order } %>
 		</div>
 	</div>
 

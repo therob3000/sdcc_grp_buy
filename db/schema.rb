@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171128053359) do
+ActiveRecord::Schema.define(version: 20171223205247) do
 
   create_table "chat_messages", force: :cascade do |t|
     t.string   "message"
@@ -177,6 +177,7 @@ ActiveRecord::Schema.define(version: 20171128053359) do
     t.string   "validation_code"
     t.boolean  "is_admin",               default: false
     t.text     "payment_info"
+    t.text     "order_prefs"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
