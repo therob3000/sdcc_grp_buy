@@ -1,10 +1,14 @@
 <% return if member.nil? %>
-<li class="member-item-container" id='member-item-container_<%= idx %>' order='<%= idx %>' member_group_id="<%= mem_grp.id %>">
+<% if defined? idx %>
+	<li class="member-item-container" id='member-item-container_<%= idx %>' order='<%= idx %>' member_group_id="<%= mem_grp.try(:id) %>">
+<% else %>
+	<li class="member-item-container">
+<% end %>
 	
 <% if mem_grp %>
-	<div class="member-item <%= member.checked_in ? 'member_checked_in' : 'member_not_checked_in' %> clock-slot<%= member.try(:covered) ? ' member_covered' : ' ' %><%= member.try(:active) ? ' member_active' : '' %> member_select_<%= member.try(:id) %> member_groups_marker_<%= member.try(:id) %>" id="member_row_<%= mem_grp.id %>" member_group_id="<%= mem_grp.id %>" original_order='<%= idx %>'>
+	<div class="member-item <%= member.checked_in ? 'member_checked_in' : 'member_not_checked_in' %> clock-slot<%= member.try(:covered) ? ' member_covered' : ' ' %><%= member.try(:active) ? ' member_active' : '' %> member_select_<%= member.try(:id) %> member_groups_marker_<%= member.try(:id) %>" id="member_row_<%= mem_grp.try(:id) %>" member_group_id="<%= mem_grp.try(:id) %>">
 <% else %>
-	<div class="member-item clock-slot <%= member.try(:covered) ? 'member_covered' : '' %>" id="member_row_<%= mem_grp.id %>" member_group_id="<%= mem_grp.id %>" original_order='<%= idx %>'>
+	<div class="member-item clock-slot <%= member.try(:covered) ? 'member_covered' : '' %>" id="member_row_<%= mem_grp.try(:id) %>" member_group_id="<%= mem_grp.try(:id) %>">
 <% end %>
 	<div class="mem-block name-holder">
 		<a href="#" class='member-modal-pop btn' data-toggle="modal" data-target="#memberModal" data-id='<%= member.try(:id) %>'> <%= member.try(:display_last) %> </a>  
