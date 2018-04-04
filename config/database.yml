@@ -22,5 +22,4 @@ test:
 
 production:
   <<: *default
-  adapter: postgresql
-  database: HEROKU_POSTGRESQL_CYAN_URL
+  database: db/development.sqlite3
