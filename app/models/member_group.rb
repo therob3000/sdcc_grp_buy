@@ -8,7 +8,7 @@ class MemberGroup < ApplicationRecord
 	validate :member_not_in_any_group
 
 	def member_not_in_any_group
-		if member.member_groups >= 1
+		if member.member_groups.length >= 1
 			gname = member.member_groups.first.group.name
       errors.add(:group_id, "member already belongs to #{gname}")
     end
