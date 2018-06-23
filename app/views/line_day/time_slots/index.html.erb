@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Line Day Time Slots</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Day</th>
+      <th>Description</th>
+      <th>Time</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @line_day_time_slots.each do |line_day_time_slot| %>
+      <tr>
+        <td><%= line_day_time_slot.day %></td>
+        <td><%= line_day_time_slot.description %></td>
+        <td><%= line_day_time_slot.time %></td>
+        <td><%= link_to 'Show', line_day_time_slot %></td>
+        <td><%= link_to 'Edit', edit_line_day_time_slot_path(line_day_time_slot) %></td>
+        <td><%= link_to 'Destroy', line_day_time_slot, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Line Day Time Slot', new_line_day_time_slot_path %>

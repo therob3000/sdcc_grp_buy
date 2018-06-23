@@ -26,4 +26,6 @@
 /vendor/bundle
 /log
 
-dump.rdb
+dump.rdb/public/packs
+/public/packs-test
+/node_modules

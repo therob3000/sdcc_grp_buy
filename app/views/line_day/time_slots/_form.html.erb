@@ -1,0 +1,32 @@
+<%= form_for(line_day_time_slot) do |f| %>
+  <% if line_day_time_slot.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(line_day_time_slot.errors.count, "error") %> prohibited this line_day_time_slot from being saved:</h2>
+
+      <ul>
+      <% line_day_time_slot.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :day %>
+    <%= f.text_field :day %>
+  </div>
+
+  <div class="field">
+    <%= f.label :description %>
+    <%= f.text_area :description %>
+  </div>
+
+  <div class="field">
+    <%= f.label :time %>
+    <%= f.datetime_select :time %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

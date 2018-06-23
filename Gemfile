@@ -53,6 +53,8 @@ gem 'redis', '~> 3.0'
 # Use Unicorn as the app server
 # gem 'unicorn'
 # gem 'websocket-rails'
+gem 'react-rails'
+gem 'webpacker'
 gem 'websocket-rails', github: 'recurser/websocket-rails', branch: 'bugfix/388-latest-faye-websocket'
 # gem 'websocket-rails', github: 'moaa/websocket-rails', branch: 'threadsocket-rails'
 

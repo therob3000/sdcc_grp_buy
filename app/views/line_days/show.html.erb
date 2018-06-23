@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Day:</strong>
+  <%= @line_day.day %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @line_day.description %>
+</p>
+
+<%= link_to 'Edit', edit_line_day_path(@line_day) %> |
+<%= link_to 'Back', line_days_path %>

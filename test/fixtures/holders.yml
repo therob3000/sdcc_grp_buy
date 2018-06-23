@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  number: 1
+  email: MyString
+  line_day: one
+
+two:
+  user: two
+  number: 1
+  email: MyString
+  line_day: two

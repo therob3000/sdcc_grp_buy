@@ -1,0 +1,2 @@
+module LineDay::TimeSlotsHelper
+end

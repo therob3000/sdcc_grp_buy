@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Holders</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Number</th>
+      <th>Email</th>
+      <th>Line day</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @holders.each do |holder| %>
+      <tr>
+        <td><%= holder.user %></td>
+        <td><%= holder.number %></td>
+        <td><%= holder.email %></td>
+        <td><%= holder.line_day %></td>
+        <td><%= link_to 'Show', holder %></td>
+        <td><%= link_to 'Edit', edit_holder_path(holder) %></td>
+        <td><%= link_to 'Destroy', holder, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Holder', new_holder_path %>

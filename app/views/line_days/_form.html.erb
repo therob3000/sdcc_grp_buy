@@ -1,0 +1,27 @@
+<%= form_for(line_day) do |f| %>
+  <% if line_day.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(line_day.errors.count, "error") %> prohibited this line_day from being saved:</h2>
+
+      <ul>
+      <% line_day.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :day %>
+    <%= f.text_field :day %>
+  </div>
+
+  <div class="field">
+    <%= f.label :description %>
+    <%= f.text_area :description %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

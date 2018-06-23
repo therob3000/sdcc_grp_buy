@@ -1,0 +1,37 @@
+<%= form_for(holder) do |f| %>
+  <% if holder.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(holder.errors.count, "error") %> prohibited this holder from being saved:</h2>
+
+      <ul>
+      <% holder.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :user_id %>
+    <%= f.text_field :user_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :number %>
+    <%= f.number_field :number %>
+  </div>
+
+  <div class="field">
+    <%= f.label :email %>
+    <%= f.text_field :email %>
+  </div>
+
+  <div class="field">
+    <%= f.label :line_day_id %>
+    <%= f.text_field :line_day_id %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
