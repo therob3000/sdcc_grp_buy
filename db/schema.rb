@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171223205247) do
+ActiveRecord::Schema.define(version: 20180623205321) do
 
   create_table "chat_messages", force: :cascade do |t|
     t.string   "message"
@@ -55,12 +55,41 @@ ActiveRecord::Schema.define(version: 20171223205247) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "holders", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "line_day_id"
+    t.string   "number"
+    t.string   "email"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+    t.integer  "line_day_time_slot_id"
+    t.index ["line_day_id"], name: "index_holders_on_line_day_id"
+    t.index ["user_id"], name: "index_holders_on_user_id"
+  end
+
   create_table "invites", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "email"
     t.boolean  "accepted",   default: false
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
+  end
+
+  create_table "line_day_time_slots", force: :cascade do |t|
+    t.string   "day"
+    t.text     "description"
+    t.time     "time"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "line_day_id"
+    t.time     "end_time"
+  end
+
+  create_table "line_days", force: :cascade do |t|
+    t.string   "day"
+    t.text     "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "member_group_petitions", force: :cascade do |t|
@@ -178,6 +207,7 @@ ActiveRecord::Schema.define(version: 20171223205247) do
     t.boolean  "is_admin",               default: false
     t.text     "payment_info"
     t.text     "order_prefs"
+    t.string   "phone"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

@@ -28,7 +28,7 @@ class LineDay::TimeSlotsController < ApplicationController
 
     respond_to do |format|
       if @line_day_time_slot.save
-        format.html { redirect_to @line_day_time_slot, notice: 'Time slot was successfully created.' }
+        format.html { redirect_to :back, notice: 'Time slot was successfully created.' }
         format.json { render :show, status: :created, location: @line_day_time_slot }
       else
         format.html { render :new }
@@ -69,6 +69,6 @@ class LineDay::TimeSlotsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def line_day_time_slot_params
-      params.require(:line_day_time_slot).permit(:day, :description, :time)
+      params.require(:line_day_time_slot).permit(:day, :description, :time, :line_day_id, :end_time)
     end
 end

@@ -27,6 +27,11 @@
         </div>
 
         <div class="form-group">
+          <label for="phone">Contact Number</label>
+          <input type="text" class="form-control" name='update[phone]' id="phone" value='<%= @user.phone %>'></input>
+        </div>
+
+        <div class="form-group">
           <label for="update[avatar_url]">Avatar URL(optional)</label>
           <input type="text" class="form-control" value="<%= @user.avatar_url %>" name='update[avatar_url]' id="signup_avatar" aria-describedby="emailHelp" placeholder="Enter url of yourself...if you want">
         </div>

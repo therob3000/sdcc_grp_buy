@@ -4,6 +4,8 @@ class CreateLineDayTimeSlots < ActiveRecord::Migration[5.0]
       t.string :day
       t.text :description
       t.datetime :time
+      t.references :line_day, foreign_key: true
+
 
       t.timestamps
     end

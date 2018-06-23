@@ -17,6 +17,10 @@ class HoldersController < ApplicationController
     @holder = Holder.new
   end
 
+  def send_text
+    
+  end
+
   # GET /holders/1/edit
   def edit
   end
@@ -25,10 +29,12 @@ class HoldersController < ApplicationController
   # POST /holders.json
   def create
     @holder = Holder.new(holder_params)
-
+    @holder.user_id = current_user.id
+    @holder.email = current_user.email
+    @holder.number = current_user.phone
     respond_to do |format|
       if @holder.save
-        format.html { redirect_to @holder, notice: 'Holder was successfully created.' }
+        format.html { redirect_to :back, notice: 'Holder was successfully created.' }
         format.json { render :show, status: :created, location: @holder }
       else
         format.html { render :new }
@@ -69,6 +75,6 @@ class HoldersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def holder_params
-      params.require(:holder).permit(:user_id, :number, :email, :line_day_id)
+      params.require(:holder).permit(:line_day_time_slot_id)
     end
 end

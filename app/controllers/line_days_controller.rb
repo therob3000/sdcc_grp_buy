@@ -10,6 +10,8 @@ class LineDaysController < ApplicationController
   # GET /line_days/1
   # GET /line_days/1.json
   def show
+    @time_slots = @line_day.time_slots
+    @line_day_time_slot = LineDay::TimeSlot.new
   end
 
   # GET /line_days/new

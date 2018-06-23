@@ -128,11 +128,11 @@ class UsersController < ApplicationController
   end
 
   def user_update_params
-    params.require(:update).permit(:name,:email,:avatar_url,:payment_info)
+    params.require(:update).permit(:name,:email,:avatar_url,:payment_info, :phone)
     
   end
 
   def user_params
-    params.require(:signup).permit(:name,:email,:avatar_url,:password,:password_confirmation)
+    params.require(:signup).permit(:name,:email,:avatar_url,:password,:password_confirmation, :phone)
   end
 end

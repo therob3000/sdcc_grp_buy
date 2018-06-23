@@ -1,32 +1,39 @@
-<%= form_for(line_day_time_slot) do |f| %>
-  <% if line_day_time_slot.errors.any? %>
+<%= form_for(@line_day_time_slot) do |f| %>
+  <% if @line_day_time_slot.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(line_day_time_slot.errors.count, "error") %> prohibited this line_day_time_slot from being saved:</h2>
+      <h2><%= pluralize(@line_day_time_slot.errors.count, "error") %> prohibited this @line_day_time_slot from being saved:</h2>
 
       <ul>
-      <% line_day_time_slot.errors.full_messages.each do |message| %>
+      <% @line_day_time_slot.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :day %>
-    <%= f.text_field :day %>
+  <div class="field form-group">
+    <%= f.text_field :day, :value => @line_day.day, :type => 'hidden' %>
+    <%= f.number_field :line_day_id, :value => @line_day.id, :type => 'hidden' %>
   </div>
 
-  <div class="field">
-    <%= f.label :description %>
-    <%= f.text_area :description %>
+  <div class="field form-group">
+    <%= f.label :description, :value => 'Special Notes' %>
+    <%= f.text_area :description, :placeholder => 'optional', :class => "form-control" %>
   </div>
 
-  <div class="field">
-    <%= f.label :time %>
-    <%= f.datetime_select :time %>
+  <div class="field form-group">
+    <%= f.label :time, :value => 'Start' %>
+    <%= f.time_select :time, :class => "form-control", :default => '5:00'.to_time %>
   </div>
+
+  
+  <div class="field form-group">
+    <%= f.label :time, :value => 'End' %>
+    <%= f.time_select :end_time, :class => "form-control", include_blank: true, :default => '' %>
+  </div>
+
 
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit :class => "btn btn-primary btn-lg mb-2" %>
   </div>
 <% end %>

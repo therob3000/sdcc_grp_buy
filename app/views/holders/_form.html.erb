@@ -11,27 +11,12 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :user_id %>
-    <%= f.text_field :user_id %>
-  </div>
-
-  <div class="field">
-    <%= f.label :number %>
-    <%= f.number_field :number %>
-  </div>
-
-  <div class="field">
-    <%= f.label :email %>
-    <%= f.text_field :email %>
-  </div>
-
-  <div class="field">
-    <%= f.label :line_day_id %>
-    <%= f.text_field :line_day_id %>
+  <div class="field form-group">
+    <%= f.label :line_day_time_slot_id %>
+    <%= f.text_field :line_day_time_slot_id, :value => slot_id, :type => 'hidden' %>
   </div>
 
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit :class => 'btn btn-md btn-primary', :value => 'Sign up for this wait shift' %>
   </div>
 <% end %>
