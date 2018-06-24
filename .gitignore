@@ -34,3 +34,4 @@ dump.rdb/public/packs
 /node_modules
 yarn-debug.log*
 .yarn-integrity
+node_modules/
