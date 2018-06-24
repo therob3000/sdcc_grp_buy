@@ -1,5 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
+import PersonContact from "./PersonContact"
 
 export default class TimeSlot extends React.Component {
 
@@ -9,8 +10,11 @@ export default class TimeSlot extends React.Component {
     	id: props.id,
     	time: props.time,
     	people: props.people,
+    	people_hash: props.people_hash,
     	is_admin: props.is_admin,
-    	authenticity_token: props.authenticity_token
+    	notes: props.notes,
+    	authenticity_token: props.authenticity_token,
+    	has_current: props.has_current
     }
   }
 
@@ -22,24 +26,54 @@ export default class TimeSlot extends React.Component {
 					<b>
 				     {time.time}:  
 					</b>
-					    ({time.people})
+					<span className="ppl_list">
+					   __({time.people})__
+					</span>
 				</a>
 
 				<div className="list-grp-detail" id={"info-" + time.id}>
 					<div className="contact-list">
-						{ time.description }
-						<form className="new_holder" id="new_holder" action="/holders" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="✓" /><input type="hidden" name="authenticity_token" value={time.authenticity_token} />
+						{ time.notes }
+						<div className="verbose_list">
+							<div>
+								{time.people_hash.map(function(elem, idx) {
+										return (
+												<div key={"contact_" + idx}>
+													<PersonContact user_id={elem.id} name={elem.name} />
+									    	</div>
+											)
+								})}
+							</div>
 
-						  <div className="field form-group">
-						    <label for="holder_line_day_time_slot_id">Line day time slot</label>
-						    <input value="21" type="hidden" name="holder[line_day_time_slot_id]" id="holder_line_day_time_slot_id" />
-						  </div>
+							<a href="#" className='broadcast-message btn-wide btn btn-lg btn-primary btn-contact-grp' data-id={time.id} end-pt='/line_day/time_slots/broadcast_to_slot' data-identifier={"Wait shift: " + time.time} data-toggle="modal" data-target="#timeSlotContactModal">Broadcast a message to this group</a>
+						</div>
+						{time.has_current ? 
+								<form className="new_holder" id="new_holder" action="/holders/erase" accept-charset="UTF-8"><input name="utf8" type="hidden" value="✓" /><input type="hidden" name="authenticity_token" value={time.authenticity_token} />
 
-						  <div className="actions">
-						    <input type="submit" name="commit" value="Sign up for this wait shift" className="btn btn-md btn-primary" data-disable-with="Create Holder" />
-						  </div>
-						</form>
-						<a href="#" className='broadcast-message btn btn-lg btn-primary' data-toggle="modal" data-target="#timeSlotContactModal">Broadcast a message to this group</a>
+								  <div className="field form-group">
+								    <input value={time.id} type="hidden" name="holder[line_day_time_slot_id]" id="holder_line_day_time_slot_id" />
+								  </div>
+
+								  <div className="actions">
+
+								    <input type="submit" name="commit" value="Unassign youself" className="btn btn-md btn-wide btn-spec btn-primary" data-disable-with="un assigning You" />
+
+								  </div>
+								</form> 
+							: 
+							<form className="new_holder" id="new_holder" action="/holders" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="✓" /><input type="hidden" name="authenticity_token" value={time.authenticity_token} />
+
+							  <div className="field form-group">
+							    <input value={time.id} type="hidden" name="holder[line_day_time_slot_id]" id="holder_line_day_time_slot_id" />
+							  </div>
+
+							  <div className="actions">
+
+							    <input type="submit" name="commit" value="Sign up for this wait shift" className="btn btn-md btn-wide btn-spec btn-primary" data-disable-with="Assigning You" />
+
+							  </div>
+							</form>
+						}
 					</div>
 
 					{ this.props.is_admin ? 

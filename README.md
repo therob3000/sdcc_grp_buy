@@ -28,4 +28,5 @@ to get react working with rails:
 bundle exec rails webpacker:install:react
 
 rails g react:component TimeSlot
+rails g react:component PersonContact
 ```

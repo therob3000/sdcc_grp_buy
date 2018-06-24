@@ -1054,5 +1054,36 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
         overflow-y: auto;
     }
 
+    .ppl_list {
+        display: none;
+    }
+
 }
+
+
+
+
+    .timerow {
+        background-color: transparent;
+    }
+
+    .time_slot {
+        width: 100%;
+    }
+    
+    .centered {
+        text-align: center;
+    }
+
+    .list-grp-detail {
+        display: none; padding: 3px;
+    }
+
+    .expand-slot {
+        width: 70%;
+    }
+
+    tr:hover {
+        background-color: red;
+    }
 

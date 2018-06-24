@@ -1,5 +1,5 @@
 class HoldersController < ApplicationController
-  before_action :set_holder, only: [:show, :edit, :update, :destroy]
+  before_action :set_holder, only: [:show, :edit, :update, :destroy], except: [:erase]
 
   # GET /holders
   # GET /holders.json
@@ -18,11 +18,40 @@ class HoldersController < ApplicationController
   end
 
   def send_text
-    
+    contact_id = contact_holder_params[:contact_id]
+    holder = Holder.find(contact_id)
+    text = contact_holder_params[:body]
+    begin
+      holder.send_text
+      # persist to holder text message record
+      TextMessageRecord.create(:user_id => holder.user_id)
+      respond_to do |format|
+          format.html { redirect_to :back, notice: "Message sent to #{holder.user.name}." }
+        end
+    rescue Exception => e
+      respond_to do |format|
+        format.html { redirect_to :back, notice: e.message }
+      end
+    end
   end
 
   # GET /holders/1/edit
   def edit
+  end
+
+  def erase
+    time_slot_id = holder_params[:line_day_time_slot_id]
+    holder = Holder.find_by ({:line_day_time_slot_id => time_slot_id, :user_id => current_user.id})
+    begin
+      holder.destroy
+      respond_to do |format|
+        format.html { redirect_to :back, notice: 'you were successfully unassigned from group.' }
+      end    
+    rescue Exception => e
+      respond_to do |format|
+        format.html { redirect_to :back, notice: e.message }
+      end
+    end
   end
 
   # POST /holders
@@ -34,11 +63,10 @@ class HoldersController < ApplicationController
     @holder.number = current_user.phone
     respond_to do |format|
       if @holder.save
-        format.html { redirect_to :back, notice: 'Holder was successfully created.' }
+        format.html { redirect_to :back, notice: 'You were successfully assigned.' }
         format.json { render :show, status: :created, location: @holder }
       else
-        format.html { render :new }
-        format.json { render json: @holder.errors, status: :unprocessable_entity }
+        format.html { redirect_to :back, notice: 'Could not assign you to this group again.' }
       end
     end
   end
@@ -62,8 +90,7 @@ class HoldersController < ApplicationController
   def destroy
     @holder.destroy
     respond_to do |format|
-      format.html { redirect_to holders_url, notice: 'Holder was successfully destroyed.' }
-      format.json { head :no_content }
+      format.html { redirect_to :back, notice: 'Holder was successfully destroyed.' }
     end
   end
 
@@ -75,6 +102,11 @@ class HoldersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def holder_params
-      params.require(:holder).permit(:line_day_time_slot_id)
+      params.require(:holder).permit(:line_day_time_slot_id, :contact_id)
     end
+
+    def contact_holder_params
+      params.require(:holder_contact).permit(:contact_id,:body)
+    end
+
 end

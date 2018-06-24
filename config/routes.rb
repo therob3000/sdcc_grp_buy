@@ -1,9 +1,22 @@
 Rails.application.routes.draw do
+
   namespace :line_day do
-    resources :time_slots
+    resources :time_slots do
+      collection do 
+        post 'broadcast_to_slot'
+      end
+    end
   end
+
   resources :line_days
-  resources :holders
+
+  resources :holders do 
+    collection do 
+      get 'erase'
+      post 'send_text'
+    end
+  end
+
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
 
   resources :users do
@@ -29,7 +42,6 @@ Rails.application.routes.draw do
       get 'send_out_confirmation'
     end
   end
-
 
   resources :members do 
     collection do

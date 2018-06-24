@@ -8,59 +8,40 @@
   <strong>Description:</strong>
   <%= @line_day.description %>
 </p>
+
 <% 
-		time_slots_infos = @line_day.time_slots.map { |e| e.present_info }
+		time_slots_infos = @line_day.time_slots.map { |e| e.present_info(current_user.id) }
     time_slots_infos.each do |slot|
       slot['authenticity_token'] = form_authenticity_token
     end
 %>
+
 <%= javascript_pack_tag 'application' %>
 <div class="centered">
 	<%= react_component("LineDaySchedule", { 
 			day: @line_day.id, 
 			time_slots: time_slots_infos,
-			is_admin: current_user.is_admin?
+			is_admin: current_user.is_admin?,
+			user_id: current_user.id
 		}) %>
 </div>
-
 
 <% if current_user.is_admin? %>
 	<div class="container">
 		<%= render :partial => 'line_day/time_slots/form' %>
 	</div>
 <% end %>
-<style>
-
-	.timerow {
-		background-color: transparent;
-	}
-
-	.time_slot {
-		width: 100%;
-	}
-	
-	.centered {
-		text-align: center;
-	}
-
-	.list-grp-detail {
-		display: none; padding: 3px;
-	}
-
-	.expand-slot {
-		width: 70%;
-	}
-
-	tr:hover {
-		background-color: red;
-	}
-</style>
 
 
 <script>
+
+
 // pop up modal
 $('body').on('click', '.broadcast-message', function(event) {
 	event.preventDefault();
+	$("#modal_contact_id").val($(this).attr('data-id'));
+	$("#contact_indentifier").text($(this).attr('data-identifier'));
+	$("#broadcast_to_contact").attr('action', $(this).attr('end-pt'));
 	$('.time-slot-modal-body').fadeIn(500, function() {});
 });
 
@@ -84,15 +65,38 @@ $('body').on('click', '.expand-slot', function(event) {
 });
 
 //sign up
-
 $('body .modal-footer').on('click', '.send_text', function(event) {
 	event.preventDefault();
-	// send the text to the group
+	$('#broadcast_to_contact').trigger('submit');
 });
 
 </script>
 
+<style>
+	.btn-person, .btn-wide {
+     background-color: #abdeb4;
+    color: black;
+    font-weight: bold;
+    display: inline-block;
+    margin: 2px;
+    width: 70%;
 
+	}
+
+	.btn-contact-grp {
+		background-color: #abdeb4;
+
+	}
+
+	.btn-spec {
+		background-color: #e21717;
+		color: white;
+	}
+
+	.modal-body textarea {
+		width: 100%;
+	}
+</style>
 
 
 <div id="timeSlotContactModal" class="modal fade" role="dialog">
@@ -101,13 +105,17 @@ $('body .modal-footer').on('click', '.send_text', function(event) {
     <div class="modal-content time-slot-modal-body">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Time Slot Contact</h4>
+        <h4 class="modal-title">Time Slot Contact: <span id="contact_indentifier"></span></h4>
       </div>
       <div class="modal-body">
-        <textarea name="broadcast_to_slot" data-id="" cols="50" rows="20"></textarea>
+      	<form action="#" class='broadcast_to_slot' id='broadcast_to_contact' method='POST'>
+      		<input type="hidden" name="authenticity_token" value='<%= form_authenticity_token %>' />
+      		<input type="hidden" name="holder_contact[contact_id]" id="modal_contact_id">
+		      <textarea name="holder_contact[body]" cols="50" rows="20"></textarea>
+      	</form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="send_text btn btn-default" data-dismiss="modal">Send</button>
+        <button type="button" class="send_text btn btn-default" slot_id="" type="" data-dismiss="modal">Send</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>

@@ -6,6 +6,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [:facebook]
   has_many :members, :dependent => :delete_all
   has_many :purchases, :dependent => :delete_all
+  has_many :text_message_records, :dependent => :delete_all
   has_many :groups, :dependent => :delete_all
   has_many :followed_groups, :dependent => :delete_all
   has_many :direct_messages, :dependent => :delete_all

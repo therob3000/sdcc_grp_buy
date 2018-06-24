@@ -4,6 +4,11 @@ class LineDay::TimeSlot < ApplicationRecord
 		default_scope { order(:time => :asc) }
 		before_save :cover_end_time
 
+		def initialize
+			super
+			@has_current = false
+		end
+
 		def present_time
 			"#{time.strftime("%l:%M %p")} - #{end_time.try('strftime',"%l:%M %p")}"			
 		end
@@ -14,16 +19,33 @@ class LineDay::TimeSlot < ApplicationRecord
 			end
 		end
 
-		def present_people
-			holders.includes(:user).map { |e| e.user.name }.join(',')
+		def present_people(current_user_id)
+			people = []
+			holders.includes(:user).each { |e| 
+				if e.user_id == current_user_id
+					@has_current = true
+				end
+				people << e.user.attributes.slice("name","id")
+			}
+			people
 		end
 
-		def present_info
+		def present_info(current_user_id)
+			people_array = present_people(current_user_id)
+			people = people_array.map{ |e| e["name"] }.join(',')
+
 			{
 				time: present_time,
-				people: present_people,
-				id: id
+				people: people,
+				people_hash: people_array,
+				notes: description,
+				id: id,
+				has_current: @has_current
 			}
+		end
+
+		def has_current_user
+			
 		end
 
 		def send_text_message_to_grp
