@@ -81,7 +81,7 @@ export default class TimeSlot extends React.Component {
 					<div>
 					<a href="#" data-id={time.id} end-pt={"/line_day/time_slots/" + time.id} data-toggle="modal" data-target="#timeSlotEdit" className='modal-pop edit-slot btn-wide centered btn btn-lg btn-warning'>Edit</a>
 					{ this.props.is_admin ? 
-							<a href={"/line_day/time_slots/" + time.id} data-id={time.id} className='modal-pop delete-slot centered btn btn-lg btn-danger'>Delete</a>
+							<a href={"/line_day/time_slots/" + time.id} data-id={time.id} className='modal-pop btn-wide delete-slot centered btn btn-lg btn-danger'>Delete</a>
 						:
 						<div></div>
 					}
