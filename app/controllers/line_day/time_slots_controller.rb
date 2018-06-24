@@ -56,7 +56,7 @@ class LineDay::TimeSlotsController < ApplicationController
   def destroy
     @line_day_time_slot.destroy
     respond_to do |format|
-      format.html { redirect_to line_day_time_slots_url, notice: 'Time slot was successfully destroyed.' }
+      format.html { redirect_to :back, notice: 'Time slot was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

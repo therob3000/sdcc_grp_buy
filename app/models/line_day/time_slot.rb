@@ -1,5 +1,5 @@
 class LineDay::TimeSlot < ApplicationRecord
-		has_many :holders, :foreign_key => :line_day_time_slot_id
+		has_many :holders, :foreign_key => :line_day_time_slot_id, :dependent => :destroy
 		belongs_to :line_day
 		default_scope { order(:time => :asc) }
 		before_save :cover_end_time
@@ -12,11 +12,18 @@ class LineDay::TimeSlot < ApplicationRecord
 			if end_time.nil? || end_time == ''
 				end_time = time + 1.hour
 			end
-			# byebug
 		end
 
 		def present_people
-			holders.map { |e| e.user.name }.join(',')
+			holders.includes(:user).map { |e| e.user.name }.join(',')
+		end
+
+		def present_info
+			{
+				time: present_time,
+				people: present_people,
+				id: id
+			}
 		end
 
 		def send_text_message_to_grp

@@ -22,3 +22,10 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+to get react working with rails:
+```
+bundle exec rails webpacker:install:react
+
+rails g react:component TimeSlot
+```
