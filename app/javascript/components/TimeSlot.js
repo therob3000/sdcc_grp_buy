@@ -33,7 +33,9 @@ export default class TimeSlot extends React.Component {
 
 				<div className="list-grp-detail" id={"info-" + time.id}>
 					<div className="contact-list">
+					<span id={"notes_for" + time.id}>
 						{ time.notes }
+					</span>
 						<div className="verbose_list">
 							<div>
 								{time.people_hash.map(function(elem, idx) {
@@ -48,7 +50,7 @@ export default class TimeSlot extends React.Component {
 							<a href="#" className='broadcast-message btn-wide btn btn-lg btn-primary btn-contact-grp' data-id={time.id} end-pt='/line_day/time_slots/broadcast_to_slot' data-identifier={"Wait shift: " + time.time} data-toggle="modal" data-target="#timeSlotContactModal">Broadcast a message to this group</a>
 						</div>
 						{time.has_current ? 
-								<form className="new_holder" id="new_holder" action="/holders/erase" accept-charset="UTF-8"><input name="utf8" type="hidden" value="✓" /><input type="hidden" name="authenticity_token" value={time.authenticity_token} />
+								<form className="new_holder" id="new_holder" action="/holders/erase" acceptCharset="UTF-8"><input name="utf8" type="hidden" value="✓" /><input type="hidden" name="authenticity_token" value={time.authenticity_token} />
 
 								  <div className="field form-group">
 								    <input value={time.id} type="hidden" name="holder[line_day_time_slot_id]" id="holder_line_day_time_slot_id" />
@@ -61,7 +63,7 @@ export default class TimeSlot extends React.Component {
 								  </div>
 								</form> 
 							: 
-							<form className="new_holder" id="new_holder" action="/holders" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="✓" /><input type="hidden" name="authenticity_token" value={time.authenticity_token} />
+							<form className="new_holder" id="new_holder" action="/holders" acceptCharset="UTF-8" method="post"><input name="utf8" type="hidden" value="✓" /><input type="hidden" name="authenticity_token" value={time.authenticity_token} />
 
 							  <div className="field form-group">
 							    <input value={time.id} type="hidden" name="holder[line_day_time_slot_id]" id="holder_line_day_time_slot_id" />
@@ -76,14 +78,14 @@ export default class TimeSlot extends React.Component {
 						}
 					</div>
 
+					<div>
+					<a href="#" data-id={time.id} end-pt={"/line_day/time_slots/" + time.id} data-toggle="modal" data-target="#timeSlotEdit" className='modal-pop edit-slot btn-wide centered btn btn-lg btn-warning'>Edit</a>
 					{ this.props.is_admin ? 
-						<div>
-							<a href="#" data-id={time.id} className='modal-pop edit-slot centered btn btn-lg btn-warning'>Edit</a>
 							<a href={"/line_day/time_slots/" + time.id} data-id={time.id} className='modal-pop delete-slot centered btn btn-lg btn-danger'>Delete</a>
-						</div>
 						:
 						<div></div>
 					}
+					</div>
 				
 
 				</div>

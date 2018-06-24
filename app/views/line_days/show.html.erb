@@ -16,7 +16,6 @@
     end
 %>
 
-<%= javascript_pack_tag 'application' %>
 <div class="centered">
 	<%= react_component("LineDaySchedule", { 
 			day: @line_day.id, 
@@ -56,7 +55,14 @@ $('body').on('click', '.delete-slot', function(event) {
 	})
 	
 });
-// edit
+// edit. edit-slot
+$('body').on('click', '.edit-slot', function(event) {
+	event.preventDefault();
+	$("#edit_time_slot").attr('action', $(this).attr('end-pt'));
+	var text = $('#notes_for' + $(this).attr('data-id')).text();
+	$("#time_slot_textarea").text(text);
+	$('.time-slot-modal-body').fadeIn(500, function() {});
+});
 
 //expand
 $('body').on('click', '.expand-slot', function(event) {
@@ -65,9 +71,23 @@ $('body').on('click', '.expand-slot', function(event) {
 });
 
 //sign up
-$('body .modal-footer').on('click', '.send_text', function(event) {
+$('body').on('click', '.send_text', function(event) {
 	event.preventDefault();
 	$('#broadcast_to_contact').trigger('submit');
+});
+
+$('body').on('click', '.update_notes', function(event) {
+	event.preventDefault();
+	// $('#edit_time_slot').trigger('submit');
+	$.ajax({
+		url: $('#edit_time_slot').attr('action'),
+		type: 'PATCH',
+		data: $('#edit_time_slot').serialize(),
+	})
+	.done(function(data) {
+		$("#notes_for" + data.id).text(data.description);
+	})
+	
 });
 
 </script>
@@ -112,10 +132,36 @@ $('body .modal-footer').on('click', '.send_text', function(event) {
       		<input type="hidden" name="authenticity_token" value='<%= form_authenticity_token %>' />
       		<input type="hidden" name="holder_contact[contact_id]" id="modal_contact_id">
 		      <textarea name="holder_contact[body]" cols="50" rows="20"></textarea>
+		      <input type="submit" class="send_text btn btn-default">
       	</form>
       </div>
       <div class="modal-footer">
         <button type="button" class="send_text btn btn-default" slot_id="" type="" data-dismiss="modal">Send</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div id="timeSlotEdit" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content edit-time-slot-modal-body">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Edit</h4>
+      </div>
+      <div class="modal-body" class="update_notes btn btn-default">
+      	<form action="#" class='edit_time_slot' id='edit_time_slot' method='PUT'>
+      		<input type="hidden" name="authenticity_token" value='<%= form_authenticity_token %>' />
+		      <textarea name="line_day_time_slot[description]" id="time_slot_textarea" value="" cols="50" rows="20"></textarea>
+		      <input type="submit">
+      	</form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="update_notes btn btn-default" slot_id="" type="" data-dismiss="modal">Update</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>

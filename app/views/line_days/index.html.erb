@@ -1,29 +1,61 @@
 <p id="notice"><%= notice %></p>
 
 <h1>Line Days</h1>
+<div class="centered">
 
-<table>
-  <thead>
-    <tr>
-      <th>Day</th>
-      <th>Description</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+  <% 
+  @line_days.each do |line_day|
+  %>
 
-  <tbody>
-    <% @line_days.each do |line_day| %>
-      <tr>
-        <td><%= line_day.day %></td>
-        <td><%= line_day.description %></td>
-        <td><%= link_to 'Show', line_day %></td>
-        <td><%= link_to 'Edit', edit_line_day_path(line_day) %></td>
-        <td><%= link_to 'Destroy', line_day, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+  <%=
+    react_component("LineDay", { 
+        day: line_day.day, 
+        description: line_day.description,
+        link: "/line_days/#{line_day.id}", 
+        is_admin: current_user.is_admin?,
+        user_id: current_user.id
+      }) 
+  %>
+
+
+  <%
+    end
+  %>
+
+    <br>
+
+
+    <% if current_user.is_admin %>
+
+      <%=
+        react_component("LineDay", { 
+            day: 'New Line Day', 
+            description: '(Admin only)',
+            link: new_line_day_path, 
+            is_admin: current_user.is_admin?,
+            user_id: current_user.id
+          }) 
+      %>
+
     <% end %>
-  </tbody>
-</table>
+  </div>
 
-<br>
 
-<%= link_to 'New Line Day', new_line_day_path %>
+
+<style>
+  
+    .line-day {
+        width: 90%;
+        padding: 2%;
+        margin: 1%;
+        font-size: 20px;
+        font-weight: bold;
+        background-color: #775b5b;
+        color: white;
+    }
+  
+    a:visited {
+      color: white;
+    }
+
+</style>

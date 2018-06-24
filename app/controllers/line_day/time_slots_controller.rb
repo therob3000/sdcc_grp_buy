@@ -40,15 +40,20 @@ class LineDay::TimeSlotsController < ApplicationController
   # PATCH/PUT /line_day/time_slots/1
   # PATCH/PUT /line_day/time_slots/1.json
   def update
-    respond_to do |format|
-      if @line_day_time_slot.update(line_day_time_slot_params)
-        format.html { redirect_to @line_day_time_slot, notice: 'Time slot was successfully updated.' }
-        format.json { render :show, status: :ok, location: @line_day_time_slot }
-      else
-        format.html { render :edit }
-        format.json { render json: @line_day_time_slot.errors, status: :unprocessable_entity }
-      end
+    # respond_to do |format|
+    if @line_day_time_slot.update(line_day_time_slot_params)
+      render :json => @line_day_time_slot
+    else
+      render :json => {}
     end
+      # if @line_day_time_slot.update(line_day_time_slot_params)
+      #   # format.html { redirect_to :back, notice: 'Time slot was successfully updated.' }
+      #   # format.json { render @line_day_time_slot, status: :ok }
+      # else
+      #   format.html { render :edit }
+      #   format.json { render json: @line_day_time_slot.errors, status: :unprocessable_entity }
+      # end
+    # end
   end
 
   # DELETE /line_day/time_slots/1

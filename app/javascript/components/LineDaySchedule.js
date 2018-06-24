@@ -19,7 +19,7 @@ export default class LineDaySchedule extends React.Component {
     return (
       <div>
       {data.map(function(time, idx){
-         return (<TimeSlot time={time.time} people={time.people} id={time.id} authenticity_token={time.authenticity_token} is_admin={isAdmin} notes={time.notes} has_current={time.has_current} people_hash={time.people_hash} />)
+         return (<TimeSlot key={"slot_"+idx} time={time.time} people={time.people} id={time.id} authenticity_token={time.authenticity_token} is_admin={isAdmin} notes={time.notes} has_current={time.has_current} people_hash={time.people_hash} />)
        })}
       </div>
     );
