@@ -4,10 +4,6 @@ class LineDay::TimeSlot < ApplicationRecord
 		default_scope { order(:time => :asc) }
 		before_save :cover_end_time
 
-		def initialize
-			super
-			@has_current = false
-		end
 
 		def present_time
 			"#{time.strftime("%l:%M %p")} - #{end_time.try('strftime',"%l:%M %p")}"			
@@ -21,6 +17,7 @@ class LineDay::TimeSlot < ApplicationRecord
 
 		def present_people(current_user_id)
 			people = []
+			@has_current = false
 			holders.includes(:user).each { |e| 
 				if e.user_id == current_user_id
 					@has_current = true
