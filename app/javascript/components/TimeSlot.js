@@ -27,7 +27,6 @@ export default class TimeSlot extends React.Component {
 				expanded: false
 		}));
 
-		// console.log(this.state)
   }
 
 
