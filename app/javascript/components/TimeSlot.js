@@ -5,24 +5,38 @@ import PersonContact from "./PersonContact"
 export default class TimeSlot extends React.Component {
 
 	constructor (props) {
-    super(props)
+    super(props);
     this.state = {
-    	id: props.id,
-    	time: props.time,
-    	people: props.people,
-    	people_hash: props.people_hash,
-    	is_admin: props.is_admin,
-    	notes: props.notes,
-    	authenticity_token: props.authenticity_token,
-    	has_current: props.has_current
-    }
+			expanded: false
+    };
+
+    // This binding is necessary to make `this` work in the callback
+    this.expandBox = this.expandBox.bind(this);
   }
 
+  expandBox() {
+  	this.props.onChange()
+		this.setState((prevState, props) => ({
+				expanded: !prevState.expanded
+		}));
+  }
+
+
+  closeBox(){
+  	this.setState((prevState, props) => ({
+				expanded: false
+		}));
+
+		// console.log(this.state)
+  }
+
+
+
   render () {
-  	const time = this.state;
+  	const time = this.props;
     return (
     	<div key={time.id}>
-      	<a href="#" data-id={time.id} className='expand-slot btn btn-lg btn-primary time_slot centered'>
+      	<a data-id={time.id} className='expand-slot btn btn-lg btn-primary time_slot centered' onClick={this.expandBox}>
 					<b>
 				     {time.time}:  
 					</b>
@@ -31,7 +45,7 @@ export default class TimeSlot extends React.Component {
 					</span>
 				</a>
 
-				<div className="list-grp-detail" id={"info-" + time.id}>
+				<div className="list-grp-detail" style={ this.state.expanded ? {display: "block"} : {display: "none"} } id={"info-" + time.id}>
 					<div className="contact-list">
 					<span id={"notes_for" + time.id}>
 						{ time.notes }

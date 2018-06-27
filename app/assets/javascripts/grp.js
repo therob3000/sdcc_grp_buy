@@ -340,7 +340,6 @@ $(document).ready(function() {
 	  		});
 	  	});
 	  	if (!activeDispatcher) {
-	  		// return;
 		    console.log('Connection has been established: ', data);
 		    connectionID = data.connection_id;
 		    connection = group_id;

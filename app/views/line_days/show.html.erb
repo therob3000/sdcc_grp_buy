@@ -65,10 +65,10 @@ $('body').on('click', '.edit-slot', function(event) {
 });
 
 //expand
-$('body').on('click', '.expand-slot', function(event) {
-	event.preventDefault();
-	$('#info-' + $(this).attr('data-id')).toggle(400);
-});
+// $('body').on('click', '.expand-slot', function(event) {
+// 	event.preventDefault();
+// 	$('#info-' + $(this).attr('data-id')).toggle(400);
+// });
 
 //sign up
 $('body').on('click', '.send_text', function(event) {
@@ -132,7 +132,6 @@ $('body').on('click', '.update_notes', function(event) {
       		<input type="hidden" name="authenticity_token" value='<%= form_authenticity_token %>' />
       		<input type="hidden" name="holder_contact[contact_id]" id="modal_contact_id">
 		      <textarea name="holder_contact[body]" cols="50" rows="20"></textarea>
-		      <input type="submit" class="send_text btn btn-default">
       	</form>
       </div>
       <div class="modal-footer">
@@ -157,7 +156,6 @@ $('body').on('click', '.update_notes', function(event) {
       	<form action="#" class='edit_time_slot' id='edit_time_slot' method='PUT'>
       		<input type="hidden" name="authenticity_token" value='<%= form_authenticity_token %>' />
 		      <textarea name="line_day_time_slot[description]" id="time_slot_textarea" value="" cols="50" rows="20"></textarea>
-		      <input type="submit">
       	</form>
       </div>
       <div class="modal-footer">
@@ -167,3 +165,14 @@ $('body').on('click', '.update_notes', function(event) {
     </div>
   </div>
 </div>
+
+
+<style>
+	.hidden-block {
+		display: none;
+	}
+
+	.shown-block {
+		display: block;
+	}
+</style>
