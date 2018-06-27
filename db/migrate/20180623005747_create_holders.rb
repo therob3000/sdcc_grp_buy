@@ -4,7 +4,7 @@ class CreateHolders < ActiveRecord::Migration[5.0]
       t.references :user, foreign_key: true
       t.integer :number
       t.string :email
-      t.references :time_slot, foreign_key: true
+      t.references :line_day_time_slot, foreign_key: true
       t.boolean :active
 
       t.timestamps
