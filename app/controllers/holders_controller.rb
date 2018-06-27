@@ -1,4 +1,5 @@
 class HoldersController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_holder, only: [:show, :edit, :update, :destroy], except: [:erase]
 
   # GET /holders
