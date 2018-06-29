@@ -39,6 +39,7 @@
 $('body').on('click', '.broadcast-message', function(event) {
 	event.preventDefault();
 	$("#modal_contact_id").val($(this).attr('data-id'));
+	$("#time_slot_id").val($(this).attr('data-slot-id'));
 	$("#contact_indentifier").text($(this).attr('data-identifier'));
 	$("#broadcast_to_contact").attr('action', $(this).attr('end-pt'));
 	$('.time-slot-modal-body').fadeIn(500, function() {});
@@ -131,6 +132,7 @@ $('body').on('click', '.update_notes', function(event) {
       	<form action="#" class='broadcast_to_slot' id='broadcast_to_contact' method='POST'>
       		<input type="hidden" name="authenticity_token" value='<%= form_authenticity_token %>' />
       		<input type="hidden" name="holder_contact[contact_id]" id="modal_contact_id">
+      		<input type="hidden" name="holder_contact[slot_id]" id="time_slot_id">
 		      <textarea name="holder_contact[body]" cols="50" rows="20"></textarea>
       	</form>
       </div>

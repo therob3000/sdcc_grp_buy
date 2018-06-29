@@ -1,3 +1,5 @@
+require 'twilio-ruby'
+
 class Holder < ApplicationRecord
   belongs_to :user
   belongs_to :line_day_time_slot
@@ -9,9 +11,4 @@ class Holder < ApplicationRecord
   	user.name
   end
 
-  def send_text
-  	number = user.phone
-  	raise 'No Phone number provided' if number.nil?
-  	# twilio API
-  end
 end

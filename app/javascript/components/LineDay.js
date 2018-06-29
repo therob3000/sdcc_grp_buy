@@ -10,6 +10,8 @@ export default class LineDay extends React.Component {
     	link: props.link
     }
   }
+
+
   render () {
     return (
     	<div>
@@ -18,7 +20,19 @@ export default class LineDay extends React.Component {
 					<br/>
 					{this.state.description}
 				</a>
-    	</div>
+          { this.props.is_admin ? 
+            <div>
+              <div className="admin_box_line_day">
+                <div className="btn btn-warning btn-lg">edit</div>
+                <div className="btn btn-danger btn-lg">delete</div>
+              </div>
+            </div>
+            :
+            <div></div>
+          }
+      </div>
     );
   }
+
+
 }

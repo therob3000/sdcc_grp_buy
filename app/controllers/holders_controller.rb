@@ -1,3 +1,5 @@
+require 'twilio-ruby'
+
 class HoldersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_holder, only: [:show, :edit, :update, :destroy], except: [:erase]
@@ -20,20 +22,33 @@ class HoldersController < ApplicationController
 
   def send_text
     contact_id = contact_holder_params[:contact_id]
-    holder = Holder.find(contact_id)
+    slot_id = contact_holder_params[:slot_id]
+    holder = Holder.where({:user_id => contact_id, :line_day_time_slot_id => slot_id}).first
     text = contact_holder_params[:body]
-    begin
-      holder.send_text
+    # begin
+      account_sid = ENV['TWILIO_ACCOUNT_SID']
+      auth_token = ENV['TWILIO_AUTH_TOKEN']
+      # number = number_to_phone(holder.user.phone, country_code: 1)
+      number = holder.user.phone
+      raise 'No Phone number provided' if number.nil?
+      # twilio API
+      @client = Twilio::REST::Client.new account_sid, auth_token
+
+      @client.api.account.messages.create(
+        from: '+14152796392',
+        to: '+14152796392',
+        body: text
+      )
       # persist to holder text message record
       TextMessageRecord.create(:user_id => holder.user_id)
       respond_to do |format|
           format.html { redirect_to :back, notice: "Message sent to #{holder.user.name}." }
         end
-    rescue Exception => e
-      respond_to do |format|
-        format.html { redirect_to :back, notice: e.message }
-      end
-    end
+    # rescue Exception => e
+    #   respond_to do |format|
+    #     format.html { redirect_to :back, notice: e.message }
+    #   end
+    # end
   end
 
   # GET /holders/1/edit
@@ -107,7 +122,7 @@ class HoldersController < ApplicationController
     end
 
     def contact_holder_params
-      params.require(:holder_contact).permit(:contact_id,:body)
+      params.require(:holder_contact).permit(:contact_id,:body,:slot_id)
     end
 
 end

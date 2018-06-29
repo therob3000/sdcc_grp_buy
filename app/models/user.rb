@@ -1,3 +1,6 @@
+require 'twilio-ruby'
+
+
 class User < ApplicationRecord
   include SecurityHelper
   # Include default devise modules. Others available are:

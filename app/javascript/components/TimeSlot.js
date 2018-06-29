@@ -55,9 +55,10 @@ export default class TimeSlot extends React.Component {
 						<div className="verbose_list">
 							<div>
 								{time.people_hash.map(function(elem, idx) {
+										const timeSlotId = time.id
 										return (
 												<div key={"contact_" + idx}>
-													<PersonContact user_id={elem.id} name={elem.name} />
+													<PersonContact user_id={elem.id} name={elem.name} slot_id={timeSlotId}/>
 									    	</div>
 											)
 								})}
