@@ -1,4 +1,5 @@
 class LineDay::TimeSlotsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_line_day_time_slot, only: [:show, :edit, :update, :destroy]
 
   # GET /line_day/time_slots

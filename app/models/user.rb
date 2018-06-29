@@ -1,3 +1,6 @@
+require 'twilio-ruby'
+
+
 class User < ApplicationRecord
   include SecurityHelper
   # Include default devise modules. Others available are:
@@ -11,7 +14,7 @@ class User < ApplicationRecord
   has_many :followed_groups, :dependent => :delete_all
   has_many :direct_messages, :dependent => :delete_all
   validates_uniqueness_of :name, :email
-  validate :filter_whitelist
+  # validate :filter_whitelist
   after_create :transfer_member_self
 
 
