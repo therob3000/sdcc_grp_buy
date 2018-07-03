@@ -38,7 +38,7 @@ export default class TimeSlot extends React.Component {
   	const time = this.props;
     return (
     	<div key={time.id}>
-      	<a data-id={time.id} className='expand-slot btn btn-lg btn-primary time_slot centered' onClick={this.expandBox}>
+      	<a data-id={time.id} className={ this.state.expanded ? 'selected-time-slot expand-slot btn btn-lg btn-primary time_slot centered' : 'expand-slot btn btn-lg btn-primary time_slot centered' } onClick={this.expandBox}>
 					<b>
 				     {time.time}:  
 					</b>
