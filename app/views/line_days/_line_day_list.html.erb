@@ -1,0 +1,4 @@
+  <% LineDay.all.try(:each) do |grp| %>
+      <li><a href="/line_days/<%= grp.id %>" style="    width: 100%;
+    margin: 0px;" class='btn btn-lg btn-primary'><%= grp.day %></a></li>
+  <% end %>
