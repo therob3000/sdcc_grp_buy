@@ -38,7 +38,7 @@ export default class TimeSlot extends React.Component {
   	const time = this.props;
     return (
     	<div key={time.id}>
-      	<a data-id={time.id} className='expand-slot btn btn-lg btn-primary time_slot centered' onClick={this.expandBox}>
+      	<a data-id={time.id} className={ this.state.expanded ? 'selected-time-slot expand-slot btn btn-lg btn-primary time_slot centered' : 'expand-slot btn btn-lg btn-primary time_slot centered' } onClick={this.expandBox}>
 					<b>
 				     {time.time}:  
 					</b>
@@ -64,7 +64,7 @@ export default class TimeSlot extends React.Component {
 								})}
 							</div>
 
-							<a href="#" className='broadcast-message btn-wide btn btn-lg btn-primary btn-contact-grp' data-id={time.id} end-pt='/line_day/time_slots/broadcast_to_slot' data-identifier={"Wait shift: " + time.time} data-toggle="modal" data-target="#timeSlotContactModal">Broadcast a message to this group</a>
+							<a href="#" className='broadcast-message btn-wide btn btn-lg btn-primary btn-contact-grp' data-slot-id={time.id} data-id={time.id} end-pt='/line_day/time_slots/broadcast_to_slot' data-identifier={"Wait shift: " + time.time} data-toggle="modal" data-target="#timeSlotContactModal">Broadcast a message to this group</a>
 						</div>
 						{time.has_current ? 
 								<form className="new_holder" id="new_holder" action="/holders/erase" acceptCharset="UTF-8"><input name="utf8" type="hidden" value="✓" /><input type="hidden" name="authenticity_token" value={time.authenticity_token} />
