@@ -30,7 +30,7 @@ class HoldersController < ApplicationController
       auth_token = ENV['TWILIO_AUTH_TOKEN']
       # number = number_to_phone(holder.user.phone, country_code: 1)
       number = holder.user.phone
-      raise 'No Phone number provided' if number.nil?
+      # raise 'No Phone number provided' if number.nil?
       # twilio API
       @client = Twilio::REST::Client.new account_sid, auth_token
 
