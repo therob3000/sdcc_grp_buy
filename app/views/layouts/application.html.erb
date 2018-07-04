@@ -143,12 +143,24 @@
           <ul class="sidebar-menu">
             <li class="header">YOUR GROUPS</li>
           </ul>
+
         </section>
         <div style='overflow-y: scroll;'>
           <ul id="grp_search_aside" style='padding: 2%;'>
             <%= render :partial => 'groups/group_list_sidebar', :locals => { :groups => current_user.my_groups} %>
           </ul>
         </div>
+
+        <ul class="sidebar-menu">
+          <li class="header">LINE GROUPS</li>
+        </ul>
+
+        <div style='overflow-y: scroll;'>
+          <ul id="line_search_aside" style='padding: 0%;'>
+            <%= render :partial => 'line_days/line_day_list' %>
+          </ul>
+        </div>
+
         <!-- /.sidebar -->
       </aside>
 
