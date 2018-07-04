@@ -941,6 +941,55 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 
 }
 
+.line_search_aside, .sidebar-menu, .grp_search_aside {
+    margin: 0px;
+}
+
+    .btn-person, .btn-wide {
+     background-color: #abdeb4;
+    color: black;
+    font-weight: bold;
+    display: inline-block;
+    margin: 2px;
+    width: 70%;
+
+    }
+
+    .btn-contact-grp {
+        background-color: #abdeb4;
+
+    }
+
+    .btn-spec {
+        background-color: #e21717;
+        color: white;
+    }
+
+    .modal-body textarea {
+        width: 100%;
+    }
+
+    .ln-wait-grp {
+    white-space: normal;
+        word-wrap: break-word;
+        width: 100%;
+    margin: 0px;
+    }
+
+
+    .selected_group {
+        background-color: #edf0f6;
+        border-radius: 0;
+    }
+
+    .selected-time-slot {
+        background-color: #8d6262;
+    }
+    .selected-time-slot:hover {
+        background-color: #8d6262;
+    }
+
+
 .modal-body {
     position: relative;
     padding: 15px;
